@@ -1,4 +1,7 @@
 import { ERROR, NOT_RECOGNIZED } from "../store/types";
+import history from './createHistory';
+
+
 const errorHandler = (error) => (dispatch) => {
   if (error.response) {
     const { message, status } = error.response;
