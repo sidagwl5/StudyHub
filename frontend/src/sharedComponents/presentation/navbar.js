@@ -1,8 +1,9 @@
 import React from "react";
 import NavbarContainer from "../container/navbar";
-import Grid from '@material-ui/core/Grid'
+import Grid from "@material-ui/core/Grid";
+import { Link } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ bgColor }) => {
   return (
     <Grid
       xs={12}
@@ -11,11 +12,17 @@ const Navbar = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingTop: '7px',
-        boxSizing: 'border-box'
+        paddingTop: "7px",
+        padding: "0px 10px",
+        boxSizing: "border-box",
+        backgroundColor: bgColor || "transparent",
       }}
     >
-      <h4 style={{ fontSize: "2em", color: "white" }}>Study <span style={{color: 'orange'}}>Hub</span></h4>
+      <Link to = "/">
+        <h4 style={{ fontSize: "2em", color: "white" }}>
+          Study <span style={{ color: "orange" }}>Hub</span>
+        </h4>
+      </Link>
       <NavbarContainer />
     </Grid>
   );

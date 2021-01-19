@@ -1,9 +1,0 @@
-first_name,email,user_role,is_active,last_login
-"Mayank","mayank@namasys.co","DemoRole","false","null"
-"Harsh","rkjrk78@email.com","Manager","false","null"
-"Puneet","puneet@namasys.co","DemoRole","false","null"
-"Mohit","mohit@uflexltd.co","No Role","true","2020-12-30T17:57:43.167016+05:30"
-"Kulbhushan","kulbhushan@namasys.co","Manager","true","null"
-"Ashish","ashish@namasys.co","COANotGiven","true","null"
-"Mohit","mohit@namasys.co","Admin","true","2021-01-06T18:15:52.571986+05:30"
-"Siddha","sas45@gamil.com","Default","false","null"

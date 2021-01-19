@@ -1,19 +1,23 @@
-import React from "react";
-import TextFieldContainer from '../container/textField';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { memo } from "react";
+import TextFieldContainer from "../container/textField";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(() => ({
+const TextField = ({ radius, width, endAdorment, label, height, onChange, dataType, value, params }) => {
+  const classes = makeStyles(() => ({
     root: {
       position: "relative",
-      borderRadius: "35px",
-      width: "600px",
+      borderRadius: radius || "35px",
+      width: width || "600px",
       minWidth: "200px",
       border: "none",
       backgroundColor: "white",
-      height: "40px",
       display: "flex",
+      height: height || '40px',
       flexDirection: "row",
       alignItems: "flex-end",
+      margin: "10px",
+      padding: '0px 10px',
+      boxShadow: "0.5px 0.5px 15px rgba(128, 128, 128, 0.2)",
     },
     TextField: {
       position: "relative",
@@ -36,12 +40,22 @@ const useStyles = makeStyles(() => ({
         borderBottom: "none",
       },
     },
-}));
+  }))();
 
-const TextField = () => {
-   
-    const classes = useStyles();   
-    return <TextFieldContainer classes={classes} placeholder="Search something..." />
+  console.log(endAdorment)
+
+  return (
+    <TextFieldContainer
+      classes={classes}
+      placeholder="Search something..."
+      endAdorment={endAdorment}
+      label={label}
+      onChange={onChange}
+      dataType={dataType}
+      value={value}
+      params={params}
+    />
+  );
 };
 
-export default TextField;
+export default memo(TextField)

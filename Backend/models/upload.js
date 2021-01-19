@@ -14,7 +14,6 @@ const uploadSchema = new mongoose.Schema({
    description: String,
    url: {
        type: String,
-       required: true
    },
    university: {
        type: String,
@@ -40,6 +39,11 @@ const uploadSchema = new mongoose.Schema({
        type: String,
        enum: ['Question Paper', 'Notes'],
        required: true
+   },
+   status: {
+    type: String,
+    enum: ['Accepted', 'Pending'],
+    default: 'Pending'
    },
    favourites: {
        type: String,

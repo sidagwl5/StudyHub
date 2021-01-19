@@ -27,7 +27,7 @@ const Home = () => (
         width: "100%",
         height: "100%",
         background:
-          "linear-gradient(180deg, rgba(0, 0, 0, 0.8) 4%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.4))",
+          "linear-gradient(180deg, rgba(0, 0, 0, 0.6) 2%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.8))",
         position: "absolute",
         top: "0px",
         left: "0px",

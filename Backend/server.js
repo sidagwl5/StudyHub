@@ -6,6 +6,7 @@ const fileUpload = require("express-fileupload");
 const databaseConfig = require("./utils/databaseConfig");
 const userRoutes = require("./routes/user");
 const uploadRoutes = require("./routes/upload");
+const notificationRoutes = require("./routes/notifications"); 
 
 const app = express();
 require("dotenv").config();
@@ -23,6 +24,7 @@ app.use(fileUpload());
 
 app.use("/user", userRoutes);
 app.use("/upload", uploadRoutes);
+app.use("/notification", notificationRoutes);
 
 app.use((err, req, res, next) => {
     console.log(err.message);

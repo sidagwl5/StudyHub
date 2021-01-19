@@ -15,7 +15,9 @@ const MidSection = () => {
               justifyContent: "center",
             }}
           >
-            <TextField /> 
+            <TextField 
+             endAdorment={true}
+            /> 
           </Grid>
     )
 }

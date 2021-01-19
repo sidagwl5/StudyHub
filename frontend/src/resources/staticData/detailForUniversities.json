@@ -1,0 +1,18 @@
+[
+    {
+        "university": "GGSIPU",
+        "childs": [
+            "MSIT",
+            "MAIT",
+            "BPIT",
+            "BVP"
+        ]
+    },
+    {
+        "university": "DU",
+        "childs": [
+            "NC",
+            "Shaheed Sukhdev"
+        ]
+    }
+]

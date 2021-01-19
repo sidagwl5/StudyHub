@@ -2,6 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import ProfilePic from "../presentation/profilePic";
 import Button from "../presentation/button";
+import history from '../../utils/createHistory';
+import Notifications from '../presentation/notifications';
 
 const Navbar = () => {
   const userData = useSelector((state) => state.user);
@@ -10,22 +12,26 @@ const Navbar = () => {
     window.open("http://localhost:5000/user/google");
   };
 
-  const navigateToUploadPage = () => {};
+  const navigateToUploadPage = () => {
+      history.push("/uploadhub");
+  };
 
   return userData ? (
     <div
       style={{
         display: "flex",
-        width: "170px",
+        width: "220px",
         justifyContent: "space-between",
+        alignItems: 'center'
       }}
     >
+      <Notifications />
       <Button
-        title="Upload Place"
+        title="Upload Hub"
         handleClick={navigateToUploadPage}
         radius="25px"
         textColor="black"
-        padding={['0px', '15px']}
+        padding={['8px', '12px']}
       />
       <ProfilePic avatar={userData.imageUrl} />
     </div>

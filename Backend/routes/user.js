@@ -28,7 +28,7 @@ router
         }
 
         const token = getJwtToken(user._id);
-        res.cookie('token', token, { maxAge: 90000, httpOnly: true });
+        res.cookie('token', token, { maxAge: 9000000, httpOnly: true });
         res.redirect("http://localhost:3000");
   
        }
