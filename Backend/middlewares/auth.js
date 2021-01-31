@@ -3,31 +3,30 @@ const asyncHandler = require("express-async-handler");
 const users = require("../models/user");
 
 const authentication = asyncHandler(async (req, res, next) => {
+  const token = req.cookies.token;
 
-        const token = req.cookies.token;
+  if (!token) {
+    res.status(401);
+    throw new Error("User not authenticated");
+  } 
+  
+  else {
+    const userId = jwt.verify(token, process.env.SECRET_KEY);
+    if (!userId) {
+      res.clearCookie("token");
+      res.status(401);
+      throw new Error("User not authenticated");
+    }
 
-        if(!token) {
-           res.status(401);
-           throw new Error("User not authenticated");
-        }
-        else{
+    const userData = await users.findById(userId.id);
+    if (!userData) {
+      res.status(401);
+      throw new Error("User is not registered");
+    }
 
-            const userId = jwt.verify(token, process.env.SECRET_KEY);
-            if(!userId){
-                res.status(401);
-                throw new Error("User not authorized");
-            }
+    req.user = userData;
+    next();
+  }
+});
 
-
-            const userData = await users.findById(userId.id);
-            if(!userData){
-                res.status(401);
-                throw new Error("User is not registered");
-            }
-
-            req.user = userData;
-            next();
-        }
-})
-
-module.exports = { authentication }
+module.exports = { authentication };

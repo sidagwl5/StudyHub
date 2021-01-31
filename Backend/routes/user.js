@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 const { getJwtToken } = require("../utils/helperFunctions");
 const users = require("../models/user");
 const { authentication } = require("../middlewares/auth")
+const { logIn, authenticate , logOut, getAllUserDetails } = require("../controllers/user");
 
 
 router.route("/google").get(passport.authenticate("google", { scope: ['profile'] }));
@@ -28,17 +29,16 @@ router
         }
 
         const token = getJwtToken(user._id);
-        res.cookie('token', token, { maxAge: 9000000, httpOnly: true });
+        res.cookie('token', token, { httpOnly: true });
         res.redirect("http://localhost:3000");
   
        }
   ))
-
-  router.route("/auth").get(authentication, asyncHandler((req, res) => {
-
-         const { firstName, lastName, imageUrl } = req.user;
-         return res.json({firstName, lastName, imageUrl});
-  }))
+  
+  router.route("/login").get(authentication, logIn);
+  router.route("/authenticate").get(authentication, authenticate);
+  router.route("/logout").get(authentication, logOut);
+  router.route("/all").get(authentication, getAllUserDetails);
 
 
 module.exports = router;  

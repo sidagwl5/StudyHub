@@ -1,7 +1,8 @@
 const asyncHandler = require("express-async-handler");
+const path = require("path");
+
 const uploads = require("../models/upload");
 const notifications = require("../models/notifications");
-const path = require("path");
 
 const uploadFile = asyncHandler(async (req, res) => {
   let dataArray = [
@@ -19,11 +20,10 @@ const uploadFile = asyncHandler(async (req, res) => {
 
   if (check) {
     res.status(400);
-    throw new Error("All details not filled");
+    throw new Error("All details neec to be filled!");
   }
 
   let fileData = {};
-
   dataArray.forEach((v) => {
     fileData[v] = req.body[v] || "";
   });
@@ -50,18 +50,20 @@ const uploadFile = asyncHandler(async (req, res) => {
         const { uploadsPending, _id, firstName, lastName } = userData;
 
         userData.uploadsPending = uploadsPending + 1;
-        await userData.save();
+        userData = await userData.save();
 
-        await notifications.create({
-          uploaderId: _id,
-          fileId: fileUploadedData._id,
-          message: {
-            forAdmin: `${firstName} ${lastName} has uploaded a new file`,
-            forUploader: 'Your file is pending for review by admin'
-          }
-        })
+          await notifications.create({
+            uploaderId: _id,
+            fileId: fileUploadedData._id,
+            message: {
+              forAdmin: `${firstName} ${lastName} has uploaded a new file`,
+              forUploader: "Your file is pending for review by admin",
+            },
+          });
 
-        res.json({ message: "File has been sent to admin for review" });
+          console.log('done');
+          return res.json({ message: "File has been sent to admin for review" });
+
       } catch (error) {
         await uploads.findByIdAndRemove(fileUploadedData._id);
         console.log(error);
@@ -72,5 +74,12 @@ const uploadFile = asyncHandler(async (req, res) => {
   );
 });
 
-module.exports = { uploadFile };
- 
+const getSpecificUpload = asyncHandler(async (req, res) => {
+  const uploadId = req.params.id;
+  const uploadData = await uploads.findById(uploadId);
+  console.log(uploadData);
+
+  res.json(uploadData);
+});
+
+module.exports = { uploadFile, getSpecificUpload };
