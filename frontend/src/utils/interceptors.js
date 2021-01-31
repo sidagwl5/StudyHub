@@ -9,8 +9,6 @@ const interceptors = (axios) => {
       request.withCredentials = true;
 
       dispatch({ type: SET_LOADER });
-
-      console.log(request);
       return request;
     },
     (err) => {
@@ -23,8 +21,9 @@ const interceptors = (axios) => {
   axios.interceptors.response.use(
     (response) => {
 
+      console.log(response);
       dispatch({ type: UNSET_LOADER });
-      return Promise.resolve(response);
+      return response;
     },
     (err) => {
 

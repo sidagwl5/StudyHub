@@ -1,15 +1,45 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import Button from '../presentation/button';
+import React, { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
+import IconButton from "../presentation/iconButton";
+import { logOut } from "../../store/actions/user";
+import Menu from "../presentation/menu";
+import history from '../../utils/createHistory';
 
 const Navbar = () => {
-  const userData = useSelector((state) => state.user);
+  const userData = useSelector((state) => state.user.persistantUserData);
+  const isAdmin = userData && userData.isAdmin;
+  const dispatch = useDispatch();
 
-  const handleClick = () => {
-     console.log('clicked');
-  }
+  const handleClick = useCallback(() => {
+    dispatch(logOut());
+  }, []);
 
-  return userData ? <Button title="Log Out" handleClick={handleClick} /> : null
-}
+  return userData ? (
+    <>
+      {isAdmin && (
+        <Menu
+          items={[
+            {
+              name: "Users",
+              operation: () => history.push("/users"),
+            },
+            {
+              name: "Uploads",
+              operation: () => console.log("uploads"),
+            },
+          ]}
+        />
+      )}
+      <IconButton
+        size="small"
+        color="white"
+        hover={{ backgroundColor: "orange" }}
+        handleClick={handleClick}
+        Icon={(props) => <MeetingRoomIcon {...props} />}
+      />
+    </>
+  ) : null;
+};
 
 export default Navbar;

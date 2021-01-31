@@ -1,16 +1,31 @@
-import { ERROR, NOT_RECOGNIZED } from "../store/types";
-import history from './createHistory';
-
+import { SET_ALERT, NOT_RECOGNIZED } from "../store/types";
 
 const errorHandler = (error) => (dispatch) => {
-  if (error.response) {
-    const { message, status } = error.response;
+  if (error.response && error.response.config.url !== "/user/login") {
+    const { data, status } = error.response;
 
-    dispatch({ type: ERROR, payload: message });
-
-    if (status === 401 || status === 403) {
+    if (status === 500) {
+      dispatch({
+        type: SET_ALERT,
+        payload: { type: "error", message: "Server Error!" },
+        dispatch,
+      });
+    } 
+    
+    else if (status === 401 || status === 403) {
       window.localStorage.removeItem("userData");
       dispatch({ type: NOT_RECOGNIZED });
+      dispatch({
+        type: SET_ALERT,
+        payload: { type: "error", message: data.message },
+      });
+    } 
+    
+    else {
+      dispatch({
+        type: SET_ALERT,
+        payload: { type: "error", message: data.message },
+      });
     }
   }
 };

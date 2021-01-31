@@ -12,15 +12,11 @@ const TextFieldContainer = ({
   dataType,
   value,
   params = null,
+  disabled
 }) => {
-  const handleClick = () => {
-    console.log(value);
-  };
-
   let obj = {
     placeholder,
-    onChange,
-    dataType,
+    onChange: (e) => onChange(e, dataType),
     value,
     label,
   };
@@ -36,12 +32,13 @@ const TextFieldContainer = ({
         },
         endAdornment: (
           <InputAdornment position="start">
-            {endAdorment && <Button title="Search" handleClick={handleClick} />}
+            {endAdorment && <Button title="Search" />}
           </InputAdornment>
         ),
       }}
       {...props}
       color="white"
+      disabled={disabled}
       className={classes.TextField}
       classes={{ root: classes.root }}
     />

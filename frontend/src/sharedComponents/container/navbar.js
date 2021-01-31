@@ -6,7 +6,7 @@ import history from '../../utils/createHistory';
 import Notifications from '../presentation/notifications';
 
 const Navbar = () => {
-  const userData = useSelector((state) => state.user);
+  const userData = useSelector(state => state.user.persistantUserData);
 
   const handleClick = () => {
     window.open("http://localhost:5000/user/google");

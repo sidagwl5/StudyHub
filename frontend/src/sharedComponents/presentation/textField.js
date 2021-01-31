@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import TextFieldContainer from "../container/textField";
 import { makeStyles } from "@material-ui/core/styles";
 
-const TextField = ({ radius, width, endAdorment, label, height, onChange, dataType, value, params }) => {
+const TextField = ({ radius, width, endAdorment, label, height, onChange, dataType, value, params, disabled=false }) => {
   const classes = makeStyles(() => ({
     root: {
       position: "relative",
@@ -42,8 +42,6 @@ const TextField = ({ radius, width, endAdorment, label, height, onChange, dataTy
     },
   }))();
 
-  console.log(endAdorment)
-
   return (
     <TextFieldContainer
       classes={classes}
@@ -54,6 +52,7 @@ const TextField = ({ radius, width, endAdorment, label, height, onChange, dataTy
       dataType={dataType}
       value={value}
       params={params}
+      disabled={disabled}
     />
   );
 };

@@ -1,17 +1,44 @@
-import { LOGIN_SUCCESS, LOGOUT_SUCCESS, NOT_RECOGNIZED } from '../types';
+import {
+  LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
+  NOT_RECOGNIZED,
+  GET_ALL_USERS_DATA,
+  SET_LOGIN_SUCCESS_MODAL,
+  UNSET_LOGIN_SUCCESS_MODAL,
+} from "../types";
+import { getDataInLocalStorage } from "../../utils/localStorage";
 
-export default (state=null, action) => {
+const initialState = {
+  persistantUserData: getDataInLocalStorage(),
+  userProfile: null,
+  allUsersData: {
+    data: [],
+    columns: [],
+  },
+  setLoginSuccessModal: false,
+};
 
-    const { type, payload } = action;
+export default (state = initialState, action) => {
+  const { type, payload } = action;
 
-    switch (type) {
-        case LOGIN_SUCCESS:
-            return payload;
+  switch (type) {
+    case LOGIN_SUCCESS:
+      return { ...state, persistantUserData: payload };
 
-        case LOGOUT_SUCCESS, NOT_RECOGNIZED:
-            return null;    
-    
-        default:
-            return state;
-    }
-}
+    case SET_LOGIN_SUCCESS_MODAL:
+      return { ...state, setLoginSuccessModal: payload };
+
+    case UNSET_LOGIN_SUCCESS_MODAL:
+      return { ...state, setLoginSuccessModal: payload };
+
+    case GET_ALL_USERS_DATA:
+      return { ...state, allUsersData: payload };
+
+    case LOGOUT_SUCCESS:
+    case NOT_RECOGNIZED:
+      return { ...state, persistantUserData: null };
+
+    default:
+      return state;
+  }
+};
