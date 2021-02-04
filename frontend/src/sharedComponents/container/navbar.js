@@ -33,7 +33,7 @@ const Navbar = () => {
         textColor="black"
         padding={['8px', '12px']}
       />
-      <ProfilePic avatar={userData.imageUrl} />
+      <ProfilePic title={userData.firstName} avatar={userData.imageUrl} />
     </div>
   ) : (
     <Button title="Google Sign In" handleClick={handleClick} radius="20px" textColor="black" />

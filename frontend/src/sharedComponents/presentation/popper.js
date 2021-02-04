@@ -6,10 +6,8 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(1),
     backgroundColor: theme.palette.background.paper,
-    height: "250px",
-    borderRadius: "6px",
-    width: "200px",
     overflowY: "auto",
+    borderRadius: "6px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
@@ -19,13 +17,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PopperPresentation = ({ open, anchorEl, children }) => {
+const PopperPresentation = ({ open, anchorEl, children, height=null, width=null }) => {
   const classes = useStyles();
   const id = open ? "simple-popper" : undefined;
 
   return (
     <Popper className={classes.root} id={id} open={open} anchorEl={anchorEl}>
-      <div className={classes.paper}>{children}</div>
+      <div 
+       style={{
+        height: height || "250px",
+        width: width || "200px",
+      }}
+      className={classes.paper}>{children}</div>
     </Popper>
   );
 };

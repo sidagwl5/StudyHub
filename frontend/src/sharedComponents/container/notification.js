@@ -8,6 +8,7 @@ import IconButton from "../presentation/iconButton";
 import { getNotificationsForUser } from "../../store/actions/notification";
 import Popper from "../presentation/popper";
 import Button from "../presentation/button";
+import AlertStrip from '../presentation/alertStrip';
 
 const Notifications = () => {
   
@@ -38,22 +39,16 @@ const Notifications = () => {
         handleClick={handleClick}
       />
 
-      <Popper open={open} anchorEl={anchorEl}>
-        <div>
+      <Popper width="300px" open={open} anchorEl={anchorEl}>
+        <div style={{padding: '10px 0px'}}>
           {notificationsData.length > 0 ? (
             notificationsData.map((v) => (           
              <Link to={`/uploadhub/${v.fileId}`}>   
-              <div
-                style={{
-                  width: "100%",
-                  padding: "5px",
-                  color: "black",
-                  fontSize: "13px",
-                  borderBottom: "0.5px solid rgba(128, 128, 128, 0.4)",
-                }}
-              >
-                {v.message}
-              </div>
+              <AlertStrip 
+               key={v.fileId}
+               message={v.message}
+               type={v.status}
+              />
              </Link> 
             ))
           ) : (
@@ -61,7 +56,7 @@ const Notifications = () => {
           )}
         </div>
         <Button
-          title="Upload Hub"
+          title="Refresh"
           handleClick={handleNotifications}
           radius="25px"
           textColor="black"

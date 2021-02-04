@@ -52,18 +52,17 @@ const uploadFile = asyncHandler(async (req, res) => {
         userData.uploadsPending = uploadsPending + 1;
         userData = await userData.save();
 
-          await notifications.create({
-            uploaderId: _id,
-            fileId: fileUploadedData._id,
-            message: {
-              forAdmin: `${firstName} ${lastName} has uploaded a new file`,
-              forUploader: "Your file is pending for review by admin",
-            },
-          });
+        await notifications.create({
+          uploaderId: _id,
+          fileId: fileUploadedData._id,
+          message: {
+            forAdmin: `${firstName} ${lastName} has uploaded a new file`,
+            forUploader: "Your file is pending for review by admin",
+          },
+        });
 
-          console.log('done');
-          return res.json({ message: "File has been sent to admin for review" });
-
+        console.log("done");
+        return res.json({ message: "File has been sent to admin for review" });
       } catch (error) {
         await uploads.findByIdAndRemove(fileUploadedData._id);
         console.log(error);
@@ -82,4 +81,13 @@ const getSpecificUpload = asyncHandler(async (req, res) => {
   res.json(uploadData);
 });
 
-module.exports = { uploadFile, getSpecificUpload };
+const getAllFilesData = asyncHandler(async (req, res) => {
+  const allFilesData = await uploads.find({})
+                       .populate("uploaderId", ['imageUrl', 'firstName'])
+                       .select(['status', 'name', 'description', 'university', 'college', 'type']);
+
+  console.log(allFilesData);
+  return res.json(allFilesData);
+});
+
+module.exports = { uploadFile, getSpecificUpload, getAllFilesData };

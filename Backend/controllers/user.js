@@ -1,4 +1,6 @@
 const users = require("../models/user");
+const notifications = require("../models/notifications");
+const uploads = require("../models/upload");
 const asyncHandler = require("express-async-handler");
 
 const logIn = asyncHandler((req, res) => {
@@ -21,9 +23,27 @@ const authenticate = asyncHandler((req, res) => {
 });
 
 const getAllUserDetails = asyncHandler(async (req, res) => {
-  const usersData = await users.find({});
-  console.log(usersData);
+  const usersData = await users.find({ isAdmin: false });
   return res.json(usersData);
 });
 
-module.exports = { logIn, logOut, authenticate, getAllUserDetails };
+const deleteUser = asyncHandler(async (req, res) => {
+  const userData = await users.findByIdAndDelete(req.params.id);
+  await notifications.deleteMany({ uploaderId: userData._id });
+  await uploads.deleteMany({ uploaderId: userData._id });
+  return res.json({
+    message: `User with name ${userData.firstName} deleted Successfully!`,
+  });
+});
+
+const assignAdminRole = asyncHandler(async (req, res) => {
+  const usersData = await users.findById(req.params.id);
+  usersData.isAdmin = true;
+
+  await usersData.save();
+  return res.json({
+    message: `user with name ${usersData.firstName} assigned admin role successfully!`,
+  });
+});
+
+module.exports = { logIn, logOut, authenticate, getAllUserDetails, deleteUser, assignAdminRole };

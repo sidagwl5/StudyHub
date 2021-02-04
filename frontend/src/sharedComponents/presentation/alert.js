@@ -1,10 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Alert from "@material-ui/lab/Alert";
-import { useSelector, useDispatch } from "react-redux";
 import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from './iconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import AlertStrip from './alertStrip';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,35 +13,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AlertPresentation = () => {
-  const alert = useSelector((state) => state.alert);
+const AlertPresentation = ({ onClose, message, type }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-
-  const handleClick = () => {
-    dispatch({ type: "UNSET_ALERT" });
-  }
 
   return (
-    alert && (
-      <div className={classes.root}>
-        <Snackbar
-          open={true}
-          anchorOrigin={{ horizontal: "center", vertical: "top" }}
-          autoHideDuration={4000}
-          onClose={() => {
-            console.log('closed');
-            dispatch({ type: "UNSET_ALERT" });
-          }}
-        >
-          <Alert
-           severity={alert.type}
-           action={<CloseIcon fontSize="small" onClick={handleClick} />}
-          
-          >{alert.message}</Alert>
-        </Snackbar>
-      </div>
-    )
+    <div className={classes.root}>
+      <Snackbar
+        open={true}
+        anchorOrigin={{ horizontal: "center", vertical: "top" }}
+        autoHideDuration={4000}
+        onClose={onClose}
+      >
+        <AlertStrip 
+         message={message}
+         type={type}
+         onClose={onClose}
+        />
+      </Snackbar>
+    </div>
   );
 };
 

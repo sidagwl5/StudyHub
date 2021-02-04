@@ -8,7 +8,7 @@ const MidSectionMessage = () => {
     const isAdmin = userData && userData.isAdmin;
 
     return (
-        isAdmin && (
+        isAdmin ? (
             <Text
               Component={({ style }) => (
                 <p style={{ ...style }}>
@@ -18,7 +18,7 @@ const MidSectionMessage = () => {
               size="40px"
               weight="bold"
             />
-          )
+          ) : null
     )
 }
 

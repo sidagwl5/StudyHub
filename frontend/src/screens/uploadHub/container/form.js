@@ -21,61 +21,61 @@ const Form = ({ match }) => {
   });
   const dispatch = useDispatch();
 
-  // const specificFileData = useSelector(
-  //   (state) => state.upload.specificFileData
-  // );
+  const specificFileData = useSelector(
+    (state) => state.upload.specificFileData
+  );
 
-  // useEffect(() => {
-  //   if (match.params.id) dispatch(getSpecificUpload(match.params.id));
-  // }, [match]);
+  useEffect(() => {
+    if (match.params.id) dispatch(getSpecificUpload(match.params.id));
+  }, [match]);
 
-  // useEffect(() => {
-  //   if(specificFileData){
-  //     setDisabled(true);
-  //     setUpdate(true);
-  //   } 
-  // }, [specificFileData]);
+  useEffect(() => {
+    if(specificFileData){
+      setDisabled(true);
+      setUpdate(true);
+    } 
+  }, [specificFileData]);
 
-  // useEffect(() => {
-  //   if (specificFileData) {
-  //     const {
-  //       name,
-  //       university,
-  //       college,
-  //       course,
-  //       branch,
-  //       semester,
-  //       type,
-  //     } = specificFileData;
-  //     setFormData({
-  //       name,
-  //       university,
-  //       college,
-  //       course,
-  //       branch,
-  //       semester,
-  //       type,
-  //     });
-  //   }
-  // }, [specificFileData]);
+  useEffect(() => {
+    if (specificFileData) {
+      const {
+        name,
+        university,
+        college,
+        course,
+        branch,
+        semester,
+        type,
+      } = specificFileData;
+      setFormData({
+        name,
+        university,
+        college,
+        course,
+        branch,
+        semester,
+        type,
+      });
+    }
+  }, [specificFileData]);
 
   const handleClick = (e) => {
 
     e.preventDefault();
     let formDataArray = Object.keys(formData);
-    // if (formDataArray.length !== 8) {
-    //   alert("all fields erquired!");
-    //   return false;
-    // }
+    if (formDataArray.length !== 8) {
+      alert("all fields erquired!");
+      return false;
+    }
 
-    // let data = new FormData();
+    let data = new FormData();
 
-    // formDataArray.forEach((v) => {
-    //   data.append(v, formData[v]);
-    // });
+    formDataArray.forEach((v) => {
+      data.append(v, formData[v]);
+    });
 
-    // console.log(data);
-    // dispatch(uploadFile(data));
+    console.log(data);
+    dispatch(uploadFile(data));
     setTimeout(() => setFormData({
       name: "",
       university: "",
@@ -106,25 +106,25 @@ const Form = ({ match }) => {
     [disabled]
   );
 
-  // const handleReject = useCallback(() => {
-  //   setUpdate(false);
-  // }, []);
+  const handleReject = useCallback(() => {
+    setUpdate(false);
+  }, []);
 
-  // const handleAccept = useCallback(() => {
-  //   setDisabled(false);
-  //   setUpdate(false);
-  // }, []);
+  const handleAccept = useCallback(() => {
+    setDisabled(false);
+    setUpdate(false);
+  }, []);
 
   return (
     <div style={{ width: "55%" }}>
-      {/* {update && (
+      {update && (
         <UpdateFileNotice
           type="warning"
           message="Do you want to make some changes!"
           onReject={handleReject}
           onAccept={handleAccept}
         />
-      )} */}
+      )}
 
       {console.log(formData)} 
       <div

@@ -1,0 +1,39 @@
+[
+    {
+        "id": "Avatar",
+        "label": "imageUrl",
+        "align": "center"
+    },
+    {
+        "id": "firstName",
+        "label": "First Name",
+        "align": "center"
+    },
+    {
+        "id": "lastName",
+        "label": "Last Name",
+        "align": "center"
+    },
+    {
+        "id": "uploads",
+        "label": "Uploads",
+        "align": "center"
+    },
+    {
+        "id": "role",
+        "label": "Role",
+        "align": "center"
+    },
+    {
+        "id": "delete",
+        "label": "Delete",
+        "align": "center"
+    },
+    {
+        "id": "assign",
+        "label": "Assign",
+        "align": "center"
+    }
+    
+   
+]

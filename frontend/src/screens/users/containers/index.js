@@ -9,9 +9,13 @@ import TableBody from "@material-ui/core/TableBody";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { useDispatch, useSelector } from "react-redux";
+import DeleteIcon from "@material-ui/icons/Delete";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import IconButton from "../../../sharedComponents/presentation/iconButton";
 
-import { getAllUserDetails } from "../../../store/actions/user";
+import { getAllUserDetails, deleteUser, assignAdminRole } from "../../../store/actions/user";
 import Avatar from "../../../sharedComponents/presentation/profilePic";
+import headers from "../../../resources/staticData/columnForUserTable.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,32 +39,6 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
   },
 }));
-
-const columnHeaders = [
-  {
-    id: "name",
-    label: "Name",
-    align: "center",
-  },
-  {
-    id: "isAdmin",
-    label: "Admin",
-    align: "center",
-  },
-];
-
-const data = [
-  {
-    name: "Siddharth",
-    isAdmin: "lol",
-    align: "center",
-  },
-  {
-    name: "Shubh",
-    isAdmin: "boom",
-    align: "center",
-  },
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -121,6 +99,14 @@ const UsersTable = () => {
     dispatch(getAllUserDetails());
   }, [dispatch]);
 
+  const handleDelete = (id) => {
+    dispatch(deleteUser(id));
+  };
+
+  const handleAssignRole = (id) => {
+    dispatch(assignAdminRole(id));
+  }
+
   const rowProps = {
     padding: "none",
     align: "center",
@@ -137,7 +123,7 @@ const UsersTable = () => {
                 backgroundColor: "rgba(128, 128, 128, 0.1)",
               }}
             >
-              {allUsersData.columns.map((column) => (
+              {headers.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
@@ -164,34 +150,68 @@ const UsersTable = () => {
           </TableHead>
 
           <TableBody>
-            {stableSort(allUsersData.data, getComparator(order, orderBy))
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                return (
-                  <TableRow
-                    style={{ height: "56px" }}
-                    hover
-                    // onClick={(event) => handleClick(event, row.name)}
-                    key={row._id}
-                  >
-                    <TableCell {...rowProps}>{row.uploads.length}</TableCell>
-
-                    <TableCell {...rowProps}>{row.firstName}</TableCell>
-                    <TableCell {...rowProps}>{row.lastName}</TableCell>
-                    <TableCell
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        height: "56px",
-                        alignItems: "center",
-                      }}
-                      {...rowProps}
+            {allUsersData.length ? (
+              stableSort(allUsersData, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  return (
+                    <TableRow
+                      style={{ height: "56px" }}
+                      hover
+                      // onClick={(event) => handleClick(event, row.name)}
+                      key={row._id}
                     >
-                      <Avatar avatar={row.imageUrl} />
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                      <TableCell
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          height: "56px",
+                          alignItems: "center",
+                        }}
+                        {...rowProps}
+                      >
+                        <Avatar avatar={row.imageUrl} />
+                      </TableCell>
+
+                      <TableCell {...rowProps}>{row.firstName}</TableCell>
+                      <TableCell {...rowProps}>{row.lastName}</TableCell>
+                      <TableCell {...rowProps}>{row.uploads.length}</TableCell>
+                      <TableCell {...rowProps}>
+                        {row.isAdmin ? "Admin" : "Default"}
+                      </TableCell>
+                      <TableCell {...rowProps}>
+
+                        <IconButton
+                          color="red"
+                          handleClick={handleDelete.bind(this, row._id)}
+                          Icon={(props) => <DeleteIcon {...props} />}
+                          tooltip="Delete user"
+                        />
+                      </TableCell>
+
+                      <TableCell {...rowProps}>
+                        <IconButton
+                          color="blue"
+                          handleClick={handleAssignRole.bind(this, row._id)}
+                          Icon={(props) => <SupervisorAccountIcon {...props} />}
+                          tooltip="Assign Admin Role"
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+            ) : (
+              <p
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                No users present
+              </p>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -200,7 +220,7 @@ const UsersTable = () => {
         style={{ backgroundColor: "rgba(128, 128, 128, 0.1)" }}
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={data.length}
+        count={allUsersData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

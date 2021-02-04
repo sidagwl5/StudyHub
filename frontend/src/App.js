@@ -10,7 +10,7 @@ import history from './utils/createHistory';
 import { logIn, authenticate } from './store/actions/user';
 import store from "./store";
 import Loader from './sharedComponents/presentation/loader';
-import Alert from './sharedComponents/presentation/alert';
+import Alert from './sharedComponents/container/alert';
 
 const App = () => {
 
@@ -33,6 +33,7 @@ const App = () => {
           <Route exact path="/" component={Home} />
           <ProtectedRoute path="/users/:id*" component={Users} />
           <ProtectedRoute path="/uploadhub/:id*" component={UploadHub} />
+          <ProtectedRoute path="/review/:id" component={UploadHub} />
         </Switch>
         <Loader /> 
       </Router>

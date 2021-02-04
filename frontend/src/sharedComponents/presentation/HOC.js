@@ -14,7 +14,10 @@ const HOC = (WrapperComponent) => {
             height: "calc(100vh - 60px)",
             overflowY: "auto",
             display: "flex",
-            justifyContent: "center",
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '0px',
+            boxShadow: '0.5px 0.5px 20px rgba(128, 128, 128, 0.2)'
           }}
         >
           <WrapperComponent {...props} />

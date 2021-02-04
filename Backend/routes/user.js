@@ -3,42 +3,53 @@ const passport = require("passport");
 const asyncHandler = require("express-async-handler");
 const { getJwtToken } = require("../utils/helperFunctions");
 const users = require("../models/user");
-const { authentication } = require("../middlewares/auth")
-const { logIn, authenticate , logOut, getAllUserDetails } = require("../controllers/user");
-
-
-router.route("/google").get(passport.authenticate("google", { scope: ['profile'] }));
+const { authentication } = require("../middlewares/auth");
+const {
+  logIn,
+  authenticate,
+  logOut,
+  getAllUserDetails,
+  deleteUser,
+  assignAdminRole,
+} = require("../controllers/user");
 
 router
-  .route("/google/callback")
-  .get(passport.authenticate('google', { failureRedirect: '/login', session: false }),
-   asyncHandler(async (req, res) => {
+  .route("/google")
+  .get(passport.authenticate("google", { scope: ["profile"] }));
 
-    const {id: gId, name, photos} = req.user;
+router.route("/google/callback").get(
+  passport.authenticate("google", {
+    failureRedirect: "/login",
+    session: false,
+  }),
+  asyncHandler(async (req, res) => {
+    const { id: gId, name, photos } = req.user;
     let user = await users.findOne({ gId });
-       
-        if(!user) {         
-            let userData = {
-                gId,
-                firstName: name.givenName,
-                lastName: name.familyName,
-                imageUrl: photos[0].value
-            } 
-             
-            user = await users.create(userData);
-        }
 
-        const token = getJwtToken(user._id);
-        res.cookie('token', token, { httpOnly: true });
-        res.redirect("http://localhost:3000");
-  
-       }
-  ))
-  
-  router.route("/login").get(authentication, logIn);
-  router.route("/authenticate").get(authentication, authenticate);
-  router.route("/logout").get(authentication, logOut);
-  router.route("/all").get(authentication, getAllUserDetails);
+    if (!user) {
+      let userData = {
+        gId,
+        firstName: name.givenName,
+        lastName: name.familyName,
+        imageUrl: photos[0].value,
+      };
 
+      user = await users.create(userData);
+    }
 
-module.exports = router;  
+    const token = getJwtToken(user._id);
+    res.cookie("token", token, { httpOnly: true });
+    res.redirect("http://localhost:3000");
+  })
+);
+
+router.route("/login").get(authentication, logIn);
+router.route("/authenticate").get(authentication, authenticate);
+router.route("/logout").get(authentication, logOut);
+router.route("/all").get(authentication, getAllUserDetails);
+router
+  .route("/:id")
+  .delete(authentication, deleteUser)
+  .post(authentication, assignAdminRole);
+
+module.exports = router;
