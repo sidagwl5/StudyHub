@@ -3,7 +3,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "./button";
 
-export default function SimpleMenu({ items = [] }) {
+export default function SimpleMenu({ items = [], title="Options" }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -15,7 +15,7 @@ export default function SimpleMenu({ items = [] }) {
 
   return (
     <>
-      <Button title="Options" textColor="black" handleClick={handleMenuClick} />
+      <Button title={title} textColor="black" handleClick={handleMenuClick} />
       <div>
         <Menu
           id="simple-menu"
@@ -25,7 +25,13 @@ export default function SimpleMenu({ items = [] }) {
           onClose={handleClose}
         >
           {items.map((item, index) => (
-            <MenuItem key={index} onClick={item.operation}>{item.name}</MenuItem>
+            <MenuItem 
+            key={index} 
+            onClick={item.operation}
+            disabled={item.disabled || false} 
+            >
+              {item.name}
+            </MenuItem>
           ))}
         </Menu>
       </div>

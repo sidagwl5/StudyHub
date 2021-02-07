@@ -6,6 +6,9 @@ import {
   SET_LOGIN_SUCCESS_MODAL,
   UNSET_LOGIN_SUCCESS_MODAL,
   FILTER_ALL_USERS_DATA_BY_ID,
+  SET_SPECIFIC_USER_DATA,
+  UNSET_SPECIFIC_USER_DATA,
+  GET_USER_UPLOADS
 } from "../types";
 import { getDataInLocalStorage } from "../../utils/localStorage";
 
@@ -14,6 +17,8 @@ const initialState = {
   userProfile: null,
   allUsersData: [],
   setLoginSuccessModal: false,
+  specificUserData: null,
+  approvedUploads: 0
 };
 
 export default (state = initialState, action) => {
@@ -31,6 +36,16 @@ export default (state = initialState, action) => {
 
     case GET_ALL_USERS_DATA:
       return { ...state, allUsersData: payload };
+
+    case GET_USER_UPLOADS:
+      return { ...state, approvedUploads: payload };  
+
+    // can be combined to one only  
+    case SET_SPECIFIC_USER_DATA:
+      return { ...state, specificUserData: payload }; 
+
+    case UNSET_SPECIFIC_USER_DATA:
+      return { ...state, specificUserData: payload };  
 
     case FILTER_ALL_USERS_DATA_BY_ID:
       return {

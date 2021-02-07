@@ -1,27 +1,12 @@
 [
     {
-        "id": "Avatar",
-        "label": "imageUrl",
+        "id": "imageUrl",
+        "label": "Avatar",
         "align": "center"
     },
     {
-        "id": "firstName",
-        "label": "First Name",
-        "align": "center"
-    },
-    {
-        "id": "lastName",
-        "label": "Last Name",
-        "align": "center"
-    },
-    {
-        "id": "uploads",
-        "label": "Uploads",
-        "align": "center"
-    },
-    {
-        "id": "role",
-        "label": "Role",
+        "id": "name",
+        "label": "Name",
         "align": "center"
     },
     {
@@ -33,7 +18,5 @@
         "id": "assign",
         "label": "Assign",
         "align": "center"
-    }
-    
-   
+    }  
 ]

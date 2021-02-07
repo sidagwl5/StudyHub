@@ -1,47 +1,57 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     gId: {
-       type: String,
-       required: true
+      type: String,
+      required: true,
     },
-    firstName: {
-        type: String,
-        required: true
-    },
-    lastName: {
-        type: String,
-        required: true
+    name: {
+      type: String,
+      required: true,
     },
     imageUrl: {
-        type: String,
-        require: true
+      type: String,
+      require: true,
     },
     university: String,
     college: String,
     course: String,
     branch: String,
     semester: String,
-    favourites: [String],
-    uploads: [String],
-    uploadsApproved: {
-        type: Number,
-        default: 0
-    },
+    favourites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Uploads",
+      },
+    ],
+    uploadsApproved: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Uploads",
+      },
+    ],
     uploadsRejected: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
     },
-    uploadsPending: {
-        type: Number,
-        default: 0
-    },
-    downloads: [String],
+    uploadsPending: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Uploads",
+      },
+    ],
     isAdmin: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
+    },
+    status: {
+      type: String,
+      enum: ['Active', 'Suspend'],
+      default: 'Active'
     }
+  },
+  { timestamps: true }
+);
 
-}, { timestamps: true });
-
-module.exports = mongoose.model('Users', userSchema);
+module.exports = mongoose.model("Users", userSchema);

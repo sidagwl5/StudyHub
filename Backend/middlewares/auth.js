@@ -20,8 +20,15 @@ const authentication = asyncHandler(async (req, res, next) => {
 
     const userData = await users.findById(userId.id);
     if (!userData) {
+      res.clearCookie("token");
       res.status(401);
       throw new Error("User is not registered");
+    }
+
+    else if(userData.status === 'Suspend'){
+      res.clearCookie("token");
+      res.status(401);
+      throw new Error("You are suspended by an admin!");
     }
 
     req.user = userData;

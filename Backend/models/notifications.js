@@ -9,24 +9,18 @@ const notificationSchema = new mongoose.Schema(
     },
     fileId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Uploads",
     },
     message: {
-      forAdmin: {
-        type: "String",
-        required: true,
-      },
-      forUploader: {
-        type: "String",
-        required: true,
-      },
+      type: String,
     },
     status: {
       type: String,
       enum: ['Pending', 'Rejected', 'Approved'],
       default: 'Pending'
     }
+    // noteId:{
+    // },
   },
   { timestamps: true }
 );

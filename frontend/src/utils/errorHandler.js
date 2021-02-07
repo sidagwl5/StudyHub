@@ -1,7 +1,7 @@
 import { SET_ALERT, NOT_RECOGNIZED } from "../store/types";
 
 const errorHandler = (error) => (dispatch) => {
-  if (error.response && error.response.config.url !== "/user/login") {
+  if (error.response) {
     const { data, status } = error.response;
 
     if (status === 500) {

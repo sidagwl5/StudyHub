@@ -46,7 +46,7 @@ const uploadSchema = new mongoose.Schema({
     default: 'Pending'
    },
    favourites: {
-       type: String,
+       type: Number,
        default: 0
    }
 }, { timestamps: true })

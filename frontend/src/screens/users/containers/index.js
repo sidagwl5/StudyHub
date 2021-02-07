@@ -11,9 +11,11 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { useDispatch, useSelector } from "react-redux";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from "../../../sharedComponents/presentation/iconButton";
+import UserInfoModal from './userInfoModal';
 
-import { getAllUserDetails, deleteUser, assignAdminRole } from "../../../store/actions/user";
+import { getAllUserDetails, deleteUser, updateUser, getSpecificUser } from "../../../store/actions/user";
 import Avatar from "../../../sharedComponents/presentation/profilePic";
 import headers from "../../../resources/staticData/columnForUserTable.json";
 
@@ -99,18 +101,25 @@ const UsersTable = () => {
     dispatch(getAllUserDetails());
   }, [dispatch]);
 
-  const handleDelete = (id) => {
+  const handleDelete = (id, event) => {
+    event.stopPropagation();
     dispatch(deleteUser(id));
   };
 
-  const handleAssignRole = (id) => {
-    dispatch(assignAdminRole(id));
+  const handleAssignRole = (id, event) => {
+    console.log('called');
+    event.stopPropagation();
+    dispatch(updateUser(id, { isAdmin: true }));
   }
 
   const rowProps = {
     padding: "none",
     align: "center",
   };
+
+  const handleClick = (id) => {
+    dispatch(getSpecificUser(id));
+  }
 
   return (
     <div className={classes.root}>
@@ -155,10 +164,11 @@ const UsersTable = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
+                    <Tooltip title="Click to see user info">
                     <TableRow
                       style={{ height: "56px" }}
                       hover
-                      // onClick={(event) => handleClick(event, row.name)}
+                      onClick={handleClick.bind(this, row._id)}
                       key={row._id}
                     >
                       <TableCell
@@ -173,14 +183,8 @@ const UsersTable = () => {
                         <Avatar avatar={row.imageUrl} />
                       </TableCell>
 
-                      <TableCell {...rowProps}>{row.firstName}</TableCell>
-                      <TableCell {...rowProps}>{row.lastName}</TableCell>
-                      <TableCell {...rowProps}>{row.uploads.length}</TableCell>
+                      <TableCell {...rowProps}>{row.name}</TableCell>
                       <TableCell {...rowProps}>
-                        {row.isAdmin ? "Admin" : "Default"}
-                      </TableCell>
-                      <TableCell {...rowProps}>
-
                         <IconButton
                           color="red"
                           handleClick={handleDelete.bind(this, row._id)}
@@ -198,6 +202,7 @@ const UsersTable = () => {
                         />
                       </TableCell>
                     </TableRow>
+                    </Tooltip>
                   );
                 })
             ) : (
@@ -226,6 +231,8 @@ const UsersTable = () => {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
+
+      <UserInfoModal />
     </div>
   );
 };

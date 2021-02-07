@@ -1,17 +1,23 @@
 import React from "react";
 
-const Button = ({ title, handleClick, radius, textColor, padding = [] }) => (
+const Button = ({
+  title,
+  handleClick,
+  radius = "17px",
+  textColor = "white",
+  padding = "5px 10px",
+  margin = "0px",
+}) => (
   <button
     type="button"
     style={{
-      padding: `${padding[0] ? padding[0] : "5px"} ${
-        padding[1] ? padding[1] : "10px"
-      }`,
+      padding,
       border: "none",
-      color: textColor ? textColor : "white",
+      color: textColor,
+      margin,
       backgroundColor: "lightblue",
-      borderRadius: radius ? radius : "17px",
-      pointerEvents:"stroke"
+      borderRadius: radius,
+      pointerEvents: "stroke",
     }}
     onClick={handleClick}
   >

@@ -10,7 +10,9 @@ const {
   logOut,
   getAllUserDetails,
   deleteUser,
-  assignAdminRole,
+  updateUser,
+  getSpecificUser,
+  getSuccessfullUploads
 } = require("../controllers/user");
 
 router
@@ -29,8 +31,7 @@ router.route("/google/callback").get(
     if (!user) {
       let userData = {
         gId,
-        firstName: name.givenName,
-        lastName: name.familyName,
+        name: `${name.givenName} ${name.familyName}`,
         imageUrl: photos[0].value,
       };
 
@@ -47,9 +48,17 @@ router.route("/login").get(authentication, logIn);
 router.route("/authenticate").get(authentication, authenticate);
 router.route("/logout").get(authentication, logOut);
 router.route("/all").get(authentication, getAllUserDetails);
+
+router
+  .route("/uploads")
+  .get(authentication, getSuccessfullUploads);
+
 router
   .route("/:id")
   .delete(authentication, deleteUser)
-  .post(authentication, assignAdminRole);
+  .patch(authentication, updateUser)
+  .get(authentication, getSpecificUser);
+
+
 
 module.exports = router;

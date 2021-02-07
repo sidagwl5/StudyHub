@@ -6,19 +6,60 @@ import Button from "../../../sharedComponents/presentation/button";
 import Autocomplete from "../../../sharedComponents/presentation/autocomplete";
 import UpdateFileNotice from "../presentation/updateFileNotice";
 import { uploadFile, getSpecificUpload } from "../../../store/actions/upload";
+import { makeStyles } from "@material-ui/core/styles";
+import uploadFormInitialValues from "../../../resources/staticData/uploadFormInitialValues.json";
+
+const useStyles = makeStyles(() => ({
+  buttonContainer: {
+    width: "100%",
+    width: "100%",
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  textFieldContainer: {
+    width: "100%",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+}));
 
 const Form = ({ match }) => {
   const [disabled, setDisabled] = useState(false);
   const [update, setUpdate] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    university: "",
-    college: "",
-    course: "",
-    branch: "",
-    semester: "",
-    type: "",
-  });
+  const [formData, setFormData] = useState(uploadFormInitialValues);
+  const textFieldArray = useState([
+    {
+      label: "Enter File Name",
+      dataType: "name",
+    },
+    {
+      dataType: "university",
+      label: "Enter University Name",
+    },
+    {
+      dataType: "college",
+      label: "Enter College Name",
+    },
+    {
+      label: "Enter Branch Name",
+      dataType: "branch",
+    },
+    {
+      label: "Enter Course Name",
+      dataType: "course",
+    },
+    {
+      label: "Enter Semester",
+      dataType: "semester",
+    },
+    {
+      dataType: "type",
+      label: "Enter Type",
+    },
+  ])[0];
+
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   const specificFileData = useSelector(
@@ -30,10 +71,10 @@ const Form = ({ match }) => {
   }, [match]);
 
   useEffect(() => {
-    if(specificFileData){
+    if (specificFileData) {
       setDisabled(true);
       setUpdate(true);
-    } 
+    }
   }, [specificFileData]);
 
   useEffect(() => {
@@ -46,6 +87,7 @@ const Form = ({ match }) => {
         branch,
         semester,
         type,
+        url,
       } = specificFileData;
       setFormData({
         name,
@@ -55,12 +97,18 @@ const Form = ({ match }) => {
         branch,
         semester,
         type,
+        file: require(`../../../resources${url}`).default,
       });
     }
   }, [specificFileData]);
 
-  const handleClick = (e) => {
+  useEffect(() => {
+    return () => {
+      dispatch({ type: 'GET_SPECIFIC_UPLOAD', payload: null });
+    }
+  }, [])
 
+  const handleClick = (e) => {
     e.preventDefault();
     let formDataArray = Object.keys(formData);
     if (formDataArray.length !== 8) {
@@ -74,17 +122,8 @@ const Form = ({ match }) => {
       data.append(v, formData[v]);
     });
 
-    console.log(data);
     dispatch(uploadFile(data));
-    setTimeout(() => setFormData({
-      name: "",
-      university: "",
-      college: "",
-      course: "",
-      branch: "",
-      semester: "",
-      type: "",
-    }), 1000);
+    // setTimeout(() => setFormData(uploadFormInitialValues), 1000);
   };
 
   const handleChange = (event, type) => {
@@ -126,82 +165,29 @@ const Form = ({ match }) => {
         />
       )}
 
-      {console.log(formData)} 
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-        }}
-      >
-        <TextField
-          {...textProps}
-          label="Enter File Name"
-          dataType="name"
-          value={formData["name"]}
-        />
+      <div className={classes.textFieldContainer}>
+        {textFieldArray.map((attributes, index) => (
+          <TextField
+            key={index}
+            {...attributes}
+            {...textProps}
+            value={formData[attributes.dataType]}
+          />
+        ))}
 
-        <TextField
-          {...textProps}
-          dataType="university"
-          label="Enter University Name"
-          value={formData["university"]}
-        />
-        <TextField
-          {...textProps}
-          dataType="college"
-          label="Enter College Name"
-          value={formData["college"]}
-        />
-        <TextField
-          {...textProps}
-          label="Enter Branch Name"
-          dataType="branch"
-          value={formData["branch"]}
-        />
+        {/* <Autocomplete /> */}
 
-        <TextField
-          {...textProps}
-          width="30%"
-          label="Enter Course Name"
-          dataType="course"
-          value={formData["course"]}
-        />
+        {!specificFileData && (
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={(e) => {
+              setFormData((prev) => ({ ...prev, file: e.target.files[0] }));
+            }}
+          />
+        )}
 
-        <TextField
-          {...textProps}
-          width="30%"
-          label="Enter Semester"
-          dataType="semester"
-          value={formData["semester"]}
-        />
-        <TextField
-          {...textProps}
-          width="30%"
-          dataType="type"
-          label="Enter Type"
-          value={formData["type"]}
-        />
-
-        <Autocomplete />
-
-        <input
-          type="file"
-          accept=".pdf"
-          onChange={(e) => {
-            setFormData((prev) => ({ ...prev, file: e.target.files[0] }));
-          }}
-        />
-
-        <div
-          style={{
-            width: "100%",
-            width: "100%",
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
+        <div className={classes.buttonContainer}>
           <Button title="Submit" handleClick={handleClick} />
         </div>
       </div>

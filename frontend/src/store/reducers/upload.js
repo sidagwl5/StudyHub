@@ -3,6 +3,7 @@ import {
   GET_ALL_FILES_DATA,
   LOGOUT_SUCCESS,
   NOT_RECOGNIZED,
+  FILTER_ALL_FILES_DATA_BY_ID,
 } from "../types";
 
 const initialState = {
@@ -19,6 +20,12 @@ export default (state = initialState, action) => {
 
     case GET_ALL_FILES_DATA:
       return { ...state, allFilesData: payload };
+
+    case FILTER_ALL_FILES_DATA_BY_ID:
+      return {
+        ...state,
+        allFilesData: state.allFilesData.filter((file) => file._id != payload),
+      };
 
     case LOGOUT_SUCCESS:
     case NOT_RECOGNIZED:

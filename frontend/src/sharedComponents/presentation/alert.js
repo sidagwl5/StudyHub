@@ -25,10 +25,11 @@ const AlertPresentation = ({ onClose, message, type }) => {
         onClose={onClose}
       >
         <AlertStrip 
-         message={message}
          type={type}
          onClose={onClose}
-        />
+        >
+          {message}
+        </AlertStrip>  
       </Snackbar>
     </div>
   );

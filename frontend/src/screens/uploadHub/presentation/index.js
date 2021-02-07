@@ -6,7 +6,7 @@ import FileList from '../container/fileList';
 
 const UploadHub = ({ match }) => {
   const tabsData = useState(["Files", "Upload"])[0];
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
 
   const handleClick = (_, value) => {
     setValue(value);

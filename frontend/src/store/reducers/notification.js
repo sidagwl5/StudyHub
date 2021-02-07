@@ -1,4 +1,4 @@
-import { GET_NOTIFICATIONS, LOGOUT_SUCCESS, NOT_RECOGNIZED } from "../types";
+import { GET_NOTIFICATIONS, LOGOUT_SUCCESS, NOT_RECOGNIZED, FILTER_NOTIFICATIONS_BY_ID } from "../types";
 
 export default (state = [], action) => {
   const { type, payload } = action;
@@ -7,7 +7,11 @@ export default (state = [], action) => {
     case GET_NOTIFICATIONS:
       return payload;
 
-    case (LOGOUT_SUCCESS, NOT_RECOGNIZED):
+    case FILTER_NOTIFICATIONS_BY_ID:
+      return state.filter(notification => notification._id !== payload);  
+
+    case LOGOUT_SUCCESS:
+    case NOT_RECOGNIZED:
       return [];
 
     default:

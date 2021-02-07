@@ -5,7 +5,7 @@ const asyncHandler = require("express-async-handler");
 
 const logIn = asyncHandler((req, res) => {
   const data = {
-    firstName: req.user.firstName,
+    name: req.user.name,
     imageUrl: req.user.imageUrl,
     isAdmin: req.user.isAdmin,
   };
@@ -23,7 +23,12 @@ const authenticate = asyncHandler((req, res) => {
 });
 
 const getAllUserDetails = asyncHandler(async (req, res) => {
-  const usersData = await users.find({ isAdmin: false });
+  const usersData = await users
+    .find({ isAdmin: false })
+    .select([
+      "name",
+      "imageUrl"
+    ]);
   return res.json(usersData);
 });
 
@@ -32,18 +37,34 @@ const deleteUser = asyncHandler(async (req, res) => {
   await notifications.deleteMany({ uploaderId: userData._id });
   await uploads.deleteMany({ uploaderId: userData._id });
   return res.json({
-    message: `User with name ${userData.firstName} deleted Successfully!`,
+    message: `User with name ${userData.name} deleted Successfully!`,
   });
 });
 
-const assignAdminRole = asyncHandler(async (req, res) => {
-  const usersData = await users.findById(req.params.id);
-  usersData.isAdmin = true;
-
-  await usersData.save();
+const updateUser = asyncHandler(async (req, res) => {
+  await users.findByIdAndUpdate(req.params.id, req.body);
   return res.json({
-    message: `user with name ${usersData.firstName} assigned admin role successfully!`,
+    message: `User updated successfully!`,
   });
 });
 
-module.exports = { logIn, logOut, authenticate, getAllUserDetails, deleteUser, assignAdminRole };
+const getSpecificUser = asyncHandler(async (req, res) => {
+  const usersData = await users.findById(req.params.id);
+  return res.json(usersData);
+});
+
+const getSuccessfullUploads = asyncHandler(async (req, res) => {
+  const userData = await users.findById(req.user._id);
+  return res.json(userData.uploadsApproved.length);
+});
+
+module.exports = {
+  logIn,
+  logOut,
+  authenticate,
+  getAllUserDetails,
+  deleteUser,
+  updateUser,
+  getSpecificUser,
+  getSuccessfullUploads
+};
