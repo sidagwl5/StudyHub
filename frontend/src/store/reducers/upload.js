@@ -29,7 +29,7 @@ export default (state = initialState, action) => {
 
     case LOGOUT_SUCCESS:
     case NOT_RECOGNIZED:
-      return null;
+      return initialState;
 
     default:
       return state;

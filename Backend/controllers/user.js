@@ -19,7 +19,7 @@ const logOut = asyncHandler((req, res) => {
 });
 
 const authenticate = asyncHandler((req, res) => {
-  return res.status(200).end();
+  return res.json(req.user);
 });
 
 const getAllUserDetails = asyncHandler(async (req, res) => {
@@ -53,11 +53,6 @@ const getSpecificUser = asyncHandler(async (req, res) => {
   return res.json(usersData);
 });
 
-const getSuccessfullUploads = asyncHandler(async (req, res) => {
-  const userData = await users.findById(req.user._id);
-  return res.json(userData.uploadsApproved.length);
-});
-
 module.exports = {
   logIn,
   logOut,
@@ -66,5 +61,4 @@ module.exports = {
   deleteUser,
   updateUser,
   getSpecificUser,
-  getSuccessfullUploads
 };

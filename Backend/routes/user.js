@@ -12,7 +12,6 @@ const {
   deleteUser,
   updateUser,
   getSpecificUser,
-  getSuccessfullUploads
 } = require("../controllers/user");
 
 router
@@ -48,10 +47,6 @@ router.route("/login").get(authentication, logIn);
 router.route("/authenticate").get(authentication, authenticate);
 router.route("/logout").get(authentication, logOut);
 router.route("/all").get(authentication, getAllUserDetails);
-
-router
-  .route("/uploads")
-  .get(authentication, getSuccessfullUploads);
 
 router
   .route("/:id")
