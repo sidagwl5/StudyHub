@@ -12,14 +12,15 @@ import Avatar from "../../../sharedComponents/presentation/profilePic";
 import notes from "../../../resources/images/notes.jpg";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
-import Tooltip from '@material-ui/core/Tooltip';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import Tooltip from "@material-ui/core/Tooltip";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 260,
     margin: "10px",
-    height: '355px'
+    height: "355px",
   },
   media: {
     height: 0,
@@ -28,15 +29,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FileCard = ({
-  data: { name, type, description, university, college, uploaderId, status, url },
+  data: {
+    name,
+    type,
+    description,
+    university,
+    college,
+    uploaderId,
+    status,
+    url,
+  },
 }) => {
   const classes = useStyles();
 
   const handleDownload = () => {
-      
-     const path = require(`../../../resources${url}`).default
-     window.open(path);
-  }
+    const path = require(`../../../resources${url}`).default;
+    window.open(path);
+  };
 
   return (
     <Card className={classes.root}>
@@ -63,18 +72,18 @@ const FileCard = ({
         <IconButton Icon={(props) => <FavoriteIcon {...props} />} />
         {status === "Pending" ? (
           <Tooltip title={status}>
-            <CancelIcon style={{ color: 'red' }} />
+            <CancelIcon style={{ color: "red" }} />
           </Tooltip>
         ) : (
           <Tooltip title={status}>
-            <CheckCircleIcon style={{ color: 'green' }} />
+            <CheckCircleIcon style={{ color: "green" }} />
           </Tooltip>
         )}
 
-        <IconButton 
-        hidden={status==="Pending"} 
-        Icon={props => <GetAppIcon {...props} />} 
-        handleClick={handleDownload}
+        <IconButton
+          hidden={status === "Pending"}
+          Icon={(props) => <GetAppIcon {...props} />}
+          handleClick={handleDownload}
         />
       </CardActions>
     </Card>

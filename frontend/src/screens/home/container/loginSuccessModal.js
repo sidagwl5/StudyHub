@@ -12,7 +12,7 @@ const LoginSuccessModal = ({ classes }) => {
   );
 
   const handleClose = () => {
-    dispatch({ type: "UNSET_LOGIN_SUCCESS_MODAL", payload: false });
+    dispatch({ type: "SET_LOGIN_SUCCESS_MODAL", payload: false });
   };
 
   return (

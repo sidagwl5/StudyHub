@@ -1,29 +1,14 @@
-import React, { useState, useEffect } from "react";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
+import React from "react";
 import UploadFileModal from "./uploadFileModal";
+import UploadFileWrapper from "../../../../sharedComponents/presentation/uploadHub/handleUploadModal";
 
-const UploadFile = ({ match }) => {
-  const [modal, setModal] = useState(false);
-
-  const renderUploadModal = () =>
-    modal && <UploadFileModal match={match} closeModal={setModal.bind(this, false)} />;
-
-  useEffect(() => {
-    if(match.params && match.params.id) setModal(true);
-  }, [match])  
-
-  return (
-    <>
-      <Fab
-        style={{ position: "absolute", right: "10px", bottom: "10px" }}
-        onClick={setModal.bind(this, true)}
-      >
-        <AddIcon />
-      </Fab>
-      {renderUploadModal()}
-    </>
-  );
-};
+const UploadFile = ({ match }) => (
+  <UploadFileWrapper
+    match={match}
+    renderProps={(value, setModal) =>
+      value && <UploadFileModal match={match} closeModal={setModal} />
+    }
+  />
+);
 
 export default UploadFile;

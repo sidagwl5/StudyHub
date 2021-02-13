@@ -11,7 +11,6 @@ import history from "./utils/createHistory";
 import {
   logIn,
   authenticate,
-  getSuccessfullUploads,
 } from "./store/actions/user";
 import store from "./store";
 import Loader from "./sharedComponents/presentation/loader";
@@ -28,10 +27,6 @@ const App = () => {
 
   useEffect(() => {
     userData && dispatch(authenticate());
-  }, [dispatch]);
-
-  useEffect(() => {
-    userData && !userData.isAdmin && dispatch(getSuccessfullUploads());
   }, [dispatch]);
 
   return (

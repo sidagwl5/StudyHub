@@ -41,7 +41,7 @@ const UserInfoModal = () => {
   const specificUserData = useSelector((state) => state.user.specificUserData);
 
   const handleClose = () => {
-    dispatch({ type: "UNSET_SPECIFIC_USER_DATA", payload: null });
+    dispatch({ type: "SET_SPECIFIC_USER_DATA", payload: null });
   };
 
   const handleDelete = (id) => {

@@ -5,7 +5,7 @@ import {
   SET_LOGIN_SUCCESS_MODAL,
   FILTER_ALL_USERS_DATA_BY_ID,
   SET_SPECIFIC_USER_DATA,
-  GET_USER_UPLOADS
+  GET_USER_PROFILE
 } from "../types";
 import axios from "../../utils/api";
 import errorHandler from "../../utils/errorHandler";
@@ -46,8 +46,9 @@ export const logOut = () => async (dispatch) => {
 
 export const authenticate = () => async (dispatch) => {
   try {
-    const { status } = await axios.get("/user/authenticate");
+    const { data, status } = await axios.get("/user/authenticate");
     if (status === 200) {
+      dispatch({ type: GET_USER_PROFILE, payload: data })
     }
   } catch (error) {
     dispatch(errorHandler(error));
@@ -97,12 +98,3 @@ export const getSpecificUser = (userId) => async (dispatch) => {
     dispatch(errorHandler(error));
   }
 };
-
-export const getSuccessfullUploads = () => async (dispatch) => {
-  try {
-    const { status, data } = await axios.get(`/user/uploads`);
-    status === 200 && dispatch({ type: GET_USER_UPLOADS, payload: data });
-  } catch (error) {
-    dispatch(errorHandler(error));
-  }
-}

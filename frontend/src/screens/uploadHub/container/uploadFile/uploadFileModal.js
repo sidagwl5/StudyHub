@@ -31,7 +31,7 @@ const UploadFileModal = ({
   useEffect(() => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      university: detailForUniversities
+      university: detailForUniversities,
     }));
   }, []);
 
@@ -52,26 +52,16 @@ const UploadFileModal = ({
 
   // change form data
   const handleChange = useCallback((type, child, event, value) => {
-    // if (event.target.type === "file") {
-    //   setFormData((prev) => ({
-    //     ...prev,
-    //     file: event.target.files[0],
-    //   }));
-    // } else {
-    //   setFormData((prev) => ({
-    //     ...prev,
-    //     [event.target.id]: event.target.value,
-    //   }));
-    // }
-
-    if(value){   
-       setFormValues(prevFormValues => ({ ...prevFormValues, [type]: value }));
-       if(type){
-        setFormData(prevFormData => ({ ...prevFormData, [child]: prevFormData[type][value] }));
-       }
-    }
-    else{
-      setFormValues(prevFormValues => ({ ...prevFormValues, [type]: "" }));
+    if (value) {
+      setFormValues((prevFormValues) => ({ ...prevFormValues, [type]: value }));
+      if (type) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [child]: prevFormData[type][value],
+        }));
+      }
+    } else {
+      setFormValues((prevFormValues) => ({ ...prevFormValues, [type]: "" }));
     }
   }, []);
 
