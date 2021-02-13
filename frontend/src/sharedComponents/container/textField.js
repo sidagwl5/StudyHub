@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import TextField from "@material-ui/core/TextField";
 import Button from "../presentation/button";
@@ -6,40 +6,41 @@ import Button from "../presentation/button";
 const TextFieldContainer = ({
   classes,
   placeholder,
-  endAdorment,
+  endAdorment = null,
   label,
   onChange = null,
-  dataType,
+  id = null,
   value,
   params = null,
-  disabled
+  disabled,
 }) => {
-  let obj = {
+  let staticProps = {
     placeholder,
-    onChange: (e) => onChange(e, dataType),
+    onChange,
     value,
     label,
   };
 
-  let props = params ? params : obj;
+  let props = params ? params : staticProps;
 
   return (
     <TextField
+      id={id}
+      InputLabelProps={{
+        classes: { root: classes.labelRoot },
+      }}
       InputProps={{
         classes: {
           underline: classes.underline,
           root: classes.inputRoot,
         },
         endAdornment: (
-          <InputAdornment position="start">
-            {endAdorment && <Button title="Search" />}
-          </InputAdornment>
+          <InputAdornment position="start">{endAdorment}</InputAdornment>
         ),
       }}
       {...props}
       color="white"
       disabled={disabled}
-      className={classes.TextField}
       classes={{ root: classes.root }}
     />
   );

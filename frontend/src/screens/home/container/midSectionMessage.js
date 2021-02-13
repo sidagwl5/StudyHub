@@ -1,25 +1,16 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import Text from "../../../sharedComponents/presentation/text";
+import React from "react";
+import { useSelector } from "react-redux";
+import Typography from "@material-ui/core/Typography";
 
 const MidSectionMessage = () => {
+  const userData = useSelector((state) => state.user.persistantUserData);
+  const isAdmin = userData && userData.isAdmin;
 
-    const userData = useSelector((state) => state.user.persistantUserData);
-    const isAdmin = userData && userData.isAdmin;
+  return isAdmin ? (
+    <Typography variant="h5">
+      <span style={{ color: "orange" }}>Welcome </span>Admin!
+    </Typography>
+  ) : null;
+};
 
-    return (
-        isAdmin ? (
-            <Text
-              Component={({ style }) => (
-                <p style={{ ...style }}>
-                  <span style={{color: 'orange'}}>Welcome </span>Admin!
-                </p>
-              )}
-              size="40px"
-              weight="bold"
-            />
-          ) : null
-    )
-}
-
-export default MidSectionMessage
+export default MidSectionMessage;

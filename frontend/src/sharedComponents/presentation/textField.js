@@ -2,46 +2,50 @@ import React, { memo } from "react";
 import TextFieldContainer from "../container/textField";
 import { makeStyles } from "@material-ui/core/styles";
 
-const TextField = ({ radius, width, endAdorment, label, height, onChange, dataType, value, params, disabled=false }) => {
-  const classes = makeStyles(() => ({
-    root: {
-      position: "relative",
-      borderRadius: radius || "35px",
-      width: width || "600px",
-      minWidth: "200px",
-      border: "none",
-      backgroundColor: "white",
-      display: "flex",
-      height: height || '40px',
-      flexDirection: "row",
-      alignItems: "flex-end",
-      margin: "10px",
-      padding: '0px 10px',
-      boxShadow: "0.5px 0.5px 15px rgba(128, 128, 128, 0.2)",
+const useStyles = props => makeStyles(() => ({
+  root: {
+    borderRadius: props.radius || "35px",
+    width: props.width || "600px",
+    minWidth: "200px",
+    backgroundColor: "white",
+    height: props.height || "40px",
+    margin: "10px",
+    display: 'flex',
+    alignItems: 'center',
+    boxShadow: "0.5px 0.5px 15px rgba(128, 128, 128, 0.2)",
+  },
+  labelRoot: {
+    left: '10px',
+    top: '-7px'
+  },
+  underline: {
+    "&&&:before": {
+      borderBottom: "none",
     },
-    TextField: {
-      position: "relative",
-      overflow: "hidden",
+    "&&:after": {
+      borderBottom: "none",
     },
-    underline: {
-      "&&:before": {
-        borderBottom: "none",
-      },
-      "&&:after": {
-        borderBottom: "none",
-      },
-    },
-    inputRoot: {
-      position: "relative",
-      width: "100%",
-      height: "100%",
-      padding: "0px 10px",
-      "&&:hover": {
-        borderBottom: "none",
-      },
-    },
-  }))();
+  },
+  inputRoot: {
+    width: "100%",
+    height: "100%",
+    padding: '0px 15px',
+  },
+}));
 
+const TextField = ({
+  radius,
+  width,
+  endAdorment,
+  label,
+  height,
+  onChange,
+  id,
+  value,
+  params,
+  disabled = false,
+}) => {
+  const classes = useStyles({ radius, width, height })();
   return (
     <TextFieldContainer
       classes={classes}
@@ -49,12 +53,12 @@ const TextField = ({ radius, width, endAdorment, label, height, onChange, dataTy
       endAdorment={endAdorment}
       label={label}
       onChange={onChange}
-      dataType={dataType}
       value={value}
+      id={id}
       params={params}
       disabled={disabled}
     />
   );
 };
 
-export default memo(TextField)
+export default memo(TextField);

@@ -25,6 +25,7 @@ export const logIn = () => async (dispatch) => {
       setDataInLocalStorage(data);
       dispatch({ type: LOGIN_SUCCESS, payload: data });
       dispatch({ type: SET_LOGIN_SUCCESS_MODAL, payload: true });
+      dispatch(getSuccessfullUploads());
     }
   } catch (error) {
     dispatch(errorHandler(error));

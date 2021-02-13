@@ -1,8 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
-import AlertStrip from './alertStrip';
-
+import AlertStrip from "./alertStrip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,12 +23,9 @@ const AlertPresentation = ({ onClose, message, type }) => {
         autoHideDuration={4000}
         onClose={onClose}
       >
-        <AlertStrip 
-         type={type}
-         onClose={onClose}
-        >
+        <AlertStrip type={type} onClose={onClose}>
           {message}
-        </AlertStrip>  
+        </AlertStrip>
       </Snackbar>
     </div>
   );

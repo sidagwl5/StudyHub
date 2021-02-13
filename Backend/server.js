@@ -7,6 +7,7 @@ const databaseConfig = require("./utils/databaseConfig");
 const userRoutes = require("./routes/user");
 const uploadRoutes = require("./routes/upload");
 const notificationRoutes = require("./routes/notifications");
+const blogRoutes = require("./routes/blog");
 
 const app = express();
 require("dotenv").config();
@@ -23,6 +24,7 @@ app.use(fileUpload());
 
 app.use("/user", userRoutes);
 app.use("/upload", uploadRoutes);
+app.use("/blog", blogRoutes);
 app.use("/notification", notificationRoutes);
 
 app.use((err, req, res, next) => {
@@ -30,7 +32,6 @@ app.use((err, req, res, next) => {
   let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
 
   if (err.message === "jwt expired") {
-
     res.clearCookie("token");
     statusCode = 401;
   }

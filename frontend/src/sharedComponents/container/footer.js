@@ -5,6 +5,7 @@ import IconButton from "../presentation/iconButton";
 import { logOut } from "../../store/actions/user";
 import Menu from "../presentation/menu";
 import history from '../../utils/createHistory';
+import Button from '../presentation/button';
 
 const Navbar = () => {
   const userData = useSelector((state) => state.user.persistantUserData);
@@ -19,6 +20,8 @@ const Navbar = () => {
     <>
       {isAdmin && (
         <Menu
+          
+          Source={(props) => <Button title="Options" {...props} />}
           items={[
             {
               name: "Users",

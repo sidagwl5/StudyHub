@@ -1,18 +1,47 @@
-[
-    {
-        "university": "GGSIPU",
-        "childs": [
-            "MSIT",
-            "MAIT",
-            "BPIT",
-            "BVP"
-        ]
-    },
-    {
-        "university": "DU",
-        "childs": [
-            "NC",
-            "Shaheed Sukhdev"
-        ]
+{
+    "GGSIPU": {
+        "Amity Institute of Education": {
+            "B.Ed": {}
+        },
+        "Amity Law School": {
+            "B.A": {},
+            "LLB (Integrated)": {}
+        },
+        "Amity School of Engineering & Technology": {
+            "B.Tech": {
+                "ECE": {},
+                "CSE": {},
+                "IT": {},
+                "MAE": {},
+                "CIE": {}
+            }
+        },
+        "Army Institute of Management & Technology": {
+            "MBA": {}
+        },
+        "Banarsidas Chandiwala Institute of Physiotherapy": {
+            "BHMCT": {}
+        },
+        "Bhagwan Parshuram Institute of Technology": {
+            "B.Tech": {
+                "ECE": {},
+                "CSE": {},
+                "IT": {},
+                "MAE": {},
+                "CIE": {}
+            },
+            "MBA": {}
+        },
+        "Bharti Vidyapeeth's College of Engineering": {
+            "B.Tech": {
+                "ECE": {},
+                "CSE": {},
+                "IT": {},
+                "MAE": {},
+                "CIE": {},
+                "EEE": {}
+            },
+            "MCA": {}
+        }
     }
-]
+}

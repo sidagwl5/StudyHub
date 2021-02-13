@@ -25,6 +25,7 @@ function CircularProgressWithLabel(props) {
       <CircularProgress
         className={classes["MuiCircularProgress-colorPrimary"]}
         variant="determinate"
+        style={{ width: props.size }}
         {...props}
       />
       <div
@@ -34,7 +35,7 @@ function CircularProgressWithLabel(props) {
       >
         <Typography
           variant="caption"
-          style={{ color: "white" }}
+          style={{ color: props.color, fontSize: props.fontSize }}
           component="div"
           color="textSecondary"
         >
@@ -45,9 +46,9 @@ function CircularProgressWithLabel(props) {
   );
 }
 
-export default function CircularStatic() {
+export default function CircularStatic({ size="40px", color="white", fontSize="12px" }) {
   const approvedUploads = useSelector((state) => state.user.approvedUploads);
 
   const progress = Math.floor((approvedUploads / 10) * 100);
-  return <CircularProgressWithLabel value={progress} />;
+  return <CircularProgressWithLabel value={progress} size={size} color={color} fontSize={fontSize} />;
 }

@@ -1,0 +1,39 @@
+[
+    {
+        "label": "Enter University",
+        "id": "university",
+        "child": "college",
+        "width": "45%"
+    },
+    {
+        "label": "Enter College",
+        "id": "college",
+        "child": "degree",
+        "parent": "university",
+        "width": "45%"
+    },
+    {
+        "label": "Enter degree",
+        "id": "degree",
+        "child": "course",
+        "parent": "college",
+        "width": "45%"
+    },
+    {
+        "label": "Enter Course",
+        "id": "course",
+        "parent": "degree",
+        "child": "type",
+        "width": "45%"
+    },
+    {
+        "label": "Enter Type",
+        "id": "type",
+        "parent": "course",
+        "width": "45%",
+        "data": {
+            "Notes": {},
+            "Question Paper": {}
+        }
+    }
+]

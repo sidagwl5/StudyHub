@@ -1,10 +1,11 @@
 import React from "react";
-import ModalContainer from "../../../sharedComponents/presentation/modal/modalContainer";
-import ModalActions from "../../../sharedComponents/presentation/modal/modalActions";
-import ModalContent from "../presentation/components/modalContent";
 import { useSelector, useDispatch } from "react-redux";
+import Typography from "@material-ui/core/Typography";
 
-const LoginSuccessModal = () => {
+import ModalContainer from "../../../sharedComponents/presentation/modal/modalContainer";
+import successImage from "../../../resources/images/success.png";
+
+const LoginSuccessModal = ({ classes }) => {
   const dispatch = useDispatch();
   const setLoginSuccessModal = useSelector(
     (state) => state.user.setLoginSuccessModal
@@ -16,15 +17,21 @@ const LoginSuccessModal = () => {
 
   return (
     setLoginSuccessModal && (
-      <ModalContainer handleClose={handleClose}>
-        {ModalContent}
-        <ModalActions
-          specificAction={{
-            hidden: true,
-            operation: null,
-          }}
-          cancelAction={handleClose}
-        />
+      <ModalContainer
+        handleClose={handleClose}
+        height="450px"
+        alignItems="flex-start"
+      >
+        <Typography variant="h6" style={{ fontWeight: "bold" }}>
+          You have logged In successfully!
+        </Typography>
+        <Typography variant="body2">
+          Now you can experience other features provided as well!
+        </Typography>
+
+        <div className={classes.imageContainer}>
+          <img className={classes.image} src={successImage} />
+        </div>
       </ModalContainer>
     )
   );

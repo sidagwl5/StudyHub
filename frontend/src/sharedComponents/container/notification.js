@@ -5,7 +5,10 @@ import Badge from "@material-ui/core/Badge";
 import { Link } from "react-router-dom";
 
 import IconButton from "../presentation/iconButton";
-import { getNotificationsForUser, deleteNotification } from "../../store/actions/notification";
+import {
+  getNotificationsForUser,
+  deleteNotification,
+} from "../../store/actions/notification";
 import Popper from "../presentation/popper";
 import Button from "../presentation/button";
 import AlertStrip from "../presentation/alertStrip";
@@ -29,7 +32,7 @@ const Notifications = () => {
   const handleDelete = (id) => {
     console.log(id);
     dispatch(deleteNotification(id));
-  }
+  };
 
   return (
     <>
@@ -57,7 +60,9 @@ const Notifications = () => {
                   type={v.status}
                   onClose={handleDelete.bind(this, v._id)}
                 >
-                  <Link style={{color: '#1b1b1b'}} to={url}>{v.message}</Link>
+                  <Link style={{ color: "#1b1b1b" }} to={url}>
+                    {v.message}
+                  </Link>
                 </AlertStrip>
               );
             })

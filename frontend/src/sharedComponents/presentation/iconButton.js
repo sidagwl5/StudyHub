@@ -3,6 +3,16 @@ import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
 
+const useStyles = (props) =>
+  makeStyles(() => ({
+    root: {
+      "&&:hover": {
+        top: props.hover.top,
+        backgroundColor: props.hover.backgroundColor,
+      },
+    },
+  }));
+
 const IconButtonPresentation = ({
   color,
   Icon,
@@ -10,26 +20,16 @@ const IconButtonPresentation = ({
   backgroundColor,
   size,
   handleClick,
-  hidden = false,
-  tooltip = false
+  tooltip = false,
 }) => {
-  const classes = makeStyles(() => ({
-    root: {
-      "&&:hover": {
-        top: hover.top,
-        backgroundColor: hover.backgroundColor,
-      },
-    },
-  }))();
+  const classes = useStyles({ hover })();
 
-  console.log("icon");
   return (
     <Tooltip title={tooltip} disableHoverListener={!tooltip}>
       <IconButton
         onClick={handleClick}
         style={{ color, backgroundColor }}
         classes={{ root: classes.root }}
-        hidden={hidden}
       >
         <Icon fontSize={size} />
       </IconButton>

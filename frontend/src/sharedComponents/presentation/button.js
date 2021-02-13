@@ -1,28 +1,33 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = (props) =>
+  makeStyles((theme) => ({
+    root: {
+      padding: props.padding,
+      border: "none",
+      color: props.textColor,
+      margin: props.margin,
+      backgroundColor: "lightblue",
+      borderRadius: props.radius,
+      pointerEvents: "stroke",
+    },
+  }));
 
 const Button = ({
   title,
   handleClick,
-  radius = "17px",
-  textColor = "white",
+  radius = "20px",
+  textColor = "black",
   padding = "5px 10px",
-  margin = "0px",
-}) => (
-  <button
-    type="button"
-    style={{
-      padding,
-      border: "none",
-      color: textColor,
-      margin,
-      backgroundColor: "lightblue",
-      borderRadius: radius,
-      pointerEvents: "stroke",
-    }}
-    onClick={handleClick}
-  >
-    {title}
-  </button>
-);
+  margin = "0px 10px",
+}) => {
+  const classes = useStyles({ radius, textColor, padding, margin })();
+  return (
+    <button type="button" className={classes.root} onClick={handleClick}>
+      {title}
+    </button>
+  );
+};
 
 export default Button;

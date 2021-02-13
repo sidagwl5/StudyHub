@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -28,9 +28,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FileCard = ({
-  data: { name, type, description, university, college, uploaderId, status },
+  data: { name, type, description, university, college, uploaderId, status, url },
 }) => {
   const classes = useStyles();
+
+  const handleDownload = () => {
+      
+     const path = require(`../../../resources${url}`).default
+     window.open(path);
+  }
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -67,10 +74,11 @@ const FileCard = ({
         <IconButton 
         hidden={status==="Pending"} 
         Icon={props => <GetAppIcon {...props} />} 
+        handleClick={handleDownload}
         />
       </CardActions>
     </Card>
   );
 };
 
-export default FileCard;
+export default memo(FileCard);

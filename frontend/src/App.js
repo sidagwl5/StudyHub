@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import ProtectedRoute from "./utils/protectedRoute";
 import Home from "./screens/home/presentation";
 import UploadHub from "./screens/uploadHub/presentation";
+import blogHub from "./screens/blogHub/presentation";
 import Users from "./screens/users/presentation";
 import history from "./utils/createHistory";
 import {
@@ -31,7 +32,7 @@ const App = () => {
 
   useEffect(() => {
     userData && !userData.isAdmin && dispatch(getSuccessfullUploads());
-  }, [userData]);
+  }, [dispatch]);
 
   return (
     <Provider store={store}>
@@ -41,6 +42,7 @@ const App = () => {
           <Route exact path="/" component={Home} />
           <ProtectedRoute path="/users/:id*" component={Users} />
           <ProtectedRoute path="/uploadhub/:id*" component={UploadHub} />
+          <ProtectedRoute path="/bloghub/:id*" component={blogHub} />
           <ProtectedRoute path="/review/:id" component={ReviewPage} />
         </Switch>
         <Loader />

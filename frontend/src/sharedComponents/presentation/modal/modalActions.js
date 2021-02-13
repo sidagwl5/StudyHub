@@ -1,42 +1,36 @@
-import React, {memo} from 'react';
-import Button from '@material-ui/core/Button';
+import React from "react";
+import Button from "@material-ui/core/Button";
 
-const ModalActions = ({btnTitle, specificAction={ hidden: false, operation: null }, cancelAction, disabled=false}) => (
-  <div
-    style={{
-        position: 'relative',
-        width: '100%',
-        height: '45px',
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        overflow: 'hidden',
-        padding: '0px 10px',
-        boxSizing: 'border-box'
-    }}
->
-    <Button
+const ModalActions = ({
+  btnTitle,
+  action,
+  cancelAction,
+  disabled = false,
+  classes,
+}) => (
+  <div className={classes.buttonContainer}>
+    {btnTitle && (
+      <Button
         variant="text"
         size="large"
-        style={{ margin: '0px 10px' }}
+        style={{ margin: "0px 10px" }}
         color="primary"
-        onClick={specificAction.operation}
+        onClick={action}
         disabled={disabled}
-        hidden={specificAction.hidden}
-    >
+      >
         {btnTitle}
-    </Button>
+      </Button>
+    )}
 
     <Button
-        variant="text"
-        size="large"
-        style={{ color: 'red' }}
-        onClick={cancelAction}
+      variant="text"
+      size="large"
+      style={{ color: "red" }}
+      onClick={cancelAction}
     >
-        Cancel
+      Cancel
     </Button>
-</div>
+  </div>
+);
 
-)
-
-export default memo(ModalActions);
+export default ModalActions;
