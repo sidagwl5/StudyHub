@@ -5,7 +5,9 @@ const {
   getAllFilesData,
   uploadReject,
   uploadAccept,
+  updateUpload
 } = require("../controllers/upload");
+const { authenticate } = require("../controllers/user");
 const { authentication } = require("../middlewares/auth");
 
 router
@@ -17,6 +19,7 @@ router
   .route("/:id")
   .get(authentication, getSpecificUpload)
   .delete(authentication, uploadReject)
-  .post(authentication, uploadAccept);
+  .post(authentication, uploadAccept)
+  .patch(authentication, updateUpload);
 
 module.exports = router;

@@ -4,10 +4,9 @@ import Popper from "@material-ui/core/Popper";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    padding: theme.spacing(1),
     backgroundColor: theme.palette.background.paper,
     overflowY: "auto",
-    borderRadius: "6px",
+    borderRadius: "3px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
@@ -22,7 +21,7 @@ const PopperPresentation = ({ open, anchorEl, children, height=null, width=null 
   const id = open ? "simple-popper" : undefined;
 
   return (
-    <Popper className={classes.root} id={id} open={open} anchorEl={anchorEl}>
+    <Popper placement="bottom-end" className={classes.root} id={id} open={open} anchorEl={anchorEl}>
       <div 
        style={{
         height: height || "250px",

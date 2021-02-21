@@ -6,8 +6,9 @@ import {
   getSpecificUpload,
 } from "../../../../store/actions/upload";
 import { useDispatch, useSelector } from "react-redux";
-import objectCreator from "../../../../resources/staticData/uploadFormInitialValues.js";
+import { uploadFileInititialValues } from "../../../../resources/staticData/uploadFormInitialValues.js";
 import detailForUniversities from "../../../../resources/staticData/detailForUniversities.json";
+import fieldsForFileUpload from "../../../../resources/staticData/fieldsForFileUpload.json";
 
 const UploadFileModal = ({
   closeModal,
@@ -16,8 +17,8 @@ const UploadFileModal = ({
   match,
 }) => {
   const dispatch = useDispatch();
-  const [formValues, setFormValues] = useState(objectCreator(""));
-  const [formData, setFormData] = useState(objectCreator({}));
+  const [formValues, setFormValues] = useState(uploadFileInititialValues(""));
+  const [formData, setFormData] = useState(uploadFileInititialValues({}));
 
   const specificFileData = useSelector(
     (state) => state.upload.specificFileData
@@ -51,7 +52,28 @@ const UploadFileModal = ({
   }, [specificFileData]);
 
   // change form data
-  const handleChange = useCallback((type, child, event, value) => {
+
+  const handleChangeForTextfield = useCallback((event) => {
+    let type = event.target.id;
+
+    if (type == "name") {
+      setFormValues((prevFormValues) => ({
+        ...prevFormValues,
+        [type]: event.target.value,
+      }));
+    } else if (type == "file") {
+      setFormValues((prevFormValues) => ({
+        ...prevFormValues,
+        [type]: event.target.files[0],
+      }));
+    }
+  });
+
+  const handleChangeForAutocomplete = useCallback((type, event, value = "") => {
+
+    console.log(event);
+    let child = fieldsForFileUpload.find((v) => v.id === type).child;
+
     if (value) {
       setFormValues((prevFormValues) => ({ ...prevFormValues, [type]: value }));
       if (type) {
@@ -61,12 +83,15 @@ const UploadFileModal = ({
         }));
       }
     } else {
-      setFormValues((prevFormValues) => ({ ...prevFormValues, [type]: "" }));
+      setFormValues((prevFormValues) => ({ ...prevFormValues, [type]: value }));
     }
   }, []);
 
+  console.log(formValues);
+
   // upload data
   const handleUpload = useCallback(() => {
+    console.log(formValues);
     let dataKeys = Object.keys(formValues);
     if (dataKeys.find((key) => !formValues[key])) {
       alert("All fields are required!");
@@ -92,7 +117,8 @@ const UploadFileModal = ({
     >
       <Form
         specificFileData={specificFileData}
-        handleChange={handleChange}
+        handleChangeForAutocomplete={handleChangeForAutocomplete}
+        handleChangeForTextfield={handleChangeForTextfield}
         values={formValues}
         data={formData}
         closeModal={closeModal}

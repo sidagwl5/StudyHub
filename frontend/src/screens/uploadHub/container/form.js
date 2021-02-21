@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 import Autocomplete from "../../../sharedComponents/presentation/autocomplete";
-import UpdateFileNotice from "../presentation/updateFileNotice";
+import UpdateFileNotice from "../../../sharedComponents/presentation/uploadHub/updateFileNotice";
 import { makeStyles } from "@material-ui/core/styles";
 import fieldsForFileUpload from "../../../resources/staticData/fieldsForFileUpload.json";
+import TextField from "../../../sharedComponents/presentation/textField";
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {
@@ -20,7 +21,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Form = ({ handleChange, specificFileData, data, closeModal, values }) => {
+const Form = ({
+  handleChangeForAutocomplete,
+  handleChangeForTextfield,
+  specificFileData,
+  data,
+  closeModal,
+  values,
+}) => {
   const [disabled, setDisabled] = useState(false);
 
   const classes = useStyles();
@@ -43,25 +51,43 @@ const Form = ({ handleChange, specificFileData, data, closeModal, values }) => {
       )}
 
       <div className={classes.textFieldContainer}>
-        {fieldsForFileUpload.map((attributes, index) => (
-          <Autocomplete
-            key={index}
-            data={data[attributes.id]}
-            {...attributes}
-            onChange={handleChange.bind(this, attributes.id, attributes.child)}
-            isDisabled={disabled}
-            values={values}
-          />
-        ))}
+        <TextField
+          key={"name"}
+          value={values["name"]}
+          width={fieldsForFileUpload[0].width}
+          onChange={handleChangeForTextfield}
+          id={fieldsForFileUpload[0].id}
+          disabled={disabled}
+        />
+        {fieldsForFileUpload.slice(1).map((attributes, index) => {
+          let isDisabled = false;
+          if (disabled) {
+            isDisabled = true;
+          } else if (
+            attributes.id !== "university" &&
+            !values[attributes.parent]
+          ) {
+            isDisabled = true;
+          } else if (attributes.id !== "course" && values[attributes.child]) {
+            isDisabled = true;
+          }
+
+          return (
+            <Autocomplete
+              key={attributes.id}
+              data={data[attributes.id]}
+              {...attributes}
+              onChange={handleChangeForAutocomplete}
+              isDisabled={isDisabled}
+              value={values[attributes.id]}
+            />
+          );
+        })}
 
         {/* <Autocomplete /> */}
 
         {!specificFileData && (
-          <input
-            type="file"
-            accept=".pdf"
-            onChange={handleChange}
-          />
+          <input type="file" accept=".pdf" id="file" onChange={handleChangeForTextfield} />
         )}
       </div>
     </div>
@@ -69,13 +95,3 @@ const Form = ({ handleChange, specificFileData, data, closeModal, values }) => {
 };
 
 export default Form;
-
-
-
-
-/*  {
-        "label": "Enter Name",
-        "id": "name",
-        "child": "college",
-        "width": "45%"
-    }, */

@@ -19,8 +19,6 @@ const notificationSchema = new mongoose.Schema(
       enum: ['Pending', 'Rejected', 'Approved'],
       default: 'Pending'
     }
-    // noteId:{
-    // },
   },
   { timestamps: true }
 );

@@ -3,7 +3,8 @@ const asyncHandler = require("express-async-handler");
 
 
 const getAllBlogs = asyncHandler(async (req, res) => {
-   const blogsData = await blogs.find({});
+   const blogsData = await blogs.find({})
+                     .populate("uploaderId", ["imageUrl", "name"]);
    return res.json(blogsData);
 })
 

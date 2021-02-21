@@ -26,7 +26,6 @@ const MoreMenu = () => {
              color="white" 
              Icon={(props) => <MoreVertIcon {...props} />} />
           )}
-          title="More"
           items={[
             {
               name: "Upload Hub",

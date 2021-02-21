@@ -22,9 +22,42 @@ export default (state = initialState, action) => {
       return { ...state, allFilesData: payload };
 
     case FILTER_ALL_FILES_DATA_BY_ID:
+
+      let allFilesData = [];
+
+      if(payload.type === 'delete'){
+        allFilesData = state.allFilesData.filter((file) => file._id != payload.data)
+      }
+      else if(payload.type === 'status'){
+        allFilesData = state.allFilesData.map(file => {
+          if(file._id == payload.data){
+            file.status = 'Accepted';
+          }
+
+          return file;
+        })
+      }
+      else if(payload.type === 'addToFavourites'){
+        allFilesData = state.allFilesData.map(file => {
+          if(file._id == payload.data){
+            file.favourites++;
+          }
+
+          return file;
+        })
+      }
+      else if(payload.type === 'removeFromFavourites'){
+        allFilesData = state.allFilesData.map(file => {
+          if(file._id == payload.data){
+            file.favourites--;
+          }
+
+          return file;
+        })
+      }
       return {
         ...state,
-        allFilesData: state.allFilesData.filter((file) => file._id != payload),
+        allFilesData
       };
 
     case LOGOUT_SUCCESS:

@@ -1,0 +1,14 @@
+[
+    {
+        "label": "title",
+        "id": "title",
+        "width": "100%",
+        "required": true
+    },
+    {
+        "label": "Description",
+        "id": "description",
+        "width": "100%",
+        "required": true
+    }
+]

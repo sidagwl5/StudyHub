@@ -23,11 +23,11 @@ const uploadSchema = new mongoose.Schema({
        type: String,
        required: true
    },
-   course: {
+   degree: {
        type: String,
        required: true
    },
-   branch: {
+   course: {
        type: String,
        required: true
    },

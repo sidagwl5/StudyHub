@@ -1,5 +1,6 @@
 import React from "react";
 import FooterContainer from "../container/footer";
+import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import PhoneIcon from "@material-ui/icons/Phone";
 import EmailIcon from "@material-ui/icons/Email";
@@ -14,10 +15,9 @@ const Footer = () => {
   };
 
   return (
-    <Grid
-      xs={12}
+    <Container
       style={{
-        height: "60px",
+        height: "50px",
         display: "flex",
       }}
     >
@@ -32,20 +32,21 @@ const Footer = () => {
       >
         <IconButton
           hover={{ top: "-7px" }}
-          color="white"
           Icon={(props) => <PhoneIcon {...props} />}
+          size="small"
         />
         <IconButton
           hover={{ top: "-7px" }}
-          color="orange"
           Icon={(props) => <EmailIcon {...props} />}
           handleClick={handleMessage}
           tooltip="Message Admin"
+          margin="0px 6px"
+          size="small"
         />
         <IconButton
           hover={{ top: "-7px" }}
-          color="white"
           Icon={(props) => <MessageIcon {...props} />}
+          size="small"
         />
       </Grid>
       <Grid
@@ -58,7 +59,7 @@ const Footer = () => {
       >
         <FooterContainer />
       </Grid>
-    </Grid>
+    </Container>
   );
 };
 

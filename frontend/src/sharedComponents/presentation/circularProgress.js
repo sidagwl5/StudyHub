@@ -48,8 +48,8 @@ function CircularProgressWithLabel(props) {
 
 export default function CircularStatic({ size="40px", color="white", fontSize="12px" }) {
   const userProfile = useSelector((state) => state.user.userProfile);
+  const uploadsApproved = userProfile ? userProfile.uploadsApproved : [];
 
-  const approvedUploads = userProfile ? userProfile.uploadsApproved.length : 0;
-  const progress = Math.floor((approvedUploads / 10) * 100);
+  const progress = Math.floor((uploadsApproved.length / 10) * 100);
   return <CircularProgressWithLabel value={progress} size={size} color={color} fontSize={fontSize} />;
 }

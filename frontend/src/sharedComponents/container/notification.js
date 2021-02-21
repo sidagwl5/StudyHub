@@ -30,7 +30,6 @@ const Notifications = () => {
   };
 
   const handleDelete = (id) => {
-    console.log(id);
     dispatch(deleteNotification(id));
   };
 
@@ -42,13 +41,27 @@ const Notifications = () => {
             <NotificationsIcon {...props} />
           </Badge>
         )}
-        color="white"
+        color="#D1D7E0"
         size="small"
         handleClick={handleClick}
       />
 
-      <Popper width="300px" open={open} anchorEl={anchorEl}>
-        <div style={{ padding: "10px 0px" }}>
+      <Popper width="330px" height="400px" open={open} anchorEl={anchorEl}>
+        <div
+          style={{
+            backgroundColor: "#7E868D",
+            width: "100%",
+            height: "45px",
+            display: "flex",
+            padding: "10px",
+            alignItems: "center",
+            fontFamily: 'roboto',
+            color: 'white'
+          }}
+        >
+          Notifications
+        </div>
+        <div>
           {notificationsData.length > 0 ? (
             notificationsData.map((v) => {
               const url = userData.isAdmin
@@ -73,9 +86,11 @@ const Notifications = () => {
         <Button
           title="Refresh"
           handleClick={handleNotifications}
-          radius="25px"
+          radius="0px"
           textColor="black"
-          padding="5px 8px"
+          padding="10px"
+          margin="0px"
+          backgroundColor="#DAABBD"
         />
       </Popper>
     </>

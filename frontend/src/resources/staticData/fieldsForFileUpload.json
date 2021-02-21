@@ -1,9 +1,15 @@
 [
     {
+        "label": "Name",
+        "id": "name",
+        "width": "100%"
+    },
+    {
         "label": "Enter University",
         "id": "university",
         "child": "college",
-        "width": "45%"
+        "width": "45%",
+        "parent": "name"
     },
     {
         "label": "Enter College",
@@ -25,6 +31,22 @@
         "parent": "degree",
         "child": "type",
         "width": "45%"
+    },
+    {
+        "label": "Enter Semester",
+        "id": "semester",
+        "parent": "course",
+        "width": "45%",
+        "data": {
+            "1": {},
+            "2": {},
+            "3": {},
+            "4": {},
+            "5": {},
+            "6": {},
+            "7": {},
+            "8": {}
+        }
     },
     {
         "label": "Enter Type",

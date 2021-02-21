@@ -15,8 +15,8 @@ const uploadFile = asyncHandler(async (req, res) => {
     "name",
     "university",
     "college",
+    "degree",
     "course",
-    "branch",
     "type",
     "semester",
   ];
@@ -117,15 +117,17 @@ const uploadReject = asyncHandler(async (req, res) => {
     fileId: req.params.id,
   });
 
-  delete notificationData.fileId;
+  notificationData.fileId = null;
   notificationData.status = "Rejected";
   await notificationData.save();
 
-  await uploads.findByIdAndDelete(req.params.id);
 
   const userData = await user.findById(notificationData.uploaderId);
   userData.uploadsRejected = userData.uploadsRejected + 1;
+  userData.uploadsPending = userData.uploadsPending.filter(v => v != req.params.id);
   await userData.save();
+
+  await uploads.findByIdAndDelete(req.params.id);
 
   return res.json({ message: "Upload has been rejected!" });
 });
@@ -135,14 +137,11 @@ const uploadReject = asyncHandler(async (req, res) => {
 // FOR: admin
 const uploadAccept = asyncHandler(async (req, res) => {
   
-  console.log(req.params.id)
   const notificationData = await notifications.findOne({
     fileId: req.params.id,
   });
 
-  console.log(notificationData);
-
-  delete notificationData.fileId;
+  notificationData.fileId = null;
   notificationData.status = 'Approved';
   await notificationData.save();
 
@@ -151,11 +150,32 @@ const uploadAccept = asyncHandler(async (req, res) => {
   await fileData.save();
 
   const userData = await user.findById(fileData.uploaderId);
-  userData.uploadsPending = userData.uploadsPending.filter(v => v !== req.params.id);
+  userData.uploadsPending = userData.uploadsPending.filter(v => v != req.params.id);
   userData.uploadsApproved.push(req.params.id);
   await userData.save();
 
   return res.json({ message: "Upload has been approved!" });
+});
+
+// PURPOSE: like a post
+// TYPE: patch
+// FOR: both
+
+const updateUpload = asyncHandler(async (req, res) => {
+  
+  const {type, ...rest} = req.body;
+  await uploads.findByIdAndUpdate(req.params.id, rest);
+
+  const userData = req.user;
+  if(type === 'addToFavourites'){
+  userData.favourites.push(req.params.id);
+  }
+  else if(type === 'removeFromFavourites'){
+    userData.favourites = userData.favourites.filter(v => v != req.params.id);
+  }
+  await userData.save();
+
+  return res.status(200).end();
 });
 
 module.exports = {
@@ -163,5 +183,6 @@ module.exports = {
   getSpecificUpload,
   getAllFilesData,
   uploadReject,
-  uploadAccept
+  uploadAccept,
+  updateUpload
 };
