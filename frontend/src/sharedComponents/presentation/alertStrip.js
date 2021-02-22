@@ -14,7 +14,11 @@ const AlertStrip = ({ type, onClose = null, children }) => {
   };
 
   if (onClose) props.action = <CloseIcon fontSize="small" onClick={onClose} />;
-  return <Alert {...props}>{children}</Alert>;
+  return (
+    <Alert {...props} style={{ alignItems: "center" }}>
+      {children}
+    </Alert>
+  );
 };
 
 export default AlertStrip;

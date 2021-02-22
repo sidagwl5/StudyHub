@@ -17,7 +17,7 @@ const useStyles = (props) =>
       minWidth: "300px",
       height: props.height,
       transform: "translate(-50%, -50%)",
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: 'white',
       boxShadow: theme.shadows[5],
       borderRadius: "10px",
       overflow: "hidden",
@@ -40,19 +40,19 @@ const useStyles = (props) =>
       height: props.title ? "calc(100% - 60px)" : "100%",
     },
     childrenContainer: {
-      height: "calc(100% - 45px)",
-      padding: "20px",
+      position: 'relative',
+      height: "calc(100% - 60px)",
       display: "flex",
       flexDirection: "column",
       alignItems: props.alignItems,
     },
     buttonContainer: {
       position: "relative",
-      height: "45px",
+      height: "75px",
       display: "flex",
-      justifyContent: "flex-end",
+      justifyContent: "center",
       alignItems: "center",
-      padding: "0px 10px",
+      backgroundColor: props.btnContainerBgColor
     }
   }));
 
@@ -60,14 +60,14 @@ export default function SimpleModal({
   handleClose = null,
   children,
   width = "370px",
-  title = null,
   height = "450px",
-  action = null,
-  btnTitle = null,
-  disabled = false,
+  btnContainerBgColor = "transparent",
   alignItems = "center",
+  specificBtnProps,
+  cancelBtnProps,
+  title=null
 }) {
-  const classes = useStyles({ width, height, title, alignItems })();
+  const classes = useStyles({ width, height, title, alignItems, btnContainerBgColor })();
 
   // modal container to show data
   return (
@@ -86,10 +86,8 @@ export default function SimpleModal({
         <div className={classes.mainContent}>
           <div className={classes.childrenContainer}>{children}</div>
           <ModalActions
-            btnTitle={btnTitle}
-            action={action}
-            cancelAction={handleClose}
-            disabled={disabled}
+            cancelBtnProps={cancelBtnProps}
+            specificBtnProps={specificBtnProps}
             classes={classes}
           />
         </div>

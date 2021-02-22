@@ -17,7 +17,7 @@ const Notifications = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const notificationsData = useSelector((state) => state.notification);
-  const userData = useSelector((state) => state.user.persistantUserData);
+  const userData = useSelector((state) => state.user.userProfile);
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -46,22 +46,16 @@ const Notifications = () => {
         handleClick={handleClick}
       />
 
-      <Popper width="330px" height="400px" open={open} anchorEl={anchorEl}>
+      <Popper width="285px" height="340px" open={open} anchorEl={anchorEl}>
         <div
           style={{
-            backgroundColor: "#7E868D",
-            width: "100%",
-            height: "45px",
+            height: "calc(100% - 35px)",
             display: "flex",
-            padding: "10px",
             alignItems: "center",
-            fontFamily: 'roboto',
-            color: 'white'
+            justifyContent: notificationsData.length ? "flex-start" : "center",
+            flexDirection: 'column'
           }}
         >
-          Notifications
-        </div>
-        <div>
           {notificationsData.length > 0 ? (
             notificationsData.map((v) => {
               const url = userData.isAdmin
@@ -73,24 +67,24 @@ const Notifications = () => {
                   type={v.status}
                   onClose={handleDelete.bind(this, v._id)}
                 >
-                  <Link style={{ color: "#1b1b1b" }} to={url}>
+                  <Link style={{ color: "#1b1b1b", fontSize: '12px' }} to={url}>
                     {v.message}
                   </Link>
                 </AlertStrip>
               );
             })
           ) : (
-            <p>No notifications present</p>
+            <p style={{ fontWeight: 'bold', fontSize: '13px' }}>No notifications present!!</p>
           )}
         </div>
         <Button
           title="Refresh"
           handleClick={handleNotifications}
-          radius="0px"
-          textColor="black"
-          padding="10px"
-          margin="0px"
-          backgroundColor="#DAABBD"
+          radius="30px"
+          textColor="white"
+          padding="8px 0px"
+          margin="10px 40px"
+          backgroundColor="#BCBCE0"
         />
       </Popper>
     </>

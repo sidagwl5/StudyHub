@@ -104,7 +104,7 @@ const UploadFileModal = ({
     });
 
     dispatch(uploadFile(apiData));
-    setTimeout(() => closeModal(), 500);
+    closeModal();
   }, [formValues]);
 
   return (
@@ -112,8 +112,22 @@ const UploadFileModal = ({
       handleClose={closeModal}
       width="700px"
       height="400px"
-      btnTitle={title}
-      action={handleUpload}
+      specificBtnProps={{
+        handleClick: handleUpload,
+        backgroundColor: "#A5A544",
+        title,
+        textColor: "white",
+        padding: "6px 28px",
+        radius: "35px",
+      }}
+      cancelBtnProps={{
+        handleClick: closeModal,
+        backgroundColor: "#BDBD76",
+        title: "Cancel",
+        textColor: "white",
+        padding: "6px 28px",
+        radius: "35px",
+      }}
     >
       <Form
         specificFileData={specificFileData}

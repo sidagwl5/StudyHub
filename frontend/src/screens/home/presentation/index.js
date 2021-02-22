@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     width: "100%",
     height: "100%",
-    backgroundColor: 'rgba(32, 88, 112, 0.11)',
+    background: 'linear-gradient(105deg, transparent 60%, rgba(32, 88, 112, 0.15))',
     top: "0px",
     left: "0px",
   },

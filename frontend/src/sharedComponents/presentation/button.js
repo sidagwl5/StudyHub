@@ -13,7 +13,7 @@ const useStyles = (props) =>
       pointerEvents: "stroke",
       fontSize: props.fontSize,
       fontWeight: props.fontWeight,
-      fontFamily: 'roboto'
+      fontFamily: 'roboto',
     },
   }));
 
@@ -26,11 +26,17 @@ const Button = ({
   margin = "0px 10px",
   fontSize = "14px",
   fontWeight = "normal",
-  backgroundColor="lightblue"
+  backgroundColor="lightblue",
+  disabled=false
 }) => {
   const classes = useStyles({ radius, textColor, padding, margin, fontSize, fontWeight, backgroundColor })();
   return (
-    <button type="button" className={classes.root} onClick={handleClick}>
+    <button 
+     type="button" 
+     className={classes.root} 
+     onClick={handleClick}
+     disabled={disabled}
+    >
       {title}
     </button>
   );

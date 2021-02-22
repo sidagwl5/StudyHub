@@ -11,17 +11,15 @@ import IconButton from '../../../../sharedComponents/presentation/iconButton';
 const MidSection = ({ classes }) => (
   <Grid className={classes.midSectionContainer}>
     <LoginSuccessModal classes={classes} />
-    <MidSectionMessage />
     <div style={{ position: "relative", width: "60%" }}>
       <div
-        style={{ position: "relative", top: "10%", fontFamily: "bebas neue" }}
+        style={{ position: "relative", top: "17%", fontFamily: "bebas neue" }}
       >
         <div style={{ padding: "0px 20px" }}>
-          <h4 style={{ color: "white", fontSize: "40px" }}>Study Hub</h4>
           <h1
             style={{ color: "#2C2929", fontSize: "90px", lineHeight: "95px" }}
           >
-            <div>A study material</div>
+            <div>A <span style={{ color: 'white', fontSize: '105px' }}>study</span> material</div>
             <div>sharing platform</div>
           </h1>
         </div>

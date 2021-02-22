@@ -1,17 +1,16 @@
-import { SET_LOADER, UNSET_LOADER } from '../types';
+import { SET_LOADER, UNSET_LOADER } from "../types";
 
-export default (state=false, action) => {
+export default (state = 0, action) => {
+  const { type, payload } = action;
 
-    const { type } = action;
+  switch (type) {
+    case SET_LOADER:
+      return payload;
 
-    switch (type) {
-        case SET_LOADER:
-            return true;
+    case UNSET_LOADER:
+      return payload;
 
-        case UNSET_LOADER:
-            return false;    
-    
-        default:
-            return state;
-    }
-}
+    default:
+      return state;
+  }
+};
