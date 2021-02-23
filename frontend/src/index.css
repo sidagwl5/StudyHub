@@ -9,10 +9,15 @@ body{
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
+    border: none;
 }
 
 button:focus{
     outline: none;
+}
+
+button{
+    background-color: transparent;
 }
 
 ::-webkit-scrollbar {

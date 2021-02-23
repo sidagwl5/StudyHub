@@ -13,12 +13,12 @@ const root = {
 const HOC = (WrapperComponent) => {
   return (props) => {
     return (
-      <>
+      <div style={{ width: '100%', height: '100vh' }}>
         <Navbar bgColor="#2D2824" arrowBack={true} />
         <Container style={root}>
           <WrapperComponent {...props} />
         </Container>
-      </>
+      </div>
     );
   };
 };

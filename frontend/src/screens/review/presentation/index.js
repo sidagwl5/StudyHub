@@ -29,8 +29,10 @@ const Review = ({ match }) => {
         <>
           <div
             style={{
+              position: 'relative',
               width: "100%",
-              padding: "15px",
+              height: '100%',
+              padding: '15px'
             }}
           >
             <Avatar

@@ -160,7 +160,6 @@ const uploadAccept = asyncHandler(async (req, res) => {
 // PURPOSE: like a post
 // TYPE: patch
 // FOR: both
-
 const updateUpload = asyncHandler(async (req, res) => {
   
   const {type, ...rest} = req.body;
@@ -178,11 +177,42 @@ const updateUpload = asyncHandler(async (req, res) => {
   return res.status(200).end();
 });
 
+// PURPOSE: delete upload
+// TYPE: delete
+// FOR: both
+
+const deleteUpload = asyncHandler(async (req, res) => {
+  
+  const {type, ...rest} = req.body;
+  await notifications.findOneAndDelete(req.params.id);
+
+  const uploadData = await uploads.findById(req.params.id);
+  const userData = await uploads.findById(req.body.userId);
+
+  if(uploadData.status === 'Pending'){
+    userData.uploadsPending = userData.uploadsPending.filter(v => v != req.params.id);
+  }
+  else {
+    userData.uploadsApproved = userData.uploadsApproved.filter(v => v != req.params.id);
+  }
+  await userData.save();
+  await uploadData.delete();
+
+  return res.status(200).end();
+});
+
+const getFavouriteUploads = asyncHandler(async (req, res) => {
+  const uploadsData = await uploads.find({}).sort({ favourites: -1 }).limit(10);
+  return res.json(uploadsData);
+})
+
+
 module.exports = {
   uploadFile,
   getSpecificUpload,
   getAllFilesData,
   uploadReject,
   uploadAccept,
-  updateUpload
+  updateUpload,
+  getFavouriteUploads
 };

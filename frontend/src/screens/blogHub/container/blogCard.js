@@ -1,23 +1,15 @@
 import React, { memo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import IconButton from "../../../sharedComponents/presentation/iconButton";
 import Avatar from "../../../sharedComponents/presentation/profilePic";
-import notes from "../../../resources/images/notes.jpg";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import WatchLaterIcon from "@material-ui/icons/WatchLater";
-import Tooltip from "@material-ui/core/Tooltip";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUpload } from "../../../store/actions/upload";
 import Badge from "@material-ui/core/Badge";
+import colorArray from "../../../resources/staticData/colorArray.json";
+import { red } from "@material-ui/core/colors";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,18 +24,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FileCard = ({
-  data: {
-    title,
-    description,
-    uploaderId,
-    _id,
-    favourites,
-  },
+  data: { title, description, uploaderId, _id, favourites },
 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.user.userProfile);
   const userFavourites = userProfile ? userProfile.favourites : [];
+  const userId = userProfile ? userProfile._id : null;
 
   const handleLikePost = () => {
     dispatch(
@@ -60,35 +47,105 @@ const FileCard = ({
     );
   };
 
+  const chooseColor = () => {
+    return Math.floor((Math.random())*8);
+ }
+
+ const handleDelete = (event) => {
+  event.stopPropagation();
+}
+
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar title={uploaderId.name} avatar={uploaderId.imageUrl} />
-        }
-        title={title}
-        subheader={uploaderId.name}
-      />
-      <CardMedia className={classes.media} image={notes} />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
+    <div
+      style={{
+        width: "260px",
+        height: "320px",
+        display: "flex",
+        flexDirection: "column",
+        boxShadow: "0.5px 0.5px 20px rgba(128, 128, 128, 0.3)",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: "30%",
+          backgroundColor: colorArray[chooseColor()],
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            position: "relative",
+            padding: "6px",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          {userId == uploaderId._id && (
+            <IconButton
+              Icon={(props) => <DeleteIcon {...props} />}
+              color={red}
+              handleClick={handleDelete}
+            />
+          )}
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "97%",
+            transform: "translate(-50%, -50%)",
+            padding: "5px",
+            backgroundColor: "white",
+            borderRadius: "60px",
+          }}
+        >
+          <Avatar radius="60px" avatar={uploaderId.imageUrl} />
+        </div>
+      </div>
+      <div
+        style={{
+          marginTop: "30px",
+          flexGrow: 1,
+          width: "100%",
+          position: "relative",
+          padding: "15px",
+          textAlign: "center",
+        }}
+      >
+        <p style={{ fontSize: "0.8em", color: "rgba(128, 128, 128, 0.8)" }}>
+          {title}
+        </p>
+        <p style={{ fontSize: "0.8em", color: "rgba(128, 128, 128, 0.8)" }}>
           {description}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        {userFavourites.find((v) => v == _id) ? (
-          <IconButton
-            handleClick={handleUnlikePost}
-            Icon={(props) => <FavoriteIcon {...props} />}
-          />
-        ) : (
-          <IconButton
-            handleClick={handleLikePost}
-            Icon={(props) => <FavoriteBorderIcon {...props} />}
-          />
-        )}
-      </CardActions>
-    </Card>
+        </p>
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: "absolute",
+            bottom: "0px",
+            left: "0px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {userFavourites.find((v) => v == _id) ? (
+            <IconButton
+              handleClick={handleUnlikePost}
+              Icon={(props) => <FavoriteIcon {...props} />}
+              color="darkpink"
+            />
+          ) : (
+            <IconButton
+              handleClick={handleLikePost}
+              Icon={(props) => <FavoriteBorderIcon {...props} />}
+              color="darkpink"
+            />
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
