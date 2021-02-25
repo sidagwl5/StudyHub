@@ -7,11 +7,9 @@ import MidSection from "./midSection";
 
 const ContentSection = ({ classes }) => (
   <Grid className={classes.contentContainer}>
-    <Container>
       <Navbar />
       <MidSection classes={classes} />
       <Footer />
-    </Container>
   </Grid>
 );
 

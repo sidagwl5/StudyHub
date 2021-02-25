@@ -16,7 +16,7 @@ const Loader = () => {
   const classes = useStyles();  
   const loadingStatus = useSelector((state) => state.loading);
 
-  return loadingStatus && (
+  return Boolean(loadingStatus) && (
     <Backdrop className={classes.backdrop} open={true}>
       <CircularProgress color="inherit" />
     </Backdrop>

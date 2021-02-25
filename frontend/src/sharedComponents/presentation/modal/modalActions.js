@@ -1,35 +1,21 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
+import Button from '../button';
 
 const ModalActions = ({
-  btnTitle,
-  action,
-  cancelAction,
-  disabled = false,
   classes,
+  cancelBtnProps={},
+  specificBtnProps=null
 }) => (
   <div className={classes.buttonContainer}>
-    {btnTitle && (
+    {specificBtnProps && (
       <Button
-        variant="text"
-        size="large"
-        style={{ margin: "0px 10px" }}
-        color="primary"
-        onClick={action}
-        disabled={disabled}
-      >
-        {btnTitle}
-      </Button>
+        {...specificBtnProps}
+      />
     )}
 
-    <Button
-      variant="text"
-      size="large"
-      style={{ color: "red" }}
-      onClick={cancelAction}
-    >
-      Cancel
-    </Button>
+    <Button 
+     {...cancelBtnProps}
+    />
   </div>
 );
 

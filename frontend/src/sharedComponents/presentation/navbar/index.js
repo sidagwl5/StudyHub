@@ -1,34 +1,37 @@
 import React from "react";
 import NavbarContainer from "../../container/navbar";
 import { Link } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import IconButton from "../iconButton";
+import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
 
-const useStyles = props => makeStyles(() => ({
-  root: {
-    height: "60px",
-    width: '100%',
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingTop: "7px",
-    padding: "0px 10px",
-    boxSizing: "border-box",
-    backgroundColor: props.bgColor || "transparent",
-  }
-}))
+const useStyles = (props) =>
+  makeStyles(() => ({
+    root: {
+      position: "relative",
+      height: "70px",
+      display: "flex",
+      justifyContent: props.arrowBack ? "space-between" : "flex-end",
+      alignItems: "center",
+      padding: "0px 10px",
+      boxSizing: "border-box",
+      backgroundColor: props.bgColor || "transparent",
+    },
+  }));
 
-const Navbar = ({ bgColor }) => {
-
-  const classes = useStyles({ bgColor })();
+const Navbar = ({ bgColor, arrowBack = false }) => {
+  const classes = useStyles({ bgColor, arrowBack })();
   return (
-    <div className={classes.root}>
-      <Link to = "/">
-        <h4 style={{ fontSize: "2em", color: "white" }}>
-          Study <span style={{ color: "orange" }}>Hub</span>
-        </h4>
-      </Link>
+    <Container className={classes.root}>
+      {arrowBack && (
+        <IconButton
+          Icon={(props) => <KeyboardBackspaceIcon {...props} />}
+          handleClick={() => window.history.go(-1)}
+        />
+      )}
       <NavbarContainer />
-    </div>
+    </Container>
   );
 };
 

@@ -14,12 +14,12 @@ import MoreMenu from "../presentation/navbar/moreMenu";
 const useStyles = makeStyles((theme) => ({
   navbarContainer: {
     display: "flex",
-    maxWidth: "320px",
     justifyContent: "space-between",
     alignItems: "center",
   },
   menuDesktop: {
     display: "flex",
+    fontFamily: "roboto",
     [theme.breakpoints.down("xs")]: {
       display: "none",
     },
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const classes = useStyles();
-  const userData = useSelector((state) => state.user.persistantUserData);
+  const userData = useSelector((state) => state.user.userProfile);
   const [adminBar, setAdminBar] = useState(false);
 
   const handleClick = () => {
@@ -48,20 +48,88 @@ const Navbar = () => {
     adminBar && (
       <ModalContainer
         handleClose={setAdminBar.bind(this, false)}
-        width="600px"
-        height="300px"
+        width="500px"
+        height="310px"
+        btnContainerBgColor="#FAFAEB"
+        cancelBtnProps={{
+          handleClick: setAdminBar.bind(this, false),
+          backgroundColor: "#BDBD76",
+          title: "Cancel",
+          textColor: "white",
+          padding: "6px 28px",
+          radius: "35px",
+        }}
+        specificBtnProps={{
+          handleClick: () => history.push("/uploadhub"),
+          backgroundColor: "#A5A544",
+          title: "Request",
+          textColor: "white",
+          padding: "6px 28px",
+          radius: "35px",
+          disabled: userData.uploadsApproved.length < 10,
+        }}
       >
         <div
           style={{
-            height: "calc(100% - 60px)",
-            padding: "20px",
+            width: "100%",
+            height: "100%",
             display: "flex",
             flexDirection: "column",
+            justifyContent: "space-between",
             alignItems: "center",
           }}
         >
-          <CircularProgress size="100px" color="black" fontSize="23px" />
-          <Typography variant="h6"> Admin Bar </Typography>
+          <div style={{ padding: "10px 0px", textAlign: "center", width: '80%', top: '14px', position: 'relative' }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                justifyContent: "space-evenly",
+              }}
+            >
+              <CircularProgress
+                size="120px"
+                color="#2C2627"
+                fontSize="30px"
+                noProgressColor="#F5F5D9"
+              />
+              <p style={{ margin: "0px", fontWeight: 'bold' }}>
+                {userData.uploadsApproved.length} out of 10 uploads
+              </p>
+            </div>
+            <p
+              style={{
+                position: 'relative',
+                fontFamily: "bebas neue",
+                fontSize: "1.7em",
+                top: '12px'
+              }}
+            >
+              Admin Bar
+            </p>
+          </div>
+
+          <div
+            style={{
+              backgroundColor: "#FAFAEB",
+              width: "100%",
+              position: "relative",
+              padding: "11px 0px",
+            }}
+          >
+            <p
+              style={{
+                textAlign: "center",
+                margin: "0px",
+                fontSize: "11.2px",
+                fontWeight: "bold",
+              }}
+            >
+              On succesfully getting 10 uploads you can request admin for an
+              admin Role as well.
+            </p>
+          </div>
         </div>
       </ModalContainer>
     );
@@ -77,24 +145,28 @@ const Navbar = () => {
       {!userData.isAdmin && (
         <IconButton
           handleClick={handleAdminBarModal}
-          Icon={(props) => <CircularProgress />}
+          Icon={(props) => <CircularProgress color="#D1D7E0" />}
           tooltip="Admin bar"
         />
       )}
       <div className={classes.menuDesktop}>
-        {userData.isAdmin && (
-          <Button
-            title="Blog Hub"
-            handleClick={navigateToBlogPage}
-            radius="25px"
-          />
-        )}
-
+        <Button
+          title="Blog Hub"
+          handleClick={navigateToBlogPage}
+          radius={userData.isAdmin ? "25px" : "25px 0px 0px 25px"}
+          margin={userData.isAdmin ? "0px 10px" : "0px"}
+          backgroundColor="#A39416"
+          fontSize="11px"
+        />
         {!userData.isAdmin && (
           <Button
             title="Upload Hub"
             handleClick={navigateToUploadPage}
-            radius="25px"
+            radius="0px 25px 25px 0px"
+            margin="0px 10px 0px 0px"
+            backgroundColor="#A34949"
+            textColor="white"
+            fontSize="11px"
           />
         )}
         <ProfilePic title={userData.firstName} avatar={userData.imageUrl} />
@@ -102,7 +174,12 @@ const Navbar = () => {
       <MoreMenu />
     </div>
   ) : (
-    <Button title="Google Sign In" handleClick={handleClick} />
+    <Button
+      backgroundColor="#9D6262"
+      textColor="#E2D4D4"
+      title="Google Sign In"
+      handleClick={handleClick}
+    />
   );
 };
 

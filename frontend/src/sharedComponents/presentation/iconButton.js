@@ -14,21 +14,24 @@ const useStyles = (props) =>
   }));
 
 const IconButtonPresentation = ({
-  color,
+  color="white",
   Icon,
   hover = { backgroundColor: "transparent", top: "0px" },
   backgroundColor,
   size,
   handleClick,
   tooltip = false,
+  hidden = false,
+  margin = "0px"
 }) => {
   const classes = useStyles({ hover })();
 
   return (
     <Tooltip title={tooltip} disableHoverListener={!tooltip}>
       <IconButton
+        hidden={hidden}
         onClick={handleClick}
-        style={{ color, backgroundColor }}
+        style={{ color, backgroundColor, margin }}
         classes={{ root: classes.root }}
       >
         <Icon fontSize={size} />

@@ -1,12 +1,12 @@
 import React from "react";
 import ModalContainer from "../../../sharedComponents/presentation/modal/modalContainer";
-import ModalActions from "../../../sharedComponents/presentation/modal/modalActions";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteUser, updateUser } from "../../../store/actions/user";
 import Avatar from "../../../sharedComponents/presentation/profilePic";
 import Chip from "@material-ui/core/Chip";
 import Menu from "../../../sharedComponents/presentation/menu";
 import { makeStyles } from "@material-ui/core/styles";
+import Button from '../../../sharedComponents/presentation/button';
 
 const useStyles = makeStyles(() => ({
   contentContainer: {
@@ -61,7 +61,9 @@ const UserInfoModal = () => {
 
   return (
     specificUserData && (
-      <ModalContainer handleClose={handleClose}>
+      <ModalContainer 
+        handleClose={handleClose}
+      >
         <div className={classes.contentContainer}>
           <Chip
             avatar={<Avatar radius="60px" avatar={specificUserData.imageUrl} />}
@@ -106,6 +108,9 @@ const UserInfoModal = () => {
           </div>
 
           <Menu
+            Source={(props) => (
+              <Button {...props} title="More" />
+            )}
             items={[
               {
                 name: "Assign Admin Role",
@@ -128,13 +133,6 @@ const UserInfoModal = () => {
             ]}
           />
         </div>
-        <ModalActions
-          specificAction={{
-            hidden: true,
-            operation: null,
-          }}
-          cancelAction={handleClose}
-        />
       </ModalContainer>
     )
   );

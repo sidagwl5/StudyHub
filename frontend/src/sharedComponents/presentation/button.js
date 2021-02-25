@@ -8,9 +8,12 @@ const useStyles = (props) =>
       border: "none",
       color: props.textColor,
       margin: props.margin,
-      backgroundColor: "lightblue",
+      backgroundColor: props.backgroundColor,
       borderRadius: props.radius,
       pointerEvents: "stroke",
+      fontSize: props.fontSize,
+      fontWeight: props.fontWeight,
+      fontFamily: 'roboto',
     },
   }));
 
@@ -21,10 +24,19 @@ const Button = ({
   textColor = "black",
   padding = "5px 10px",
   margin = "0px 10px",
+  fontSize = "14px",
+  fontWeight = "normal",
+  backgroundColor="lightblue",
+  disabled=false
 }) => {
-  const classes = useStyles({ radius, textColor, padding, margin })();
+  const classes = useStyles({ radius, textColor, padding, margin, fontSize, fontWeight, backgroundColor })();
   return (
-    <button type="button" className={classes.root} onClick={handleClick}>
+    <button 
+     type="button" 
+     className={classes.root} 
+     onClick={handleClick}
+     disabled={disabled}
+    >
       {title}
     </button>
   );

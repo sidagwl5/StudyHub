@@ -1,26 +1,24 @@
 import React, { memo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import IconButton from "../../../sharedComponents/presentation/iconButton";
 import Avatar from "../../../sharedComponents/presentation/profilePic";
-import notes from "../../../resources/images/notes.jpg";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from "@material-ui/icons/Cancel";
-import Tooltip from "@material-ui/core/Tooltip";
+import WatchLaterIcon from "@material-ui/icons/WatchLater";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUpload } from "../../../store/actions/upload";
+import Tooltip from '@material-ui/core/Tooltip';
+import DeleteIcon from "@material-ui/icons/Delete";
+import { red } from "@material-ui/core/colors";
+import colorArray from "../../../resources/staticData/colorArray.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 260,
     margin: "10px",
-    height: "355px",
+    maxHeight: "400px",
   },
   media: {
     height: 0,
@@ -32,61 +30,183 @@ const FileCard = ({
   data: {
     name,
     type,
-    description,
-    university,
     college,
     uploaderId,
     status,
     url,
+    _id,
+    favourites,
   },
 }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const userProfile = useSelector((state) => state.user.userProfile);
+  const userFavourites = userProfile ? userProfile.favourites : [];
+  const userId = userProfile ? userProfile._id : null;
 
   const handleDownload = () => {
     const path = require(`../../../resources${url}`).default;
     window.open(path);
   };
 
-  return (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar title={uploaderId.firstName} avatar={uploaderId.imageUrl} />
-        }
-        title={name}
-        subheader={type}
-      />
-      <CardMedia className={classes.media} image={notes} title={name} />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {description}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {university}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {college}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <IconButton Icon={(props) => <FavoriteIcon {...props} />} />
-        {status === "Pending" ? (
-          <Tooltip title={status}>
-            <CancelIcon style={{ color: "red" }} />
-          </Tooltip>
-        ) : (
-          <Tooltip title={status}>
-            <CheckCircleIcon style={{ color: "green" }} />
-          </Tooltip>
-        )}
+  const handleLikePost = () => {
+    dispatch(
+      updateUpload(_id, { favourites: favourites + 1, type: "addToFavourites" })
+    );
+  };
 
-        <IconButton
-          hidden={status === "Pending"}
-          Icon={(props) => <GetAppIcon {...props} />}
-          handleClick={handleDownload}
-        />
-      </CardActions>
-    </Card>
+  const chooseColor = () => {
+    return Math.floor(Math.random() * 8);
+  };
+
+  const handleUnlikePost = () => {
+    dispatch(
+      updateUpload(_id, {
+        favourites: favourites - 1,
+        type: "removeFromFavourites",
+      })
+    );
+  };
+
+  const handleDelete = (event) => {
+    event.stopPropagation();
+  };
+
+  return (
+    <div
+      style={{
+        position: 'relative',
+        width: "260px",
+        height: "320px",
+        display: "flex",
+        margin: "10px 13px",
+        flexDirection: "column",
+        boxShadow: "0.5px 0.5px 20px rgba(128, 128, 128, 0.3)",
+      }}
+    >
+      <Tooltip title="favourites">
+      <div
+        style={{
+          position: "absolute",
+          width: "25px",
+          zIndex: 500,
+          backgroundColor: '#757575',
+          height: "25px",
+          color: 'white',
+          right: '-10px',
+          top: '-10px',
+          fontSize: '10px',
+          borderRadius: "100px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {favourites}
+      </div>
+      </Tooltip>
+      <div
+        style={{
+          width: "100%",
+          height: "30%",
+          backgroundColor: colorArray[chooseColor()],
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            position: "relative",
+            padding: "6px",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          {userId == uploaderId._id && (
+            <IconButton
+              Icon={(props) => <DeleteIcon {...props} />}
+              color={red}
+              handleClick={handleDelete}
+            />
+          )}
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "97%",
+            transform: "translate(-50%, -50%)",
+            padding: "5px",
+            backgroundColor: "white",
+            borderRadius: "60px",
+          }}
+        >
+          <Avatar radius="60px" avatar={uploaderId.imageUrl} />
+        </div>
+      </div>
+      <div
+        style={{
+          marginTop: "30px",
+          flexGrow: 1,
+          width: "100%",
+          position: "relative",
+          padding: "15px",
+          textAlign: "center",
+        }}
+      >
+        <p style={{ fontFamily: "bebas neue", fontSize: "1.6em" }}>{name}</p>
+        <p style={{ fontSize: "0.8em", color: "rgba(128, 128, 128, 0.8)" }}>
+          {college}
+        </p>
+        <p style={{ fontSize: "0.8em", color: "rgba(128, 128, 128, 0.8)" }}>
+          {type}
+        </p>
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: "absolute",
+            bottom: "0px",
+            left: "0px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {status !== "Pending" &&
+            (userFavourites.find((v) => v == _id) ? (
+              <IconButton
+                handleClick={handleUnlikePost}
+                Icon={(props) => <FavoriteIcon {...props} />}
+                color="darkpink"
+              />
+            ) : (
+              <IconButton
+                handleClick={handleLikePost}
+                Icon={(props) => <FavoriteBorderIcon {...props} />}
+                color="darkpink"
+              />
+            ))}
+
+          <IconButton
+            tooltip={status}
+            Icon={() =>
+              status === "Pending" ? (
+                <WatchLaterIcon style={{ color: "red" }} />
+              ) : (
+                <CheckCircleIcon style={{ color: "green" }} />
+              )
+            }
+          />
+
+          {status !== "Pending" && (
+            <IconButton
+              Icon={(props) => <GetAppIcon {...props} />}
+              handleClick={handleDownload}
+              color="black"
+            />
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

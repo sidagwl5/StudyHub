@@ -1,6 +1,7 @@
 import store from '../store';
 import { SET_LOADER, UNSET_LOADER } from '../store/types';
 
+let countRequest = 0;
 const dispatch = store.dispatch;
 
 const interceptors = (axios) => {
@@ -8,12 +9,12 @@ const interceptors = (axios) => {
     (request) => {
       request.withCredentials = true;
 
-      dispatch({ type: SET_LOADER });
+      dispatch({ type: SET_LOADER, payload: ++countRequest });
       return request;
     },
     (err) => {
 
-      dispatch({ type: UNSET_LOADER });
+      dispatch({ type: UNSET_LOADER, payload: --countRequest });
       return Promise.reject(err);
     }
   );
@@ -22,12 +23,12 @@ const interceptors = (axios) => {
     (response) => {
 
       console.log(response);
-      dispatch({ type: UNSET_LOADER });
+      dispatch({ type: UNSET_LOADER, payload: --countRequest });
       return response;
     },
     (err) => {
 
-      dispatch({ type: UNSET_LOADER });
+      dispatch({ type: UNSET_LOADER, payload: --countRequest });
       return Promise.reject(err);
     }
   );

@@ -33,11 +33,11 @@ const getAllUserDetails = asyncHandler(async (req, res) => {
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
-  const userData = await users.findByIdAndDelete(req.params.id);
-  await notifications.deleteMany({ uploaderId: userData._id });
-  await uploads.deleteMany({ uploaderId: userData._id });
+  await notifications.deleteMany({ uploaderId: req.params.id });
+  await uploads.deleteMany({ uploaderId: req.params.id });
+  await users.findByIdAndDelete(req.params.id);
   return res.json({
-    message: `User with name ${userData.name} deleted Successfully!`,
+    message: `User deleted Successfully!`,
   });
 });
 

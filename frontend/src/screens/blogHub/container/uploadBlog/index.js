@@ -1,12 +1,12 @@
 import React, { memo } from "react";
 import UploadFileWrapper from "../../../../sharedComponents/presentation/uploadHub/handleUploadModal";
-// import UploadFileModal from "./uploadFileModal";
+import UploadBlogModal from "./uploadBlogModal";
 
 const UploadFile = ({ match }) => (
     <UploadFileWrapper
       match={match}
-      renderProps={(value, setModal) => null
-        // value && <UploadFileModal match={match} closeModal={setModal} />
+      renderProps={(value, setModal) => 
+        value && <UploadBlogModal match={match} closeModal={setModal} />
       }
     />
   );

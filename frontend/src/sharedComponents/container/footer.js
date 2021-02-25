@@ -8,8 +8,7 @@ import history from '../../utils/createHistory';
 import Button from '../presentation/button';
 
 const Navbar = () => {
-  const userData = useSelector((state) => state.user.persistantUserData);
-  const isAdmin = userData && userData.isAdmin;
+  const userData = useSelector((state) => state.user.userProfile);
   const dispatch = useDispatch();
 
   const handleClick = useCallback(() => {
@@ -18,7 +17,7 @@ const Navbar = () => {
 
   return userData ? (
     <>
-      {isAdmin && (
+      {userData.isAdmin && (
         <Menu
           
           Source={(props) => <Button title="Options" {...props} />}

@@ -15,21 +15,21 @@ const useStyles = makeStyles(() => ({
   contentContainer: {
     position: "absolute",
     display: "flex",
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     width: "100%",
     height: "100%",
-    background:
-      "linear-gradient(180deg, rgba(0, 0, 0, 0.6) 2%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.8))",
+    background: 'linear-gradient(105deg, transparent 60%, rgba(32, 88, 112, 0.15))',
     top: "0px",
     left: "0px",
   },
   midSectionContainer: {
-    height: "calc(100% - 120px)",
-    padding: "20px",
+    width: '100%',
+    height: "calc(100% - 130px)",
     boxSizing: "border-box",
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   image: {
     width: "100%",

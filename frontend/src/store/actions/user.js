@@ -14,6 +14,7 @@ import {
   removeDataInLocalStorage,
   setDataInLocalStorage,
 } from "../../utils/localStorage";
+import { getNotificationsForUser } from './notification';
 
 export const logIn = () => async (dispatch) => {
 
@@ -25,7 +26,7 @@ export const logIn = () => async (dispatch) => {
       setDataInLocalStorage(data);
       dispatch({ type: LOGIN_SUCCESS, payload: data });
       dispatch({ type: SET_LOGIN_SUCCESS_MODAL, payload: true });
-      dispatch(getSuccessfullUploads());
+      dispatch(authenticate());
     }
   } catch (error) {
     dispatch(errorHandler(error));
@@ -48,7 +49,8 @@ export const authenticate = () => async (dispatch) => {
   try {
     const { data, status } = await axios.get("/user/authenticate");
     if (status === 200) {
-      dispatch({ type: GET_USER_PROFILE, payload: data })
+      dispatch({ type: GET_USER_PROFILE, payload: data });
+      dispatch(getNotificationsForUser());
     }
   } catch (error) {
     dispatch(errorHandler(error));
@@ -70,7 +72,7 @@ export const deleteUser = (id) => async (dispatch) => {
   try {
     const { status, data } = await axios.delete(`/user/${id}`);
     if (status === 200) {
-      dispatch({ type: FILTER_ALL_USERS_DATA_BY_ID, payload: id });
+      dispatch({ type: FILTER_ALL_USERS_DATA_BY_ID, payload: {type: 'delete', data: id} });
       dispatch(successHandler(data));
     }
   } catch (error) {

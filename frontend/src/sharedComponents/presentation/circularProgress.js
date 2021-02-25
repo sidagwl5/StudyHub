@@ -4,14 +4,15 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(() => ({
-  'MuiCircularProgress-colorPrimary': {
-     color: 'orange'
-  }
-}));
+const useStyles = (value, noProgressColor) =>
+  makeStyles(() => ({
+    "MuiCircularProgress-colorPrimary": {
+      color: value ? "orange" : noProgressColor,
+    },
+  }));
 
 function CircularProgressWithLabel(props) {
-  const classes = useStyles();
+  const classes = useStyles(props.value, props.noProgressColor)();
 
   return (
     <div
@@ -25,8 +26,8 @@ function CircularProgressWithLabel(props) {
       <CircularProgress
         className={classes["MuiCircularProgress-colorPrimary"]}
         variant="determinate"
-        style={{ width: props.size }}
         {...props}
+        value={props.value || 100}
       />
       <div
         style={{
@@ -46,10 +47,23 @@ function CircularProgressWithLabel(props) {
   );
 }
 
-export default function CircularStatic({ size="40px", color="white", fontSize="12px" }) {
+export default function CircularStatic({
+  size = "40px",
+  color = "white",
+  fontSize = "12px",
+  noProgressColor = "rgba(128, 128, 128, 0.4)",
+}) {
   const userProfile = useSelector((state) => state.user.userProfile);
+  const uploadsApproved = userProfile ? userProfile.uploadsApproved : [];
 
-  const approvedUploads = userProfile ? userProfile.uploadsApproved.length : 0;
-  const progress = Math.floor((approvedUploads / 10) * 100);
-  return <CircularProgressWithLabel value={progress} size={size} color={color} fontSize={fontSize} />;
+  const progress = Math.floor((uploadsApproved.length / 10) * 100);
+  return (
+    <CircularProgressWithLabel
+      value={progress}
+      size={size}
+      color={color}
+      fontSize={fontSize}
+      noProgressColor={noProgressColor}
+    />
+  );
 }

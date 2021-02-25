@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Typography from "@material-ui/core/Typography";
+import history from '../../../utils/createHistory';
 
 import ModalContainer from "../../../sharedComponents/presentation/modal/modalContainer";
 import successImage from "../../../resources/images/success.png";
@@ -19,18 +19,40 @@ const LoginSuccessModal = ({ classes }) => {
     setLoginSuccessModal && (
       <ModalContainer
         handleClose={handleClose}
-        height="450px"
+        height="400px"
+        width="500px"
         alignItems="flex-start"
-      >
-        <Typography variant="h6" style={{ fontWeight: "bold" }}>
-          You have logged In successfully!
-        </Typography>
-        <Typography variant="body2">
-          Now you can experience other features provided as well!
-        </Typography>
+        btnContainerBgColor="rgb(249, 249, 255)"
+        cancelBtnProps={{ 
+          handleClick: handleClose,
+          backgroundColor: "#BCBCE0",
+          title: "Cancel",
+          textColor: 'white',
+          padding: '6px 20px',
+          radius: '35px' 
+        }}
 
-        <div className={classes.imageContainer}>
-          <img className={classes.image} src={successImage} />
+        specificBtnProps={{ 
+          handleClick: () => history.push("/uploadhub"),
+          backgroundColor: "#9898C9",
+          title: "Explore",
+          textColor: 'white',
+          padding: '6px 20px',
+          radius: '35px' 
+        }}
+      >
+        <img src={successImage} style={{ width: "90%", margin: "0px auto" }} />
+
+        <div
+          style={{
+            flexGrow: 1,
+            width: "100%",
+            backgroundColor: "rgb(249, 249, 255)",
+            textAlign: "center",
+            padding: "20px",
+          }}
+        >
+          <p style={{ color: "#313438" }}>You have logged in successfully!</p>
         </div>
       </ModalContainer>
     )

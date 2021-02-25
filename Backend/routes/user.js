@@ -11,7 +11,7 @@ const {
   getAllUserDetails,
   deleteUser,
   updateUser,
-  getSpecificUser,
+  getSpecificUser
 } = require("../controllers/user");
 
 router
