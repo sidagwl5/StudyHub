@@ -53,28 +53,46 @@ const Notifications = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: notificationsData.length ? "flex-start" : "center",
-            flexDirection: 'column'
+            flexDirection: "column",
+            overflowY: "auto",
           }}
         >
           {notificationsData.length > 0 ? (
             notificationsData.map((v) => {
-              const url = userData.isAdmin
-                ? `/review/${v.fileId}`
-                : `/uploadhub/${v.fileId}`;
+              const obj = {};
+              if (userData.isAdmin) {
+                obj["message"] = v.message;
+                obj["path"] =
+                  v.status === "Pending"
+                    ? `/review/${v.fileId}`
+                    : `/profile/${v.uploaderId}`;
+              } else {
+                obj['path'] = v.message.path && `${v.message.path}/${v.fileId}`;
+                obj['message'] = v.message.message;
+              }
               return (
                 <AlertStrip
                   key={v.fileId}
                   type={v.status}
                   onClose={handleDelete.bind(this, v._id)}
                 >
-                  <Link style={{ color: "#1b1b1b", fontSize: '12px' }} to={url}>
-                    {v.message}
-                  </Link>
+                  {obj.path ? (
+                    <Link
+                      style={{ color: "#1b1b1b", fontSize: "12px" }}
+                      to={obj.path}
+                    >
+                      {obj.message}
+                    </Link>
+                  ) : (
+                    <span style={{ fontSize: "12px" }}>{obj.message}</span>
+                  )}
                 </AlertStrip>
               );
             })
           ) : (
-            <p style={{ fontWeight: 'bold', fontSize: '13px' }}>No notifications present!!</p>
+            <p style={{ fontWeight: "bold", fontSize: "13px" }}>
+              No notifications present!!
+            </p>
           )}
         </div>
         <Button

@@ -3,9 +3,22 @@ const asyncHandler = require("express-async-handler");
 const notifications = require("../models/notifications");
 
 const mapper = {
-  Rejected: "Your request has been rejected by admin!",
-  Pending: "Your request has been sent to admin for review!",
-  Approved: "Your request has been approved by admin!",
+  Rejected: {
+    message: "Your request has been rejected by admin!",
+    path: null
+  },
+  Pending: {
+    message: "Your request has been sent to admin for review!",
+    path: '/uploadhub'
+  },
+  Approved: {
+    message: "Your request has been approved by admin!",
+    path: null
+  },
+  Request: {
+    message: 'Your request for admin role has been sent to admin',
+    path: null
+  }
 };
 
 const getNotificationForSpecificUser = asyncHandler(async (req, res) => {

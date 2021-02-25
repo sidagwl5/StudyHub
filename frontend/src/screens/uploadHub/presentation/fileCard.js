@@ -9,10 +9,10 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUpload } from "../../../store/actions/upload";
-import Badge from "@material-ui/core/Badge";
+import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from "@material-ui/icons/Delete";
 import { red } from "@material-ui/core/colors";
-import colorArray from '../../../resources/staticData/colorArray.json';
+import colorArray from "../../../resources/staticData/colorArray.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,8 +30,6 @@ const FileCard = ({
   data: {
     name,
     type,
-    description,
-    university,
     college,
     uploaderId,
     status,
@@ -58,8 +56,8 @@ const FileCard = ({
   };
 
   const chooseColor = () => {
-     return Math.floor((Math.random())*8);
-  }
+    return Math.floor(Math.random() * 8);
+  };
 
   const handleUnlikePost = () => {
     dispatch(
@@ -72,19 +70,41 @@ const FileCard = ({
 
   const handleDelete = (event) => {
     event.stopPropagation();
-  }
+  };
 
   return (
     <div
       style={{
+        position: 'relative',
         width: "260px",
         height: "320px",
         display: "flex",
-        margin: '10px 13px',
+        margin: "10px 13px",
         flexDirection: "column",
         boxShadow: "0.5px 0.5px 20px rgba(128, 128, 128, 0.3)",
       }}
     >
+      <Tooltip title="favourites">
+      <div
+        style={{
+          position: "absolute",
+          width: "25px",
+          zIndex: 500,
+          backgroundColor: '#757575',
+          height: "25px",
+          color: 'white',
+          right: '-10px',
+          top: '-10px',
+          fontSize: '10px',
+          borderRadius: "100px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {favourites}
+      </div>
+      </Tooltip>
       <div
         style={{
           width: "100%",

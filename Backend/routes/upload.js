@@ -6,9 +6,9 @@ const {
   uploadReject,
   uploadAccept,
   updateUpload,
-  getFavouriteUploads
+  getFavouriteUploads,
+  getLatestUploads
 } = require("../controllers/upload");
-const { authenticate } = require("../controllers/user");
 const { authentication } = require("../middlewares/auth");
 
 router
@@ -23,6 +23,7 @@ router
   .post(authentication, uploadAccept)
   .patch(authentication, updateUpload);
 
-router.route("/favourites/all").get(authentication, getFavouriteUploads);  
+router.route("/favourites/all").get(authentication, getFavouriteUploads);
+router.route("/latest/all").get(authentication, getLatestUploads);  
 
 module.exports = router;
