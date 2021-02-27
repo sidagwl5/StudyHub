@@ -22,20 +22,24 @@ const IconButtonPresentation = ({
   handleClick,
   tooltip = false,
   hidden = false,
-  margin = "0px"
+  margin = "0px",
+  disabled = false
 }) => {
   const classes = useStyles({ hover })();
 
   return (
     <Tooltip title={tooltip} disableHoverListener={!tooltip}>
+      <div>
       <IconButton
         hidden={hidden}
         onClick={handleClick}
         style={{ color, backgroundColor, margin }}
         classes={{ root: classes.root }}
+        disabled={disabled}
       >
         <Icon fontSize={size} />
       </IconButton>
+      </div>
     </Tooltip>
   );
 };

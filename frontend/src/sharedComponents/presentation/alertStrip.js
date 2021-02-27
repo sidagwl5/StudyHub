@@ -6,6 +6,7 @@ const mapper = {
   Pending: "warning",
   Rejected: "error",
   Approved: "success",
+  Request: 'warning'
 };
 
 const AlertStrip = ({ type, onClose = null, children }) => {

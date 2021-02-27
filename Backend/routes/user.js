@@ -11,7 +11,8 @@ const {
   getAllUserDetails,
   deleteUser,
   updateUser,
-  getSpecificUser
+  getSpecificUser,
+  adminRoleRequest
 } = require("../controllers/user");
 
 router
@@ -48,6 +49,7 @@ router.route("/authenticate").get(authentication, authenticate);
 router.route("/logout").get(authentication, logOut);
 router.route("/all").get(authentication, getAllUserDetails);
 
+router.route("/adminRole").get(authentication, adminRoleRequest);
 router
   .route("/:id")
   .delete(authentication, deleteUser)

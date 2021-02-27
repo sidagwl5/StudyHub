@@ -7,6 +7,7 @@ import Home from "./screens/home/presentation";
 import UploadHub from "./screens/uploadHub/presentation";
 import blogHub from "./screens/blogHub/presentation";
 import Users from "./screens/users/presentation";
+import Profile from "./screens/profile/presentation";
 import history from "./utils/createHistory";
 import {
   logIn,
@@ -39,6 +40,7 @@ const App = () => {
           <ProtectedRoute path="/uploadhub/:id*" component={UploadHub} />
           <ProtectedRoute path="/bloghub/:id*" component={blogHub} />
           <ProtectedRoute path="/review/:id" component={ReviewPage} />
+          <ProtectedRoute path="/profile/:id*" component={Profile} />
         </Switch>
         <Loader />
       </Router>

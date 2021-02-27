@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProfilePic from "../presentation/profilePic";
 import Button from "../presentation/button";
 import history from "../../utils/createHistory";
@@ -9,6 +9,7 @@ import CircularProgress from "../presentation/circularProgress";
 import IconButton from "../../sharedComponents/presentation/iconButton";
 import ModalContainer from "../presentation/modal/modalContainer";
 import Typography from "@material-ui/core/Typography";
+import { adminRoleRequest } from '../../store/actions/user';
 import MoreMenu from "../presentation/navbar/moreMenu";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +31,7 @@ const Navbar = () => {
   const classes = useStyles();
   const userData = useSelector((state) => state.user.userProfile);
   const [adminBar, setAdminBar] = useState(false);
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     window.localStorage.setItem("login", true);
@@ -43,6 +45,11 @@ const Navbar = () => {
   const navigateToBlogPage = () => {
     history.push("/bloghub");
   };
+
+  const handleAdminRequest = () => {
+    dispatch(adminRoleRequest());
+    setAdminBar(false);
+  }
 
   const handleModal = () =>
     adminBar && (
@@ -60,13 +67,13 @@ const Navbar = () => {
           radius: "35px",
         }}
         specificBtnProps={{
-          handleClick: () => history.push("/uploadhub"),
+          handleClick: handleAdminRequest,
           backgroundColor: "#A5A544",
           title: "Request",
           textColor: "white",
           padding: "6px 28px",
           radius: "35px",
-          disabled: userData.uploadsApproved.length < 10,
+          // disabled: userData.uploadsApproved.length < 10,
         }}
       >
         <div
@@ -169,7 +176,10 @@ const Navbar = () => {
             fontSize="11px"
           />
         )}
-        <ProfilePic title={userData.firstName} avatar={userData.imageUrl} />
+        
+       <div onClick={() => history.push("/profile")} style={{ cursor: "pointer" }}>
+         <ProfilePic title={userData.firstName} avatar={userData.imageUrl} />
+        </div>
       </div>
       <MoreMenu />
     </div>

@@ -26,7 +26,7 @@ const getNotificationForSpecificUser = asyncHandler(async (req, res) => {
 
   let notificationsData = [];
   if (userData.isAdmin) {
-    notificationsData = await Notifications.find({ status: "Pending" });
+    notificationsData = await Notifications.find({ status: ["Pending", "Request"] });
   } else {
     notificationsData = await Notifications.find({
       uploaderId: userData._id,

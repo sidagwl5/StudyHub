@@ -12,7 +12,7 @@ const UploadFile = ({ match, renderProps }) => {
   return (
     <>
       <Fab
-        style={{ position: "fixed", right: '10px', bottom: "10px", zIndex: 1000 }}
+        style={{ position: "fixed", right: '16px', bottom: "16px", zIndex: 1000 }}
         onClick={setModal.bind(this, true)}
       >
         <AddIcon />

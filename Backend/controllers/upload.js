@@ -104,7 +104,7 @@ const getAllFilesData = asyncHandler(async (req, res) => {
   const allFilesData = await uploads
     .find({})
     .populate("uploaderId", ["imageUrl"])
-    .select(["college", "status", "type", "url", "favourites", "name"])
+    .select(["college", "status", "type", "url", "favourites", "name", "createdAt"])
 
   return res.json(allFilesData);
 });
@@ -207,7 +207,7 @@ const getFavouriteUploads = asyncHandler(async (req, res) => {
   const uploadsData = await uploads
     .find({})
     .populate("uploaderId", ["imageUrl"])
-    .select(["college", "status", "type", "url", "favourites", "name"])
+    .select(["college", "status", "type", "url", "favourites", "name", "createdAt"])
     .sort({ favourites: -1 })
     .limit(10);
   return res.json(uploadsData);
@@ -217,7 +217,7 @@ const getLatestUploads = asyncHandler(async (req, res) => {
   const uploadsData = await uploads
     .find({})
     .populate("uploaderId", ["imageUrl"])
-    .select(["college", "status", "type", "url", "favourites", "name"])
+    .select(["college", "status", "type", "url", "favourites", "name", "createdAt"])
     .sort({ createdAt: -1 })
     .limit(10);
   return res.json(uploadsData);

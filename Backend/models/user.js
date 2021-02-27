@@ -14,15 +14,20 @@ const userSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
-    university: String,
     college: String,
     course: String,
     branch: String,
     semester: String,
-    favourites: [
+    favourites: [ 
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Uploads",
+      },
+    ],
+    blogs: [ 
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Blogs",
       },
     ],
     uploadsApproved: [

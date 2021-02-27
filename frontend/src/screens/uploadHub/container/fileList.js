@@ -40,7 +40,16 @@ const FileList = ({ match }) => {
           </button>
         ))
       ) : (
-        <p>No files uploaded yet!</p>
+        <p
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          No files uploaded yet!
+        </p>
       )}
     </div>
   );

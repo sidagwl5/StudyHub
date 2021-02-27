@@ -25,10 +25,7 @@ const authenticate = asyncHandler((req, res) => {
 const getAllUserDetails = asyncHandler(async (req, res) => {
   const usersData = await users
     .find({ isAdmin: false })
-    .select([
-      "name",
-      "imageUrl"
-    ]);
+    .select(["name", "imageUrl"]);
   return res.json(usersData);
 });
 
@@ -53,6 +50,16 @@ const getSpecificUser = asyncHandler(async (req, res) => {
   return res.json(usersData);
 });
 
+const adminRoleRequest = asyncHandler(async (req, res) => {
+  await notifications.create({
+    uploaderId: req.user._id,
+    message: `${req.user.name} has requested for admin role!`,
+    status: "Request",
+  });
+
+  return res.json({ message: 'Your request has been sent successfully!' });
+});
+
 module.exports = {
   logIn,
   logOut,
@@ -61,4 +68,5 @@ module.exports = {
   deleteUser,
   updateUser,
   getSpecificUser,
+  adminRoleRequest
 };

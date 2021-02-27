@@ -100,3 +100,16 @@ export const getSpecificUser = (userId) => async (dispatch) => {
     dispatch(errorHandler(error));
   }
 };
+
+
+export const adminRoleRequest = () => async (dispatch) => {
+  try {
+    const { status, data } = await axios.get(`/user/adminRole`);
+    if(status === 200){
+      dispatch(successHandler(data));
+      dispatch(getNotificationsForUser()); 
+    }
+  } catch (error) {
+    dispatch(errorHandler(error));
+  }
+};

@@ -36,6 +36,7 @@ const FileCard = ({
     url,
     _id,
     favourites,
+    createdAt
   },
 }) => {
   const classes = useStyles();
@@ -118,9 +119,13 @@ const FileCard = ({
             position: "relative",
             padding: "6px",
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
+            alignItems: 'center'
           }}
         >
+          <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
+            {(new Date(createdAt).toDateString()).split(" ").slice(1,).join(" ")}
+          </span>
           {userId == uploaderId._id && (
             <IconButton
               Icon={(props) => <DeleteIcon {...props} />}
@@ -183,6 +188,8 @@ const FileCard = ({
                 handleClick={handleLikePost}
                 Icon={(props) => <FavoriteBorderIcon {...props} />}
                 color="darkpink"
+                disabled={userId === uploaderId._id}
+                tooltip={userId === uploaderId._id ? 'You cannot like you own upload' : null}
               />
             ))}
 
