@@ -1,10 +1,9 @@
-export const setDataInLocalStorage = (data) => {
-  window.localStorage.setItem("userData", JSON.stringify(data));
+export const setDataInLocalStorage = () => {
+  window.localStorage.setItem("isLoggedIn", true);
 };
 
 export const getDataInLocalStorage = () => {
-  const userData = window.localStorage.getItem("userData");
-  return userData ? JSON.parse(userData) : null;
+  return window.localStorage.getItem("isLoggedIn");
 };
 
 export const removeDataInLocalStorage = () => {

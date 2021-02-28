@@ -3,21 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Badge from "@material-ui/core/Badge";
 import { Link } from "react-router-dom";
+import userProfileWrapper from '../../sharedComponents/presentation/wrappers/userProfile';
 
 import IconButton from "../presentation/iconButton";
-import {
-  getNotificationsForUser,
-  deleteNotification,
-} from "../../store/actions/notification";
+import { deleteNotification } from "../../store/actions/notification";
 import Popper from "../presentation/popper";
 import Button from "../presentation/button";
 import AlertStrip from "../presentation/alertStrip";
 
-const Notifications = () => {
+const Notifications = ({ notifications }) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const notificationsData = useSelector((state) => state.notification);
-  const userData = useSelector((state) => state.user.userProfile);
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -25,11 +21,13 @@ const Notifications = () => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
-  const handleNotifications = () => {
-    dispatch(getNotificationsForUser());
-  };
+  const handleDelete = (id, userId) => {
 
-  const handleDelete = (id) => {
+    if(userId){
+      dispatch(deleteNotification(id, { userId })); 
+      return;   
+    }
+
     dispatch(deleteNotification(id));
   };
 
@@ -37,7 +35,7 @@ const Notifications = () => {
     <>
       <IconButton
         Icon={(props) => (
-          <Badge badgeContent={notificationsData.length} color="primary">
+          <Badge badgeContent={notifications.length} color="primary">
             <NotificationsIcon {...props} />
           </Badge>
         )}
@@ -52,39 +50,28 @@ const Notifications = () => {
             height: "calc(100% - 35px)",
             display: "flex",
             alignItems: "center",
-            justifyContent: notificationsData.length ? "flex-start" : "center",
+            justifyContent: [].length ? "flex-start" : "center",
             flexDirection: "column",
             overflowY: "auto",
           }}
         >
-          {notificationsData.length > 0 ? (
-            notificationsData.map((v) => {
-              const obj = {};
-              if (userData.isAdmin) {
-                obj["message"] = v.message;
-                obj["path"] =
-                  v.status === "Pending"
-                    ? `/review/${v.fileId}`
-                    : `/profile/${v.uploaderId}`;
-              } else {
-                obj['path'] = v.message.path && `${v.message.path}/${v.fileId}`;
-                obj['message'] = v.message.message;
-              }
+          {notifications.length > 0 ? (
+            notifications.map((v) => {
               return (
                 <AlertStrip
-                  key={v.fileId}
-                  type={v.status}
-                  onClose={handleDelete.bind(this, v._id)}
+                  key={v._id}
+                  type={v.data.status}
+                  onClose={handleDelete.bind(this, v.id, v.userId)}
                 >
-                  {obj.path ? (
+                  {v.data.path ? (
                     <Link
                       style={{ color: "#1b1b1b", fontSize: "12px" }}
-                      to={obj.path}
+                      to={v.data.path}
                     >
-                      {obj.message}
+                      {v.data.message}
                     </Link>
                   ) : (
-                    <span style={{ fontSize: "12px" }}>{obj.message}</span>
+                    <span style={{ fontSize: "12px" }}>{v.data.message}</span>
                   )}
                 </AlertStrip>
               );
@@ -97,7 +84,7 @@ const Notifications = () => {
         </div>
         <Button
           title="Refresh"
-          handleClick={handleNotifications}
+          // handleClick={}
           radius="30px"
           textColor="white"
           padding="8px 0px"

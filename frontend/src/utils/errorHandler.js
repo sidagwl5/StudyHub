@@ -1,4 +1,5 @@
 import { SET_ALERT, NOT_RECOGNIZED } from "../store/types";
+import { removeDataInLocalStorage } from './localStorage';
 
 const errorHandler = (error) => (dispatch) => {
   if (error.response) {
@@ -13,7 +14,7 @@ const errorHandler = (error) => (dispatch) => {
     } 
     
     else if (status === 401 || status === 403) {
-      window.localStorage.removeItem("userData");
+      removeDataInLocalStorage();
       dispatch({ type: NOT_RECOGNIZED });
       dispatch({
         type: SET_ALERT,

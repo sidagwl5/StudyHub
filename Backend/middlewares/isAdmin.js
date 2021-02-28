@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 
-module.exports = asyncHandler(async (req, res, next) => {
+const isAdmin = asyncHandler(async (req, res, next) => {
   if (!req.user.isAdmin) {
     res.status(403);
     throw new Error("You do not have priviledges to access this content");
@@ -8,3 +8,5 @@ module.exports = asyncHandler(async (req, res, next) => {
 
   next();
 });
+
+module.exports = isAdmin;

@@ -5,7 +5,7 @@ import CloseIcon from "@material-ui/icons/Close";
 const mapper = {
   Pending: "warning",
   Rejected: "error",
-  Approved: "success",
+  Success: "success",
   Request: 'warning'
 };
 

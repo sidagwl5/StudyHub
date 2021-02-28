@@ -3,16 +3,15 @@ const passport = require("passport");
 const asyncHandler = require("express-async-handler");
 const { getJwtToken } = require("../utils/helperFunctions");
 const users = require("../models/user");
-const { authentication } = require("../middlewares/auth");
+const authentication = require("../middlewares/auth");
 const {
-  logIn,
   authenticate,
   logOut,
   getAllUserDetails,
   deleteUser,
   updateUser,
   getSpecificUser,
-  adminRoleRequest
+  adminRoleRequest,
 } = require("../controllers/user");
 
 router
@@ -44,7 +43,6 @@ router.route("/google/callback").get(
   })
 );
 
-router.route("/login").get(authentication, logIn);
 router.route("/authenticate").get(authentication, authenticate);
 router.route("/logout").get(authentication, logOut);
 router.route("/all").get(authentication, getAllUserDetails);
@@ -55,7 +53,5 @@ router
   .delete(authentication, deleteUser)
   .patch(authentication, updateUser)
   .get(authentication, getSpecificUser);
-
-
 
 module.exports = router;

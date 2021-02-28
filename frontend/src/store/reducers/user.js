@@ -12,7 +12,7 @@ import {
 import { getDataInLocalStorage } from "../../utils/localStorage";
 
 const initialState = {
-  persistantUserData: getDataInLocalStorage(),
+  isLoggedIn: getDataInLocalStorage(),
   userProfile: null,
   allUsersData: [],
   setLoginSuccessModal: false,
@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
 
   switch (type) {
     case LOGIN_SUCCESS:
-      return { ...state, persistantUserData: payload };
+      return { ...state, isLoggedIn: true };
 
     case SET_LOGIN_SUCCESS_MODAL:
       return { ...state, setLoginSuccessModal: payload };
@@ -72,7 +72,7 @@ export default (state = initialState, action) => {
 
     case LOGOUT_SUCCESS:
     case NOT_RECOGNIZED:
-      return { ...initialState, persistantUserData: null };
+      return { ...initialState, isLoggedIn: false };
 
     default:
       return state;

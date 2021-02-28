@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const notifications = require("./notifications");
 
 const userSchema = new mongoose.Schema(
   {
@@ -15,16 +16,17 @@ const userSchema = new mongoose.Schema(
       require: true,
     },
     college: String,
+    degree: String,
     course: String,
-    branch: String,
     semester: String,
-    favourites: [ 
+    favourites: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Uploads",
       },
     ],
-    blogs: [ 
+    notifications: [notifications],
+    blogs: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Blogs",
@@ -52,9 +54,9 @@ const userSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Active', 'Suspend'],
-      default: 'Active'
-    }
+      enum: ["Active", "Suspend"],
+      default: "Active",
+    },
   },
   { timestamps: true }
 );

@@ -7,7 +7,7 @@ const {
  likeBlog,
  uploadBlog
 } = require("../controllers/blog");
-const { authentication } = require("../middlewares/auth");
+const authentication = require("../middlewares/auth");
 const isAdmin = require("../middlewares/isAdmin");
 
 router

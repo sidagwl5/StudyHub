@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import history from '../../../utils/createHistory';
+import history from "../../../utils/createHistory";
 
 import ModalContainer from "../../../sharedComponents/presentation/modal/modalContainer";
 import successImage from "../../../resources/images/success.png";
 
-const LoginSuccessModal = ({ classes }) => {
+const LoginSuccessModal = () => {
   const dispatch = useDispatch();
   const setLoginSuccessModal = useSelector(
     (state) => state.user.setLoginSuccessModal
@@ -23,26 +23,20 @@ const LoginSuccessModal = ({ classes }) => {
         width="500px"
         alignItems="flex-start"
         btnContainerBgColor="rgb(249, 249, 255)"
-        cancelBtnProps={{ 
+        cancelBtnProps={{
           handleClick: handleClose,
           backgroundColor: "#BCBCE0",
           title: "Cancel",
-          textColor: 'white',
-          padding: '6px 20px',
-          radius: '35px' 
+          padding: "6px 20px",
         }}
-
-        specificBtnProps={{ 
+        specificBtnProps={{
           handleClick: () => history.push("/uploadhub"),
           backgroundColor: "#9898C9",
           title: "Explore",
-          textColor: 'white',
-          padding: '6px 20px',
-          radius: '35px' 
+          padding: "6px 20px",
         }}
       >
         <img src={successImage} style={{ width: "90%", margin: "0px auto" }} />
-
         <div
           style={{
             flexGrow: 1,

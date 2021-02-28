@@ -1,9 +1,8 @@
 const router = require("express").Router();
-const { authentication } = require("../middlewares/auth");
-const { getNotificationForSpecificUser, deleteNotification } = require("../controllers/notifications");
+const authentication = require("../middlewares/auth");
+const { deleteNotification } = require("../controllers/notifications");
 
-router.route("/getNotificationsForUser").get(authentication, getNotificationForSpecificUser);
-router.route("/:id").delete(authentication, deleteNotification);
+router.route("/:id").post(authentication, deleteNotification);
 
 
 module.exports = router;

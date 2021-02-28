@@ -11,7 +11,6 @@ import axios from "../../utils/api";
 import errorHandler from "../../utils/errorHandler";
 import successHandler from "../../utils/successHandler";
 import history from "../../utils/createHistory";
-import { getNotificationsForUser } from "./notification";
 
 export const uploadFile = (fileData) => async (dispatch) => {
   try {
@@ -20,7 +19,6 @@ export const uploadFile = (fileData) => async (dispatch) => {
     if (status === 200) {
       history.push("/");
       dispatch(successHandler(data));
-      dispatch(getNotificationsForUser());
       dispatch({
         type: FILTER_ALL_FILES_DATA_BY_ID,
         payload: { type: "post", data: data.fileData },
@@ -59,7 +57,6 @@ export const uploadReject = (id) => async (dispatch) => {
         payload: { type: "delete", data: id },
       });
       dispatch(successHandler(data));
-      dispatch(getNotificationsForUser());
       history.push("/");
     }
   } catch (error) {
@@ -76,7 +73,6 @@ export const uploadAccept = (id) => async (dispatch) => {
         payload: { type: "status", data: id },
       });
       dispatch(successHandler(data));
-      dispatch(getNotificationsForUser());
       history.push("/");
     }
   } catch (error) {
@@ -102,6 +98,19 @@ export const updateUpload = (id, data) => async (dispatch) => {
     dispatch(errorHandler(error));
   }
 };
+
+
+export const deleteUpload = (uploadId) => async dispatch => {
+  try {
+    const { status, data } = await axios.delete(`/upload/delete/${uploadId}`);
+    if(status === 200){
+      history.push("/");
+    }
+  } catch (error) {
+    dispatch(errorHandler(error));
+  }
+}
+
 
 export const getFavouriteFilesData = () => async dispatch => {
   try {

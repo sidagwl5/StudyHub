@@ -20,8 +20,8 @@ const useStyles = (props) =>
 const Button = ({
   title,
   handleClick,
-  radius = "20px",
-  textColor = "black",
+  radius = "35px",
+  textColor = "white",
   padding = "5px 10px",
   margin = "0px 10px",
   fontSize = "14px",

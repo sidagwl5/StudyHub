@@ -9,62 +9,53 @@ const user = require("../models/user");
 // TYPE: post
 // FOR: default
 const uploadFile = asyncHandler(async (req, res) => {
-  let dataArray = [
-    "description",
-    "name",
-    "university",
-    "college",
-    "degree",
-    "course",
-    "type",
-    "semester",
-  ];
-
-  let check = dataArray.find((v) => v !== "description" && !req.body[v]);
+  let keysArray = Object.keys(req.body);
+  let check = keysArray.find((v) => v !== "description" && !req.body[v]);
 
   if (check) {
     res.status(400);
-    throw new Error("All details need to be filled!");
+    throw new Error(`${check} need to be filled!`);
   }
 
-  let fileData = {};
-  dataArray.forEach((v) => {
-    fileData[v] = req.body[v] || "";
-  });
+  let fileData = req.body;
+  fileData["uploaderId"] = req.user._id;
 
-  let userData = req.user;
-  fileData["uploaderId"] = userData._id;
-
-  let fileUploadedData = await uploads.create(fileData);
+  let fileUploadedData = new uploads(fileData);
   const { file } = req.files;
 
   file.mv(
     path.join(__dirname, `../../frontend/src/resources/files/${file.name}`),
     async (err) => {
       if (err) {
-        await uploads.findByIdAndRemove(fileUploadedData._id);
         res.status(500);
         throw new Error("Error in uploading file, please try again later!");
       }
 
       try {
         fileUploadedData.url = `/files/${file.name}`;
-        await fileUploadedData.save();
+        fileUploadedData = await fileUploadedData.save();
 
         fileUploadedData = await uploads.populate(fileUploadedData, {
           path: "uploaderId",
           select: ["imageUrl", "name"],
         });
 
-        const notificationData = await notifications.create({
-          uploaderId: userData._id,
-          fileId: fileUploadedData._id,
-          message: `${userData.name} has uploaded a new file`,
-        });
-
         try {
-          userData.uploadsPending.push(fileUploadedData._id);
-          await userData.save();
+          req.user.uploadsPending.push(fileUploadedData._id);
+          const notificationsData = {
+            specificId: fileUploadedData._id,
+            admin: {
+              message: `${req.user.name} has uploaded a new file`,
+              path: `/review/${fileUploadedData._id}`,
+            },
+            user: {
+              message: `Your upload request has been sent to admin!`,
+              status: "Success",
+              path: `/uploadhub/${fileUploadedData._id}`,
+            },
+          };
+          req.user.notifications.push(notificationsData);
+          await req.user.save();
           return res.json({
             message: "File has been sent to admin for review",
             fileData: fileUploadedData,
@@ -73,8 +64,9 @@ const uploadFile = asyncHandler(async (req, res) => {
           await notifications.findByIdAndRemove(notificationData._id);
           throw error;
         }
-      } catch (error) {
-        await uploads.findByIdAndRemove(fileUploadedData._id);
+      } 
+      
+      catch (error) {
         console.log(error);
         res.status(400);
         res.send(error.message);
@@ -83,67 +75,75 @@ const uploadFile = asyncHandler(async (req, res) => {
   );
 });
 
+
 // PURPOSE: get specific file data
 // TYPE: get
 // FOR: both
 const getSpecificUpload = asyncHandler(async (req, res) => {
-  const uploadId = req.params.id;
-  let uploadData = null;
-
-  uploadData = await uploads
-    .findById(uploadId)
+  let uploadData = await uploads
+    .findById(req.params.id)
     .populate("uploaderId", ["imageUrl", "name"]);
 
   res.json(uploadData);
 });
 
-// PURPOSE: all files data
+
+// PURPOSE: get all files data
 // TYPE: get
-// FOR: admin
+// FOR: for both admin and default
 const getAllFilesData = asyncHandler(async (req, res) => {
   const allFilesData = await uploads
     .find({})
-    .populate("uploaderId", ["imageUrl"])
-    .select(["college", "status", "type", "url", "favourites", "name", "createdAt"])
+    .populate("uploaderId", ["imageUrl", "name"])
+    .select([
+      "college",
+      "status",
+      "type",
+      "url",
+      "favourites",
+      "name",
+      "createdAt",
+    ]);
 
   return res.json(allFilesData);
 });
+
 
 // PURPOSE: upload request rejected
 // TYPE: delete
 // FOR: admin
 const uploadReject = asyncHandler(async (req, res) => {
-  const notificationData = await notifications.findOne({
-    fileId: req.params.id,
-  });
+  
+  const fileData = await uploads.findById(req.params.id);
 
-  notificationData.fileId = null;
-  notificationData.status = "Rejected";
-  await notificationData.save();
-
-  const userData = await user.findById(notificationData.uploaderId);
+  const userData = await user.findById(fileData.uploaderId);
   userData.uploadsRejected = userData.uploadsRejected + 1;
   userData.uploadsPending = userData.uploadsPending.filter(
     (v) => v != req.params.id
   );
+
+  const notification = userData.notifications.find(v => v.specificId == req.params.id);
+  notification.user = {
+    message: "Your upload has been rejected by admin!",
+    status: "Rejected",
+    path: ""
+  }
+  notification.admin = {
+    message: "You have rejected the upload of user siddharth Agrawal!",
+    status: "Success",
+    path: ""
+  }
+
   await userData.save();
-
-  await uploads.findByIdAndDelete(req.params.id);
-
+  await fileData.delete();
   return res.json({ message: "Upload has been rejected!" });
 });
+
 
 // PURPOSE: upload request accepted
 // TYPE: post
 // FOR: admin
 const uploadAccept = asyncHandler(async (req, res) => {
-  const notificationData = await notifications.findOne({
-    fileId: req.params.id,
-  });
-
-  notificationData.fileId = null;
-  notificationData.status = "Approved";
-  await notificationData.save();
 
   const fileData = await uploads.findById(req.params.id);
   fileData.status = "Accepted";
@@ -154,14 +154,27 @@ const uploadAccept = asyncHandler(async (req, res) => {
     (v) => v != req.params.id
   );
   userData.uploadsApproved.push(req.params.id);
-  await userData.save();
 
+  const notification = userData.notifications.find(v => v.specificId == req.params.id);
+  notification.user = {
+    message: "Your upload has been accepted by admin!",
+    status: "Success",
+    path: ""
+  }
+  notification.admin = {
+    message: `You have accepted the upload of user ${userData.name}!`,
+    status: "Success",
+    path: ""
+  }
+
+  await userData.save();
   return res.json({ message: "Upload has been approved!" });
 });
 
-// PURPOSE: like a post
+
+// PURPOSE: favourite an upload
 // TYPE: patch
-// FOR: both
+// FOR: default
 const updateUpload = asyncHandler(async (req, res) => {
   const { type, ...rest } = req.body;
   await uploads.findByIdAndUpdate(req.params.id, rest);
@@ -177,47 +190,81 @@ const updateUpload = asyncHandler(async (req, res) => {
   return res.status(200).end();
 });
 
+
 // PURPOSE: delete upload
 // TYPE: delete
 // FOR: both
-
 const deleteUpload = asyncHandler(async (req, res) => {
-  const { type, ...rest } = req.body;
-  await notifications.findOneAndDelete(req.params.id);
 
   const uploadData = await uploads.findById(req.params.id);
-  const userData = await user.findById(req.body.userId);
+  const userData = await user.findById(uploadData.uploaderId);
 
   if (uploadData.status === "Pending") {
     userData.uploadsPending = userData.uploadsPending.filter(
       (v) => v != req.params.id
     );
-  } else {
+  } 
+  else {
+    const usersfavouritesData = await user.find({}).select(["favourites"]);
+    for (let i = 0; i < usersfavouritesData.length; i++) {
+      const index = usersfavouritesData[i].favourites.findIndex(
+        (uploadId) => uploadId == req.params.id
+      );
+      if (index !== -1) {
+        usersfavouritesData[i].favourites.splice(index, 1);
+        await usersfavouritesData[i].save();
+      }
+    }
+  
     userData.uploadsApproved = userData.uploadsApproved.filter(
       (v) => v != req.params.id
     );
   }
+
   await userData.save();
   await uploadData.delete();
-
   return res.status(200).end();
 });
 
+
+// PURPOSE: get top favourite uploads
+// TYPE: get
+// FOR: default
 const getFavouriteUploads = asyncHandler(async (req, res) => {
   const uploadsData = await uploads
     .find({})
     .populate("uploaderId", ["imageUrl"])
-    .select(["college", "status", "type", "url", "favourites", "name", "createdAt"])
+    .select([
+      "college",
+      "status",
+      "type",
+      "url",
+      "favourites",
+      "name",
+      "createdAt",
+    ])
     .sort({ favourites: -1 })
     .limit(10);
   return res.json(uploadsData);
 });
 
+
+// PURPOSE: get latest uploads
+// TYPE: get
+// FOR: default
 const getLatestUploads = asyncHandler(async (req, res) => {
   const uploadsData = await uploads
     .find({})
     .populate("uploaderId", ["imageUrl"])
-    .select(["college", "status", "type", "url", "favourites", "name", "createdAt"])
+    .select([
+      "college",
+      "status",
+      "type",
+      "url",
+      "favourites",
+      "name",
+      "createdAt",
+    ])
     .sort({ createdAt: -1 })
     .limit(10);
   return res.json(uploadsData);
@@ -231,5 +278,6 @@ module.exports = {
   uploadAccept,
   updateUpload,
   getFavouriteUploads,
-  getLatestUploads
+  getLatestUploads,
+  deleteUpload
 };

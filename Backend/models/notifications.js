@@ -2,25 +2,27 @@ const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema(
   {
-    uploaderId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "Users",
+    specificId: String,
+    admin: {
+      message: String,
+      status: {
+        type: String,
+        enum: ["Pending", "Rejected", "Success", "Request"],
+        default: "Pending",
+      },
+      path: String,
     },
-    fileId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Uploads",
+    user: {
+      message: String,
+      status: {
+        type: String,
+        enum: ["Pending", "Rejected", "Success", "Request"],
+        default: "Pending",
+      },
+      path: String,
     },
-    message: {
-      type: String,
-    },
-    status: {
-      type: String,
-      enum: ['Pending', 'Rejected', 'Approved', 'Request'],
-      default: 'Pending',
-    }
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Notifications", notificationSchema);
+module.exports = notificationSchema;

@@ -1,57 +1,32 @@
-const Notifications = require("../models/notifications");
+const e = require("express");
 const asyncHandler = require("express-async-handler");
-const notifications = require("../models/notifications");
+const users = require("../models/user");
 
-const mapper = {
-  Rejected: {
-    message: "Your request has been rejected by admin!",
-    path: null
-  },
-  Pending: {
-    message: "Your request has been sent to admin for review!",
-    path: '/uploadhub'
-  },
-  Approved: {
-    message: "Your request has been approved by admin!",
-    path: null
-  },
-  Request: {
-    message: 'Your request for admin role has been sent to admin',
-    path: null
-  }
-};
-
-const getNotificationForSpecificUser = asyncHandler(async (req, res) => {
-  const userData = req.user;
-
-  let notificationsData = [];
-  if (userData.isAdmin) {
-    notificationsData = await Notifications.find({ status: ["Pending", "Request"] });
-  } else {
-    notificationsData = await Notifications.find({
-      uploaderId: userData._id,
-    }).select(["-uploaderId", "-message"]);
-
-    notificationsData = notificationsData.map((v) => ({
-      ...v['_doc'],
-      message: mapper[v.status],
-    }));
-  }
-
-  return res.json(notificationsData);
-});
-
+// PURPOSE: delete specific notification
+// TYPE: delete
+// FOR: both admin and default
 const deleteNotification = asyncHandler(async (req, res) => {
-  const notificationData = await notifications.findById(req.params.id);
+  let userData = null;
+  if (req.body.userId) {
+    userData = await users.findById(req.body.userId).select(["notifications"]);
+    let index = userData.notifications.findIndex((v) => v._id == req.params.id);
 
-  if (
-    notificationData.status === "Rejected" ||
-    notificationData.status === "Approved"
-  ) {
-    await notificationData.delete();
+    if (!userData.notifications[index].user.message) {
+      userData.notifications.splice(index, 1);
+    } 
+    else userData.notifications[index].admin.message = "";
+  } 
+  else {
+    userData = req.user;
+    let index = userData.notifications.findIndex((v) => v._id == req.params.id);
+    if (!userData.notifications[index].admin.message) {
+      userData.notifications.splice(index, 1);
+    } 
+    else userData.notifications[index].user.message = "";
   }
 
+  await userData.save();
   return res.status(200).end();
 });
 
-module.exports = { getNotificationForSpecificUser, deleteNotification };
+module.exports = { deleteNotification };

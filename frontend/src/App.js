@@ -9,10 +9,7 @@ import blogHub from "./screens/blogHub/presentation";
 import Users from "./screens/users/presentation";
 import Profile from "./screens/profile/presentation";
 import history from "./utils/createHistory";
-import {
-  logIn,
-  authenticate,
-} from "./store/actions/user";
+import { authenticate } from "./store/actions/user";
 import store from "./store";
 import Loader from "./sharedComponents/presentation/loader";
 import Alert from "./sharedComponents/container/alert";
@@ -20,14 +17,15 @@ import ReviewPage from "./screens/review/presentation";
 
 const App = () => {
   const dispatch = store.dispatch;
-  const userData = store.getState().user.persistantUserData;
 
   useEffect(() => {
-    window.localStorage.getItem("login") && dispatch(logIn());
-  }, [dispatch]);
-
-  useEffect(() => {
-    userData && dispatch(authenticate());
+    if (window.localStorage.getItem("logIn")) {
+      dispatch(authenticate(true));
+    } 
+    
+    else if (window.localStorage.getItem("isLoggedIn")) {
+      dispatch(authenticate());
+    }
   }, [dispatch]);
 
   return (

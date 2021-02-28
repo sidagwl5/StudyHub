@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 
 export default function ProtectedRoute(props) {
-  const userData = useSelector((state) => state.user.persistantUserData);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  if (userData) {
+  if (isLoggedIn) {
     return (
       <Route
         {...props}

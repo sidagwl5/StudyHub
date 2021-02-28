@@ -7,20 +7,24 @@ const {
   uploadAccept,
   updateUpload,
   getFavouriteUploads,
-  getLatestUploads
+  getLatestUploads,
+  deleteUpload
 } = require("../controllers/upload");
-const { authentication } = require("../middlewares/auth");
+const authentication = require("../middlewares/auth");
+const isAdmin = require("../middlewares/isAdmin");
 
 router
   .route("/")
   .post(authentication, uploadFile)
   .get(authentication, getAllFilesData);
 
+router.route("/delete/:id").delete(authentication, deleteUpload);  
+
 router
   .route("/:id")
   .get(authentication, getSpecificUpload)
-  .delete(authentication, uploadReject)
-  .post(authentication, uploadAccept)
+  .delete(authentication, isAdmin, uploadReject)
+  .post(authentication, isAdmin, uploadAccept)
   .patch(authentication, updateUpload);
 
 router.route("/favourites/all").get(authentication, getFavouriteUploads);

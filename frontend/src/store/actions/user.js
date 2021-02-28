@@ -5,7 +5,7 @@ import {
   SET_LOGIN_SUCCESS_MODAL,
   FILTER_ALL_USERS_DATA_BY_ID,
   SET_SPECIFIC_USER_DATA,
-  GET_USER_PROFILE
+  GET_USER_PROFILE,
 } from "../types";
 import axios from "../../utils/api";
 import errorHandler from "../../utils/errorHandler";
@@ -14,19 +14,18 @@ import {
   removeDataInLocalStorage,
   setDataInLocalStorage,
 } from "../../utils/localStorage";
-import { getNotificationsForUser } from './notification';
 
-export const logIn = () => async (dispatch) => {
-
-  window.localStorage.removeItem("login");
+export const authenticate = (check) => async (dispatch) => {
+  window.localStorage.removeItem("logIn");
   try {
-    const { status, data } = await axios.get("/user/login");
-
+    const { data, status } = await axios.get("/user/authenticate");
     if (status === 200) {
-      setDataInLocalStorage(data);
-      dispatch({ type: LOGIN_SUCCESS, payload: data });
-      dispatch({ type: SET_LOGIN_SUCCESS_MODAL, payload: true });
-      dispatch(authenticate());
+      if (check) {
+        setDataInLocalStorage();
+        dispatch({ type: LOGIN_SUCCESS });
+        dispatch({ type: SET_LOGIN_SUCCESS_MODAL, payload: true });
+      }
+      dispatch({ type: GET_USER_PROFILE, payload: data });
     }
   } catch (error) {
     dispatch(errorHandler(error));
@@ -39,18 +38,6 @@ export const logOut = () => async (dispatch) => {
     if (status === 200) {
       removeDataInLocalStorage();
       dispatch({ type: LOGOUT_SUCCESS });
-    }
-  } catch (error) {
-    dispatch(errorHandler(error));
-  }
-};
-
-export const authenticate = () => async (dispatch) => {
-  try {
-    const { data, status } = await axios.get("/user/authenticate");
-    if (status === 200) {
-      dispatch({ type: GET_USER_PROFILE, payload: data });
-      dispatch(getNotificationsForUser());
     }
   } catch (error) {
     dispatch(errorHandler(error));
@@ -72,7 +59,10 @@ export const deleteUser = (id) => async (dispatch) => {
   try {
     const { status, data } = await axios.delete(`/user/${id}`);
     if (status === 200) {
-      dispatch({ type: FILTER_ALL_USERS_DATA_BY_ID, payload: {type: 'delete', data: id} });
+      dispatch({
+        type: FILTER_ALL_USERS_DATA_BY_ID,
+        payload: { type: "delete", data: id },
+      });
       dispatch(successHandler(data));
     }
   } catch (error) {
@@ -101,13 +91,11 @@ export const getSpecificUser = (userId) => async (dispatch) => {
   }
 };
 
-
 export const adminRoleRequest = () => async (dispatch) => {
   try {
     const { status, data } = await axios.get(`/user/adminRole`);
-    if(status === 200){
+    if (status === 200) {
       dispatch(successHandler(data));
-      dispatch(getNotificationsForUser()); 
     }
   } catch (error) {
     dispatch(errorHandler(error));

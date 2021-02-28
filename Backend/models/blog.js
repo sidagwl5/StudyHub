@@ -6,18 +6,16 @@ const blogSchema = new mongoose.Schema({
     ref: "Users",
     required: true,
   },
-
   title: {
     type: String,
     required: true,
   },
-
   description: {
     type: String,
     required: true,
     maxlength: 240,
+    minlength: 50,
   },
-
   likes: [
     {
       type: mongoose.Schema.Types.ObjectId,

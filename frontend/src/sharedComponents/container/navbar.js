@@ -9,8 +9,9 @@ import CircularProgress from "../presentation/circularProgress";
 import IconButton from "../../sharedComponents/presentation/iconButton";
 import ModalContainer from "../presentation/modal/modalContainer";
 import Typography from "@material-ui/core/Typography";
-import { adminRoleRequest } from '../../store/actions/user';
+import { adminRoleRequest } from "../../store/actions/user";
 import MoreMenu from "../presentation/navbar/moreMenu";
+import UserProfileWrapper from "../../sharedComponents/presentation/wrappers/userProfile";
 
 const useStyles = makeStyles((theme) => ({
   navbarContainer: {
@@ -34,7 +35,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    window.localStorage.setItem("login", true);
+    window.localStorage.setItem("logIn", true);
     setTimeout(() => window.open("http://localhost:5000/user/google"), 500);
   };
 
@@ -49,7 +50,7 @@ const Navbar = () => {
   const handleAdminRequest = () => {
     dispatch(adminRoleRequest());
     setAdminBar(false);
-  }
+  };
 
   const handleModal = () =>
     adminBar && (
@@ -86,7 +87,15 @@ const Navbar = () => {
             alignItems: "center",
           }}
         >
-          <div style={{ padding: "10px 0px", textAlign: "center", width: '80%', top: '14px', position: 'relative' }}>
+          <div
+            style={{
+              padding: "10px 0px",
+              textAlign: "center",
+              width: "80%",
+              top: "14px",
+              position: "relative",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -101,16 +110,16 @@ const Navbar = () => {
                 fontSize="30px"
                 noProgressColor="#F5F5D9"
               />
-              <p style={{ margin: "0px", fontWeight: 'bold' }}>
+              <p style={{ margin: "0px", fontWeight: "bold" }}>
                 {userData.uploadsApproved.length} out of 10 uploads
               </p>
             </div>
             <p
               style={{
-                position: 'relative',
+                position: "relative",
                 fontFamily: "bebas neue",
                 fontSize: "1.7em",
-                top: '12px'
+                top: "12px",
               }}
             >
               Admin Bar
@@ -145,50 +154,62 @@ const Navbar = () => {
     setAdminBar(true);
   };
 
-  return userData ? (
-    <div className={classes.navbarContainer}>
-      {handleModal()}
-      <Notifications />
-      {!userData.isAdmin && (
-        <IconButton
-          handleClick={handleAdminBarModal}
-          Icon={(props) => <CircularProgress color="#D1D7E0" />}
-          tooltip="Admin bar"
-        />
-      )}
-      <div className={classes.menuDesktop}>
-        <Button
-          title="Blog Hub"
-          handleClick={navigateToBlogPage}
-          radius={userData.isAdmin ? "25px" : "25px 0px 0px 25px"}
-          margin={userData.isAdmin ? "0px 10px" : "0px"}
-          backgroundColor="#A39416"
-          fontSize="11px"
-        />
-        {!userData.isAdmin && (
+  return (
+    <UserProfileWrapper
+      renderProps={(userProfile) =>
+        userProfile ? (
+          <div className={classes.navbarContainer}>
+            {handleModal()}
+            <Notifications notifications={userProfile.notifications} />
+            {!userProfile.isAdmin && (
+              <IconButton
+                handleClick={handleAdminBarModal}
+                Icon={(props) => <CircularProgress color="#D1D7E0" />}
+                tooltip="Admin bar"
+              />
+            )}
+            <div className={classes.menuDesktop}>
+              <Button
+                title="Blog Hub"
+                handleClick={navigateToBlogPage}
+                radius={userData.isAdmin ? "25px" : "25px 0px 0px 25px"}
+                margin={userData.isAdmin ? "0px 10px" : "0px"}
+                backgroundColor="#A39416"
+                fontSize="11px"
+              />
+              {!userProfile.isAdmin && (
+                <Button
+                  title="Upload Hub"
+                  handleClick={navigateToUploadPage}
+                  radius="0px 25px 25px 0px"
+                  margin="0px 10px 0px 0px"
+                  backgroundColor="#A34949"
+                  textColor="white"
+                  fontSize="11px"
+                />
+              )}
+
+              <div
+                onClick={() => history.push("/profile")}
+                style={{ cursor: "pointer" }}
+              >
+                <ProfilePic
+                  title={userData.firstName}
+                  avatar={userData.imageUrl}
+                />
+              </div>
+            </div>
+            <MoreMenu />
+          </div>
+        ) : (
           <Button
-            title="Upload Hub"
-            handleClick={navigateToUploadPage}
-            radius="0px 25px 25px 0px"
-            margin="0px 10px 0px 0px"
-            backgroundColor="#A34949"
-            textColor="white"
-            fontSize="11px"
+            backgroundColor="#9D6262"
+            textColor="#E2D4D4"
+            title="Google Sign In"
+            handleClick={handleClick}
           />
-        )}
-        
-       <div onClick={() => history.push("/profile")} style={{ cursor: "pointer" }}>
-         <ProfilePic title={userData.firstName} avatar={userData.imageUrl} />
-        </div>
-      </div>
-      <MoreMenu />
-    </div>
-  ) : (
-    <Button
-      backgroundColor="#9D6262"
-      textColor="#E2D4D4"
-      title="Google Sign In"
-      handleClick={handleClick}
+        )
+      }
     />
   );
 };
