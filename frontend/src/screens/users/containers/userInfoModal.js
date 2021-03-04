@@ -2,20 +2,34 @@ import React from "react";
 import ModalContainer from "../../../sharedComponents/presentation/modal/modalContainer";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteUser, updateUser } from "../../../store/actions/user";
-import Avatar from "../../../sharedComponents/presentation/profilePic";
-import Chip from "@material-ui/core/Chip";
 import Menu from "../../../sharedComponents/presentation/menu";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from '../../../sharedComponents/presentation/button';
+import Button from "../../../sharedComponents/presentation/button";
+import UserData from "../../profile/presentation/components/renderUserData";
 
 const useStyles = makeStyles(() => ({
   contentContainer: {
-    height: "calc(100% - 60px)",
+    position: 'relative',
+    width: '100%',
+    height: '100%',
     padding: "15px",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "space-between",
+    backgroundColor: '#2D2824',
+  },
+  wallpaperContainer: {
+    position: "absolute",
+    top: "0px",
+    left: "0px",
+    width: "100%",
+    height: "100%",
+    backgroundImage: "url(https://wallpapercave.com/wp/wp6868260.jpg)",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    filter: "blur(4px)",
+    color: "white",
   },
   statsContainer: {
     position: "relative",
@@ -56,61 +70,30 @@ const UserInfoModal = () => {
 
   const handleUserStatus = (id, value) => {
     dispatch(updateUser(id, { status: value }));
-    handleClose();
-  }
+  };
 
   return (
     specificUserData && (
       <ModalContainer 
-        handleClose={handleClose}
+       handleClose={handleClose}
+       btnContainerBgColor="#58642D"
+       width="1000px"
+       height="600px"
+       cancelBtnProps={{
+        backgroundColor: "#BDBD76",
+        title: "Cancel",
+        textColor: "white",
+        padding: "6px 28px",
+        radius: "35px",
+        handleClick: handleClose
+      }}
       >
         <div className={classes.contentContainer}>
-          <Chip
-            avatar={<Avatar radius="60px" avatar={specificUserData.imageUrl} />}
-            label={specificUserData.name}
-            style={{ marginTop: "20px" }}
-          />
-
-          <div className={classes.statsContainer}>
-            <p>
-              <strong>Uploads Approved:</strong>
-            </p>
-            <div
-              className={classes.stats}
-              style={{ backgroundColor: "green", color: "white" }}
-            >
-              {specificUserData.uploadsApproved.length}
-            </div>
-          </div>
-
-          <div className={classes.statsContainer}>
-            <p>
-              <strong>Uploads Pending:</strong>
-            </p>
-            <div
-              className={classes.stats}
-              style={{ backgroundColor: "yellow" }}
-            >
-              {specificUserData.uploadsPending.length}
-            </div>
-          </div>
-
-          <div className={classes.statsContainer}>
-            <p>
-              <strong>Uploads Pending:</strong>
-            </p>
-            <div
-              className={classes.stats}
-              style={{ backgroundColor: "red", color: "white" }}
-            >
-              {specificUserData.uploadsRejected}
-            </div>
-          </div>
-
+         <div className={classes.wallpaperContainer} />
+          <UserData specificUserData={specificUserData} />
+          <div style={{ zIndex: 4 }}>
           <Menu
-            Source={(props) => (
-              <Button {...props} title="More" />
-            )}
+            Source={(props) => <Button {...props} backgroundColor="#BDBD76" title="More" />}
             items={[
               {
                 name: "Assign Admin Role",
@@ -122,16 +105,25 @@ const UserInfoModal = () => {
               },
               {
                 name: "Suspend User",
-                operation: handleUserStatus.bind(this, specificUserData._id, "Suspend"),
-                disabled: specificUserData.status === 'Suspend'
+                operation: handleUserStatus.bind(
+                  this,
+                  specificUserData._id,
+                  "Suspend"
+                ),
+                disabled: specificUserData.status === "Suspend",
               },
               {
                 name: "Activate User",
-                operation: handleUserStatus.bind(this, specificUserData._id, "Active"),
-                disabled: specificUserData.status === 'Active'
+                operation: handleUserStatus.bind(
+                  this,
+                  specificUserData._id,
+                  "Active"
+                ),
+                disabled: specificUserData.status === "Active",
               },
             ]}
           />
+          </div>
         </div>
       </ModalContainer>
     )

@@ -4,10 +4,11 @@ import {
   NOT_RECOGNIZED,
   GET_ALL_USERS_DATA,
   SET_LOGIN_SUCCESS_MODAL,
-  FILTER_ALL_USERS_DATA_BY_ID,
+  UPDATE_ALL_USERS_DATA,
   SET_SPECIFIC_USER_DATA,
   GET_USER_PROFILE,
   UPDATE_PROFILE,
+  UPDATE_SPECIFIC_USER_DATA
 } from "../types";
 import { getDataInLocalStorage } from "../../utils/localStorage";
 
@@ -35,18 +36,26 @@ export default (state = initialState, action) => {
     case GET_USER_PROFILE:
       return { ...state, userProfile: payload };
 
-    // can be combined to one only
     case SET_SPECIFIC_USER_DATA:
       return { ...state, specificUserData: payload };
 
-    case FILTER_ALL_USERS_DATA_BY_ID:
+    case UPDATE_SPECIFIC_USER_DATA:
+      console.log(payload);
+      if(state.specificUserData){
+        return {
+          ...state,
+          specificUserData: payload
+        }
+      }  
+
+    case UPDATE_ALL_USERS_DATA:
       let allUsersData = [];
       if (payload.type === "delete") {
         allUsersData = state.allUsersData.filter(
           (user) => user._id != payload.data
         );
       }
-
+    
       return {
         ...state,
         allUsersData,

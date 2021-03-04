@@ -88,9 +88,15 @@ const deleteUser = asyncHandler(async (req, res) => {
 // TYPE: patch
 // FOR: for both admin and default
 const updateUser = asyncHandler(async (req, res) => {
-  await users.findByIdAndUpdate(req.params.id, req.body);
+  let userData = await users.findByIdAndUpdate(req.params.id, req.body);
+  userData = {
+    ...userData._doc,
+    ...req.body
+  }
+  console.log(userData);
   return res.json({
     message: `User updated successfully!`,
+    userData
   });
 });
 

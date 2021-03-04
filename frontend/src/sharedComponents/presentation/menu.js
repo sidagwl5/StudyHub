@@ -25,7 +25,10 @@ export default function SimpleMenu({ items = [], Source }) {
           {items.map((item, index) => (
             <MenuItem
               key={index}
-              onClick={item.operation}
+              onClick={() => {
+                setAnchorEl(null);
+                item.operation();
+              }}
               disabled={item.disabled || false}
             >
               {item.name}

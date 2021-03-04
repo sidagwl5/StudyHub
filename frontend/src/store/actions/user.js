@@ -3,9 +3,10 @@ import {
   LOGOUT_SUCCESS,
   GET_ALL_USERS_DATA,
   SET_LOGIN_SUCCESS_MODAL,
-  FILTER_ALL_USERS_DATA_BY_ID,
   SET_SPECIFIC_USER_DATA,
   GET_USER_PROFILE,
+  UPDATE_ALL_USERS_DATA,
+  UPDATE_SPECIFIC_USER_DATA
 } from "../types";
 import axios from "../../utils/api";
 import errorHandler from "../../utils/errorHandler";
@@ -60,7 +61,7 @@ export const deleteUser = (id) => async (dispatch) => {
     const { status, data } = await axios.delete(`/user/${id}`);
     if (status === 200) {
       dispatch({
-        type: FILTER_ALL_USERS_DATA_BY_ID,
+        type: UPDATE_ALL_USERS_DATA,
         payload: { type: "delete", data: id },
       });
       dispatch(successHandler(data));
@@ -75,6 +76,10 @@ export const updateUser = (id, userData) => async (dispatch) => {
     const { status, data } = await axios.patch(`/user/${id}`, userData);
     if (status === 200) {
       dispatch(successHandler(data));
+      dispatch({ 
+        type: UPDATE_SPECIFIC_USER_DATA,
+        payload: data.userData 
+      });
       dispatch(getAllUserDetails());
     }
   } catch (error) {
