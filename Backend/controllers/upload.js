@@ -42,7 +42,7 @@ const uploadFile = asyncHandler(async (req, res) => {
 
         try {
           req.user.uploadsPending.push(fileUploadedData._id);
-          const notificationsData = {
+          const notificationData = {
             specificId: fileUploadedData._id,
             admin: {
               message: `${req.user.name} has uploaded a new file`,
@@ -54,11 +54,22 @@ const uploadFile = asyncHandler(async (req, res) => {
               path: `/uploadhub/${fileUploadedData._id}`,
             },
           };
-          req.user.notifications.push(notificationsData);
-          await req.user.save();
+
+          req.user.notifications.push(notificationData);
+          const userData = await req.user.save();
           return res.json({
             message: "File has been sent to admin for review",
             fileData: fileUploadedData,
+            notificationsData: userData.notifications.reduce((prev, current) => {    
+                if(current.user.message){
+                  prev.push({
+                    data: current.user,
+                    id: current._id,
+                    specificId: current.specificId
+                  })
+                }
+                return prev;
+              }, [])
           });
         } catch (error) {
           await notifications.findByIdAndRemove(notificationData._id);
@@ -136,7 +147,14 @@ const uploadReject = asyncHandler(async (req, res) => {
 
   await userData.save();
   await fileData.delete();
-  return res.json({ message: "Upload has been rejected!" });
+  return res.json({ 
+  message: "Upload has been rejected!",  
+  notificationData: {
+    specificId: null,
+    data: notification.admin,
+    id: notification._id,
+    userId: userData._id
+  } });
 });
 
 
@@ -168,7 +186,14 @@ const uploadAccept = asyncHandler(async (req, res) => {
   }
 
   await userData.save();
-  return res.json({ message: "Upload has been approved!" });
+  return res.json({ 
+    message: "Upload has been approved!",
+    notificationData: {
+      specificId: notification.specificId,
+      data: notification.admin,
+      id: notification._id,
+      userId: userData._id
+    } });
 });
 
 
@@ -196,6 +221,7 @@ const updateUpload = asyncHandler(async (req, res) => {
 // FOR: both
 const deleteUpload = asyncHandler(async (req, res) => {
 
+  console.log(req.params.id);
   const uploadData = await uploads.findById(req.params.id);
   const userData = await user.findById(uploadData.uploaderId);
 
@@ -221,9 +247,14 @@ const deleteUpload = asyncHandler(async (req, res) => {
     );
   }
 
+  userData.notifications = userData.notifications
+  .filter(notificationData  => notificationData.specificId != req.params.id);
+
   await userData.save();
   await uploadData.delete();
-  return res.status(200).end();
+  return res.status(200).json({
+    message: 'Upload deleted succesfully!'
+  });
 });
 
 

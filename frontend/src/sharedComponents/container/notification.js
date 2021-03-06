@@ -11,23 +11,23 @@ import Popper from "../presentation/popper";
 import Button from "../presentation/button";
 import AlertStrip from "../presentation/alertStrip";
 
-const Notifications = ({ notifications }) => {
+const Notifications = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const notifications = useSelector(state => state.notification);
 
   const handleClick = (event) => {
     event.stopPropagation();
+    console.log('hello');
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
   const handleDelete = (id, userId) => {
-
     if(userId){
       dispatch(deleteNotification(id, { userId })); 
       return;   
     }
-
     dispatch(deleteNotification(id));
   };
 
@@ -44,7 +44,7 @@ const Notifications = ({ notifications }) => {
         handleClick={handleClick}
       />
 
-      <Popper width="285px" height="340px" open={open} anchorEl={anchorEl}>
+      <Popper width="285px" height="340px" open={open} anchorEl={anchorEl} handleClose={handleClick}>
         <div
           style={{
             height: "calc(100% - 35px)",

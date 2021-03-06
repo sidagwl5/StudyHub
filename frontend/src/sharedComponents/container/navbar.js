@@ -160,7 +160,7 @@ const Navbar = () => {
         userProfile ? (
           <div className={classes.navbarContainer}>
             {handleModal()}
-            <Notifications notifications={userProfile.notifications} />
+            <Notifications />
             {!userProfile.isAdmin && (
               <IconButton
                 handleClick={handleAdminBarModal}

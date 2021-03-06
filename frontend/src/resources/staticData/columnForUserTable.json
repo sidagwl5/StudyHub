@@ -16,7 +16,7 @@
     },
     {
         "id": "assign",
-        "label": "Assign",
+        "label": "Assign Admin Role",
         "align": "center"
     }  
 ]

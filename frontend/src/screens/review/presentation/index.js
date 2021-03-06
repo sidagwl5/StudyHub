@@ -18,6 +18,8 @@ const useStyles = makeStyles(() => ({
     padding: "15px",
     display: "flex",
     backgroundColor: "#393e3f",
+    alignItems: "center",
+    justifyContent: "center",
     overflowY: "auto",
   },
   root_child1: {
@@ -74,10 +76,10 @@ const Review = ({ match }) => {
 
   return (
     <UserProfile
-      renderProps={(userProfile) =>
-        userProfile && specificFileData ? (
-          <>
-            <div className={classes.root}>
+      renderProps={(userProfile) => (
+        <div className={classes.root}>
+          {userProfile && specificFileData ? (
+            <>
               <div className={classes.root_child1}>
                 <div>
                   <Avatar
@@ -139,12 +141,12 @@ const Review = ({ match }) => {
                 }}
                 src={readingBooks}
               />
-            </div>
-          </>
-        ) : (
-          <p>File Data Loading...</p>
-        )
-      }
+            </>
+          ) : (
+            <p style={{ color: 'white' }}>File Data Loading...</p>
+          )}
+        </div>
+      )}
     />
   );
 };

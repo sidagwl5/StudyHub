@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import HOC from "../../../sharedComponents/presentation/HOC";
 import { makeStyles } from "@material-ui/core/styles";
-import { getSpecificUser } from "../../../store/actions/user";
+import { getSpecificUser, authenticate } from "../../../store/actions/user";
 import RenderUserData from './components/renderUserData';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -35,6 +35,7 @@ const Profile = ({ match={} }) => {
     if (match.params && match.params.id) {
       dispatch(getSpecificUser(match.params.id));
     }
+    else dispatch(authenticate());
   }, [match]); 
 
   return (

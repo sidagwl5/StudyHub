@@ -13,6 +13,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from "@material-ui/icons/Delete";
 import { red } from "@material-ui/core/colors";
 import colorArray from "../../../resources/staticData/colorArray.json";
+import { deleteUpload } from '../../../store/actions/upload';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,7 @@ const FileCard = ({
   const userProfile = useSelector((state) => state.user.userProfile);
   const userFavourites = userProfile ? userProfile.favourites : [];
   const userId = userProfile ? userProfile._id : null;
+  const isAdmin = userProfile ? userProfile.isAdmin : false;
 
   const handleDownload = () => {
     const path = require(`../../../resources${url}`).default;
@@ -54,6 +56,11 @@ const FileCard = ({
     dispatch(
       updateUpload(_id, { favourites: favourites + 1, type: "addToFavourites" })
     );
+  };
+
+  const handleDelete = (event) => {
+    event.stopPropagation(event);
+    dispatch(deleteUpload(_id));
   };
 
   const chooseColor = () => {
@@ -67,10 +74,6 @@ const FileCard = ({
         type: "removeFromFavourites",
       })
     );
-  };
-
-  const handleDelete = (event) => {
-    event.stopPropagation();
   };
 
   return (
@@ -126,11 +129,12 @@ const FileCard = ({
           <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
             {(new Date(createdAt).toDateString()).split(" ").slice(1,).join(" ")}
           </span>
-          {userId == uploaderId._id && (
+          {isAdmin || (userId == uploaderId._id) && (
             <IconButton
-              Icon={(props) => <DeleteIcon {...props} />}
+              Icon={(props) => <DeleteIcon  {...props} />}
               color={red}
-              handleClick={handleDelete}
+              handleClick={handleDelete
+              }
             />
           )}
         </div>

@@ -65,8 +65,22 @@ const UploadFileModal = ({
       handleClose={closeModal}
       width="600px"
       height="330px"
-      btnTitle={title}
-      action={handleUpload}
+      specificBtnProps={{
+        handleClick: handleUpload,
+        backgroundColor: "#A5A544",
+        title,
+        textColor: "white",
+        padding: "6px 28px",
+        radius: "35px",
+      }}
+      cancelBtnProps={{
+        handleClick: closeModal,
+        backgroundColor: "#BDBD76",
+        title: "Cancel",
+        textColor: "white",
+        padding: "6px 28px",
+        radius: "35px",
+      }}
     >
       <Form 
        handleChange={handleChange}

@@ -22,7 +22,6 @@ const RenderButtons = ({ isAdmin, id, status }) => {
   };
 
   const handleDelete = (id) => {
-    console.log(id);
     dispatch(deleteUpload(id));
   };
 

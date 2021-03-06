@@ -189,7 +189,6 @@ const UsersTable = () => {
                           color="red"
                           handleClick={handleDelete.bind(this, row._id)}
                           Icon={(props) => <DeleteIcon {...props} />}
-                          tooltip="Delete user"
                         />
                       </TableCell>
 
@@ -198,7 +197,6 @@ const UsersTable = () => {
                           color="blue"
                           handleClick={handleAssignRole.bind(this, row._id)}
                           Icon={(props) => <SupervisorAccountIcon {...props} />}
-                          tooltip="Assign Admin Role"
                         />
                       </TableCell>
                     </TableRow>

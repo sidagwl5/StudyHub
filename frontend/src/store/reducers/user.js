@@ -18,6 +18,7 @@ const initialState = {
   allUsersData: [],
   setLoginSuccessModal: false,
   specificUserData: null,
+  notifications: []
 };
 
 export default (state = initialState, action) => {

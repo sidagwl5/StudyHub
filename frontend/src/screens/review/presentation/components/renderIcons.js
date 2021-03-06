@@ -8,7 +8,7 @@ import WatchLaterIcon from "@material-ui/icons/WatchLater";
 
 const RenderIcons = ({ status, favourites, isAdmin, url }) => {
   const handleDownload = () => {
-    const path = require(`../../../resources${url}`).default;
+    const path = require(`../../../../resources${url}`).default;
     window.open(path);
   };
 

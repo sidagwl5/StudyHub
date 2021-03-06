@@ -11,6 +11,7 @@ import {
 import axios from "../../utils/api";
 import errorHandler from "../../utils/errorHandler";
 import successHandler from "../../utils/successHandler";
+import { getNotifications } from './notification';
 import {
   removeDataInLocalStorage,
   setDataInLocalStorage,
@@ -21,12 +22,15 @@ export const authenticate = (check) => async (dispatch) => {
   try {
     const { data, status } = await axios.get("/user/authenticate");
     if (status === 200) {
+
+      const { notifications, ...rest } = data;
       if (check) {
         setDataInLocalStorage();
         dispatch({ type: LOGIN_SUCCESS });
         dispatch({ type: SET_LOGIN_SUCCESS_MODAL, payload: true });
       }
-      dispatch({ type: GET_USER_PROFILE, payload: data });
+      dispatch({ type: GET_USER_PROFILE, payload: rest });
+      dispatch(getNotifications(notifications));
     }
   } catch (error) {
     dispatch(errorHandler(error));
