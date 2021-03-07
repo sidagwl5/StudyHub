@@ -4,6 +4,7 @@ import notificationReducer from "./notification";
 import uploadReducer from "./upload";
 import alertReducer from "./alert";
 import blogReducer from "./blog";
+import internetConnectivityReducer from './internetConnectivity';
 
 import { combineReducers } from "redux";
 
@@ -14,4 +15,5 @@ export default combineReducers({
   upload: uploadReducer,
   alert: alertReducer,
   blog: blogReducer,
+  internetConnectivity: internetConnectivityReducer 
 });

@@ -1,4 +1,4 @@
-import { SET_ALERT, NOT_RECOGNIZED } from "../store/types";
+import { SET_ALERT, NOT_RECOGNIZED, INTERNET_DISCONNECTED_ERROR } from "../store/types";
 import { removeDataInLocalStorage } from './localStorage';
 
 const errorHandler = (error) => (dispatch) => {
@@ -28,6 +28,9 @@ const errorHandler = (error) => (dispatch) => {
         payload: { type: "error", message: data.message },
       });
     }
+  }
+  else{
+    dispatch({ type: INTERNET_DISCONNECTED_ERROR });
   }
 };
 

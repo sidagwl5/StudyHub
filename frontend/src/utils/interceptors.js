@@ -7,8 +7,7 @@ const dispatch = store.dispatch;
 const interceptors = (axios) => {
   axios.interceptors.request.use(
     (request) => {
-      request.withCredentials = true;
-
+      
       dispatch({ type: SET_LOADER, payload: ++countRequest });
       return request;
     },

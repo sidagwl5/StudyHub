@@ -1,6 +1,8 @@
 import React from "react";
 import Navbar from "./navbar";
 import Container from "@material-ui/core/Container";
+import { connect } from "react-redux";
+import NotFoundPage from "../../screens/NotFoundPage/presentation";
 
 const root = {
   position: "relative",
@@ -11,16 +13,32 @@ const root = {
 };
 
 const HOC = (WrapperComponent) => {
-  return (props) => {
-    return (
-      <div style={{ width: '100%', height: '100vh' }}>
-        <Navbar bgColor="#2D2824" arrowBack={true} />
-        <Container style={root}>
-          <WrapperComponent {...props} />
-        </Container>
-      </div>
-    );
+  return class extends React.Component{
+    render(){
+      return (
+        <div style={{ width: "100%", height: "100vh" }}>
+          {this.props.internetConnectivity ? (
+            <>
+              <Navbar bgColor="#2D2824" arrowBack={true} />
+              <Container style={root}>
+                <WrapperComponent {...this.props} />
+              </Container>
+            </>
+          ) : (
+            <NotFoundPage
+              title="Error"
+              subtitle="Network Problem"
+              para="It seems like your internet connection is not working!"
+            />
+          )}
+        </div>
+      );
+    }
   };
 };
 
-export default HOC;
+const mapStateToProps = state => ({
+  internetConnectivity: state.internetConnectivity
+})
+
+export default connect(mapStateToProps, {})(HOC);
