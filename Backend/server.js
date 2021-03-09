@@ -8,6 +8,7 @@ const userRoutes = require("./routes/user");
 const uploadRoutes = require("./routes/upload");
 const notificationRoutes = require("./routes/notifications");
 const blogRoutes = require("./routes/blog");
+const noteRoutes = require("./routes/notes");
 
 const app = express();
 require("dotenv").config();
@@ -26,6 +27,8 @@ app.use("/user", userRoutes);
 app.use("/upload", uploadRoutes);
 app.use("/blog", blogRoutes);
 app.use("/notification", notificationRoutes);
+app.use("/note", noteRoutes);
+
 
 app.use((err, req, res, next) => {
   console.log(err.message);

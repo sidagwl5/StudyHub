@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./navbar";
 import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
+import { compose } from 'redux';
 import NotFoundPage from "../../screens/NotFoundPage/presentation";
 
 const root = {
@@ -41,4 +42,4 @@ const mapStateToProps = state => ({
   internetConnectivity: state.internetConnectivity
 })
 
-export default connect(mapStateToProps, {})(HOC);
+export default compose(connect(mapStateToProps, null), HOC);

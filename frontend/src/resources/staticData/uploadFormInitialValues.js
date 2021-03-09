@@ -14,3 +14,10 @@ export const uploadBlogInitialValues = (value) => ({
   title: value,
   description: value
 })
+
+
+export const uploadNoteInitialValues = (value) => ({
+  title: value,
+  description: value,
+  reminder: null
+})

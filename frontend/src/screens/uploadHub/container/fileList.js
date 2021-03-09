@@ -5,7 +5,7 @@ import FileCard from "../presentation/fileCard";
 import UploadFile from "./uploadFile";
 import { makeStyles } from "@material-ui/core/styles";
 import history from "../../../utils/createHistory";
-import Badge from "@material-ui/core/Badge";
+import addUpload from '../../../resources/images/addUpload.png';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -40,16 +40,36 @@ const FileList = ({ match }) => {
           </button>
         ))
       ) : (
-        <p
+        <div
           style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
           }}
         >
-          No files uploaded yet!
-        </p>
+          <p
+            style={{
+              fontFamily: "bebas neue",
+              fontSize: "30px",
+            }}
+          >
+            No Files uploaded yet!
+          </p>
+          <img
+            style={{
+              objectFit: "contain",
+              width: "45%",
+              minWidth: "350px",
+              position: "relative",
+              top: "13px",
+            }}
+            src={addUpload}
+          />
+        </div>
       )}
     </div>
   );

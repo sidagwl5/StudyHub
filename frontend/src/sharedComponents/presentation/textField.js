@@ -43,7 +43,9 @@ const TextField = ({
   id,
   value,
   params,
+  type="text",
   disabled = false,
+  defaultValue=""
 }) => {
   const classes = useStyles({ radius, width, height })();
   return (
@@ -57,6 +59,8 @@ const TextField = ({
       id={id}
       params={params}
       disabled={disabled}
+      type={type}
+      defaultValue={defaultValue}
     />
   );
 };

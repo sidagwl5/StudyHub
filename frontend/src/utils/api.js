@@ -7,7 +7,7 @@ const axios = Axios.create({
 })
 
 axios.defaults.withCredentials = true;
-axios.defaults.timeout = 2000;
+axios.defaults.timeout = 7000;
 interceptor(axios);
 
 export default axios;

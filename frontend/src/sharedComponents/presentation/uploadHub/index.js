@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import HighOrderContainer from "../HOC";
+import HigherOrderContainer from "../HOC";
 import Tab from "../tabs";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -31,4 +31,4 @@ const UploadHub = ({
   );
 };
 
-export default HighOrderContainer(UploadHub);
+export default HigherOrderContainer(UploadHub);

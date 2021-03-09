@@ -29,7 +29,6 @@ const PopperPresentation = ({
   const id = open ? "simple-popper" : undefined;
 
   return (
-    <ClickAwayListener onClickAway={handleClose}>
       <Popper
         placement="bottom-end"
         className={classes.root}
@@ -47,7 +46,6 @@ const PopperPresentation = ({
           {children}
         </div>
       </Popper>
-    </ClickAwayListener>
   );
 };
 

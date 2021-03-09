@@ -13,6 +13,8 @@ const TextFieldContainer = ({
   value,
   params = null,
   disabled,
+  type,
+  defaultValue
 }) => {
   let staticProps = {
     placeholder,
@@ -41,6 +43,8 @@ const TextFieldContainer = ({
       {...props}
       color="white"
       disabled={disabled}
+      type={type}
+      defaultValue={defaultValue}
       classes={{ root: classes.root }}
     />
   );

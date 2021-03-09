@@ -7,6 +7,7 @@ import blogHub from "../screens/blogHub/presentation";
 import Users from "../screens/users/presentation";
 import Profile from "../screens/profile/presentation";
 import ReviewPage from "../screens/review/presentation";
+import NotesPage from "../screens/notes/presentation";
 import NotFoundPage from "../screens/NotFoundPage/presentation";
 import { useDispatch } from 'react-redux';
 import { authenticate } from "../store/actions/user";
@@ -29,6 +30,7 @@ export default () => {
       <ProtectedRoute path="/uploadhub/:id*" component={UploadHub} />
       <ProtectedRoute path="/bloghub/:id*" component={blogHub} />
       <ProtectedRoute path="/review/:id" component={ReviewPage} />
+      <ProtectedRoute path="/notes/:id*" component={NotesPage} />
       <ProtectedRoute path="/profile/:id*" component={Profile} />
       <NotFoundPage 
        title="404"

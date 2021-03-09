@@ -13,7 +13,6 @@ const getAllBlogs = asyncHandler(async (req, res) => {
   return res.json(blogsData);
 });
 
-
 // PURPOSE: upload blog
 // TYPE: post
 // FOR: admin

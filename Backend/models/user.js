@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const notifications = require("./notifications");
+const notes = require("./notes");
 
 const userSchema = new mongoose.Schema(
   {
@@ -26,6 +27,7 @@ const userSchema = new mongoose.Schema(
       },
     ],
     notifications: [notifications],
+    notes: [notes],
     blogs: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -3,36 +3,47 @@ import { useDispatch, useSelector } from "react-redux";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Badge from "@material-ui/core/Badge";
 import { Link } from "react-router-dom";
-import userProfileWrapper from '../../sharedComponents/presentation/wrappers/userProfile';
+import userProfileWrapper from "../../sharedComponents/presentation/wrappers/userProfile";
 
 import IconButton from "../presentation/iconButton";
 import { deleteNotification } from "../../store/actions/notification";
 import Popper from "../presentation/popper";
 import Button from "../presentation/button";
 import AlertStrip from "../presentation/alertStrip";
+import NotesIcon from "@material-ui/icons/Notes";
+import history from '../../utils/createHistory';
 
 const Notifications = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const notifications = useSelector(state => state.notification);
+  const notifications = useSelector((state) => state.notification);
 
   const handleClick = (event) => {
     event.stopPropagation();
-    console.log('hello');
+    console.log("hello");
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
   const handleDelete = (id, userId) => {
-    if(userId){
-      dispatch(deleteNotification(id, { userId })); 
-      return;   
+    if (userId) {
+      dispatch(deleteNotification(id, { userId }));
+      return;
     }
     dispatch(deleteNotification(id));
   };
 
+  console.log(anchorEl);
+
   return (
     <>
+      <IconButton
+        Icon={(props) => <NotesIcon {...props} />}
+        color="#D1D7E0"
+        size="small"
+        handleClick={() => history.push("/notes")}
+      />
+
       <IconButton
         Icon={(props) => (
           <Badge badgeContent={notifications.length} color="primary">
@@ -44,7 +55,13 @@ const Notifications = () => {
         handleClick={handleClick}
       />
 
-      <Popper width="285px" height="340px" open={open} anchorEl={anchorEl} handleClose={handleClick}>
+      <Popper
+        width="285px"
+        height="340px"
+        open={open}
+        anchorEl={anchorEl}
+        handleClose={handleClick}
+      >
         <div
           style={{
             height: "calc(100% - 35px)",

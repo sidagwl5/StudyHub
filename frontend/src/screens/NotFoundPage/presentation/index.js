@@ -2,6 +2,7 @@ import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "../../../sharedComponents/presentation/button";
 import history from "../../../utils/createHistory";
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles(() => ({
   root: {

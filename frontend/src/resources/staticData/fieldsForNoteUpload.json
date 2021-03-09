@@ -1,0 +1,20 @@
+[
+    {
+        "label": "title",
+        "id": "title",
+        "width": "100%",
+        "required": true
+    },
+    {
+        "label": "Description",
+        "id": "description",
+        "width": "100%",
+        "required": true
+    },
+    {
+        "label": "Reminder",
+        "id": "reminder",
+        "width": "100%",
+        "required": false
+    }
+]
