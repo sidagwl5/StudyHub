@@ -1,12 +1,34 @@
-import { GET_NOTES, DELETE_NOTE, POST_NOTE } from "../types";
+import { GET_NOTES, DELETE_NOTE, REMIND_USER_ABOUT_NOTES } from "../types";
 import axios from "../../utils/api";
 import errorHandler from "../../utils/errorHandler";
 import successHandler from "../../utils/successHandler";
 
 export const getNotes = (notes) => (dispatch) => {
+
+  const modifiedNotes = notes.map(v => {
+    if(v.reminder){
+      const date = new Date(v.reminder);
+      const now = new Date();
+      if((date - now) <= 0) v['alert'] = true;
+      else v['alert'] = false;
+    }
+    else{
+      v['alert'] = false;
+    }
+
+    return v;
+  })
+
   dispatch({
     type: GET_NOTES,
-    payload: notes,
+    payload: modifiedNotes,
+  });
+};
+
+export const remindUserAboutNotes = (noteId) => (dispatch) => {
+  dispatch({
+    type: REMIND_USER_ABOUT_NOTES,
+    payload: noteId,
   });
 };
 

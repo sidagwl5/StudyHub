@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
 const BlogList = ({ match }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const notes = useSelector(state => state.note);
+  const notes = useSelector(state => state.note.notes);
 
   return (
     <div className={classes.root}>

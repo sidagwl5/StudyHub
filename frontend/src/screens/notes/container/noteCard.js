@@ -6,6 +6,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { useDispatch } from "react-redux";
 import WatchLaterIcon from "@material-ui/icons/WatchLater";
 import { deleteNote } from '../../../store/actions/notes';
+import Reminder from './reminder';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,19 +24,12 @@ const FileCard = ({ data: { title, description, reminder, _id: id } }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const chooseColor = () => {
-    return Math.floor(Math.random() * 8);
-  };
-
   const handleDelete = (event) => {
     event.stopPropagation();
     dispatch(deleteNote(id))
   };
 
   const date = new Date(reminder);
-  const now = new Date();
-  const timeLeft = (Math.floor((date - now)/(3600 * 24 * 1000)));
-
   return (
     <div
       style={{
@@ -77,7 +71,7 @@ const FileCard = ({ data: { title, description, reminder, _id: id } }) => {
             reminder && (
                  <>
                   <WatchLaterIcon />
-                  <span>  {timeLeft} days</span>
+                  <span><Reminder reminder={reminder} id={id} /></span>
                  </>
             )
         }

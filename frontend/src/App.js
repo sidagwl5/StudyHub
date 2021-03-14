@@ -6,6 +6,7 @@ import store from "./store";
 import Loader from "./sharedComponents/presentation/loader";
 import Alert from "./sharedComponents/container/alert";
 import Routes from './utils/routes';
+import RemindUserAboutNotes from './screens/notes/container/remindUserOfNoteModal';
 
 const App = () => {
  
@@ -15,6 +16,7 @@ const App = () => {
         <Alert />
           <Routes />
         <Loader />
+        <RemindUserAboutNotes />
       </Router>
     </Provider>
   );

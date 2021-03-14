@@ -10,9 +10,14 @@ const LoginSuccessModal = () => {
   const setLoginSuccessModal = useSelector(
     (state) => state.user.setLoginSuccessModal
   );
+  const notes = useSelector(
+    (state) => state.note.notes
+  );
 
   const handleClose = () => {
     dispatch({ type: "SET_LOGIN_SUCCESS_MODAL", payload: false });
+    if(notes.find(v => v.alert)) 
+      setTimeout(() => dispatch({ type: 'REMIND_USER_ABOUT_NOTES_MODAL', payload: true }), 1000);
   };
 
   return (

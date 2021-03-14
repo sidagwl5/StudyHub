@@ -42,6 +42,7 @@ const Notifications = () => {
         color="#D1D7E0"
         size="small"
         handleClick={() => history.push("/notes")}
+        tooltip="Notes"
       />
 
       <IconButton
@@ -53,6 +54,7 @@ const Notifications = () => {
         color="#D1D7E0"
         size="small"
         handleClick={handleClick}
+        tooltip="Notifications"
       />
 
       <Popper
