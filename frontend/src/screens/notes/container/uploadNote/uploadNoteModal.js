@@ -15,6 +15,9 @@ const UploadFileModal = ({
   const [formValues, setFormValues] = useState(uploadNoteInitialValues(""));
 
   const handleChange = useCallback((event) => { 
+
+    event.persist();
+    console.log(event);
     let type = event.target.id;
     setFormValues((prevFormValues) => ({
       ...prevFormValues,

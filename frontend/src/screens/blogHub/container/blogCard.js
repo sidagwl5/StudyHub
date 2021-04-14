@@ -63,6 +63,7 @@ const FileCard = ({
         display: "flex",
         flexDirection: "column",
         boxShadow: "0.5px 0.5px 20px rgba(128, 128, 128, 0.3)",
+        margin: '0px 9px'
       }}
     >
       <div

@@ -38,12 +38,11 @@ const UploadFileModal = ({
 
   // change form data
 
-  const handleChange = useCallback((event) => {
-    console.log(event.target.id);  
-    let type = event.target.id;
+  const handleChange = useCallback(({ target: { value, id } }) => {
+    let type = id;
     setFormValues((prevFormValues) => ({
       ...prevFormValues,
-      [type]: event.target.value,
+      [type]: value,
     }));
   }, []);
 

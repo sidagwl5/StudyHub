@@ -25,6 +25,7 @@ const Reminder = ({ reminder, id }) => {
     } 
     
     else if (milliSecondsLeft !== null) {
+      setTimeLeft(`0D 0H 0M 0S`);
       dispatch(remindUserAboutNotes(id));
     }
   }, [milliSecondsLeft]);
